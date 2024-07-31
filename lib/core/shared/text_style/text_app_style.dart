@@ -17,6 +17,7 @@ class TextAppStyle {
   static final TextStyle urbanistSemiBold = GoogleFonts.urbanist(fontSize: 12, fontWeight: FontWeight.w600);
   static final TextStyle urbanistBold = GoogleFonts.urbanist(fontSize: 12, fontWeight: FontWeight.w700);
   
+  static final TextStyle interLight = GoogleFonts.inter(fontSize: 12, fontWeight: FontWeight.w300);
   static final TextStyle interReguler = GoogleFonts.inter(fontSize: 12, fontWeight: FontWeight.w400);
   static final TextStyle interMedium = GoogleFonts.inter(fontSize: 12, fontWeight: FontWeight.w500);
   static final TextStyle interSemiBold = GoogleFonts.inter(fontSize: 12, fontWeight: FontWeight.w600);

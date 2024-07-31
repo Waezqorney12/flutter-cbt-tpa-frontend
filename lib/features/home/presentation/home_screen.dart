@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:test_potensial/core/provider/navigator_provider.dart';
+import 'package:test_potensial/core/shared/positioned/dimensions.dart';
 import 'package:test_potensial/core/shared/text_style/text_app_style.dart';
 import 'package:test_potensial/core/theme/app_palette.dart';
 import 'package:flutter_initicon/flutter_initicon.dart';
@@ -19,7 +20,7 @@ class HomeScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                width: MediaQuery.of(context).size.width,
+                width: Dimensions.screenWidht(context),
                 height: 190,
                 decoration: BoxDecoration(
                   color: AppPalette.primaryColor,
