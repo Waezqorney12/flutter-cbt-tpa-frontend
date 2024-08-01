@@ -6,12 +6,18 @@ import 'package:test_potensial/features/auth/data/datasource_impl/register_remot
 import 'package:test_potensial/features/auth/data/repository_impl/register_repository_impl.dart';
 import 'package:test_potensial/features/auth/domain/datasource/register_remote_datasource.dart';
 import 'package:test_potensial/features/auth/domain/repository/register_repository.dart';
+import 'package:test_potensial/features/auth/domain/usecases/user_login_usecases.dart';
 import 'package:test_potensial/features/auth/domain/usecases/user_register_usecases.dart';
 import 'package:test_potensial/features/onboarding/controller/onboarding_controller.dart';
 import 'package:test_potensial/features/onboarding/data/datasource_impl/local_datasource_impl_onboarding.dart';
 import 'package:test_potensial/features/onboarding/data/repository/onboarding_repository_impl.dart';
 import 'package:test_potensial/features/onboarding/domain/datasource/local_datasource_onboarding.dart';
 import 'package:test_potensial/features/onboarding/domain/repository/onboarding_repository.dart';
+
+import 'features/auth/data/datasource_impl/login_remote_datasource_impl.dart';
+import 'features/auth/data/repository_impl/login_repository_impl.dart';
+import 'features/auth/domain/datasource/login_remote_datasource.dart';
+import 'features/auth/domain/repository/login_repository.dart';
 
 final GetIt getIt = GetIt.instance;
 
@@ -28,6 +34,12 @@ Future<void> initDependencies() async {
 void _initOnboardingFeature() {
   getIt
     // RemoteDatasource
+    ..registerFactory<LoginRemoteDataSource>(
+      () => LoginRemoteDatasourceImpl(
+        getIt<DioClient>(),
+        getIt<SharedPreferences>(),
+      ),
+    )
     ..registerFactory<RegisterRemoteDataSource>(
       () => RegisterRemoteDatasourceImpl(
         getIt<DioClient>(),
@@ -42,6 +54,11 @@ void _initOnboardingFeature() {
     )
 
     // Repository
+    ..registerFactory<LoginRepository>(
+      () => LoginRepositoryImpl(
+        getIt<LoginRemoteDataSource>(),
+      ),
+    )
     ..registerFactory<RegisterRepository>(
       () => RegisterRepositoryImpl(
         getIt<RegisterRemoteDataSource>(),
@@ -62,6 +79,11 @@ void _initOnboardingFeature() {
 
     // UseCases
     ..registerFactory(
+      () => UserLogin(
+        getIt(),
+      ),
+    )
+    ..registerFactory(
       () => UserRegister(
         getIt(),
       ),
@@ -70,6 +92,7 @@ void _initOnboardingFeature() {
     // Bloc
     ..registerLazySingleton(
       () => AuthBloc(
+        userLogin: getIt(),
         userRegister: getIt(),
       ),
     );

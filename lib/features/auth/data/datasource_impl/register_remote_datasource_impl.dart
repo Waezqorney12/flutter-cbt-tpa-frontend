@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:test_potensial/core/failure/exception.dart';
+import 'package:test_potensial/core/failure/server_exception.dart';
 import 'package:test_potensial/core/failure/failure_message.dart';
 import 'package:test_potensial/core/infrastructure/network/dio_client.dart';
 import 'package:test_potensial/core/utils/log.dart';
@@ -23,10 +23,9 @@ class RegisterRemoteDatasourceImpl implements RegisterRemoteDataSource {
       return UserModel.fromJson(request.data['user']);
     } on DioException catch (e) {
       Log.loggerError("Error: ${e.message}");
-      Log.loggerFatal("Response: ${e.response!.data['user']}");
-      Log.loggerInformation("Uri: ${e.response!.requestOptions.uri}");
-      throw FailureMessage(e.message!);
+      rethrow;
     } on ServerException catch (e) {
+      Log.loggerError("Error: ${e.message}");
       throw ServerException(message: e.message);
     }
   }

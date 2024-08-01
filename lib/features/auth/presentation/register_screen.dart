@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:test_potensial/core/shared/widget/loading_widget.dart';
 import 'package:test_potensial/core/utils/show_snackbar_utils.dart';
 import 'package:test_potensial/features/auth/bloc/auth_bloc.dart';
 import 'package:test_potensial/features/auth/controller/register_controller.dart';
@@ -51,11 +52,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 if (state is AuthError) showSnackBar(context, state.message);
               },
               builder: (context, state) {
-                if (state is AuthLoading) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
+                if (state is AuthLoading) return const Loading();
                 return Form(
                   key: key,
                   child: Padding(

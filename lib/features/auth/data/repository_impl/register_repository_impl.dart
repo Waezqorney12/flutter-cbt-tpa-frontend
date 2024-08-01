@@ -15,7 +15,7 @@ class RegisterRepositoryImpl implements RegisterRepository {
     required String password,
   }) =>
       helperCall<UserEntities>(
-        apiCall: () async => _remoteDataSource.registerWithEmailPassword(
+        apiCall: () => _remoteDataSource.registerWithEmailPassword(
           email: email,
           password: password,
           name: name,
