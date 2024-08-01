@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:test_potensial/features/auth/bloc/auth_bloc.dart';
 import 'package:test_potensial/features/onboarding/domain/repository/onboarding_repository.dart';
 import 'package:test_potensial/init_dependencies.dart';
 import 'package:test_potensial/my_app.dart';
@@ -15,6 +17,10 @@ Future<void> main() async {
 
   // Run the app
   runApp(
-    MyApp(getFirstInstall: getFirstInstall),
+    MultiBlocProvider(providers: [
+      BlocProvider(
+        create: (_) => getIt<AuthBloc>(),
+      ),
+    ], child: MyApp(getFirstInstall: getFirstInstall)),
   );
 }

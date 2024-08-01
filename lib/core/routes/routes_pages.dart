@@ -5,6 +5,7 @@ import 'package:test_potensial/features/auth/presentation/forgot_password_screen
 import 'package:test_potensial/features/auth/presentation/otp_screen.dart';
 import 'package:test_potensial/features/home/presentation/home_screen.dart';
 import 'package:test_potensial/features/materi/presentation/materi_screen.dart';
+import 'package:test_potensial/features/materi_detail/materi_detail_screen.dart';
 import 'package:test_potensial/features/quiz/quiz_screen.dart';
 import 'package:test_potensial/features/tips%20&%20trick/tips_screen.dart';
 
@@ -26,4 +27,7 @@ class Routes {
   static MaterialPageRoute quiz() => MaterialPageRoute(builder: (context) => const QuizScreen());
   static MaterialPageRoute aboutUs() => MaterialPageRoute(builder: (context) => const AboutUsScreen());
   static MaterialPageRoute tipsTrick() => MaterialPageRoute(builder: (context) => const TipsScreen());
+  
+  static MaterialPageRoute materiDetail() => MaterialPageRoute(builder: (context) => const MateriDetailScreen());
+  
 }

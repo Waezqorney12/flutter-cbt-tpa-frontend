@@ -13,16 +13,15 @@ class DioClient {
       ..baseUrl = ApiConfig.baseUrl!
       ..headers = {
         HttpHeaders.contentTypeHeader: 'application/json',
-        HttpHeaders.authorizationHeader: ApiConfig.tokenKey!,
-      }
-      ..connectTimeout = const Duration(seconds: 2)
-      ..receiveTimeout = const Duration(seconds: 2);
+      };
+    //  ..connectTimeout = const Duration(seconds: 2);
+    //..receiveTimeout = const Duration(seconds: 2);
   }
 
   /// * POST
   Future<Response<dynamic>> post(
     String uri, {
-    data,
+    dynamic data,
     Map<String, dynamic>? queryParameters,
     Options? options,
     CancelToken? cancelToken,
@@ -31,6 +30,7 @@ class DioClient {
   }) async {
     try {
       final response = await _dio.post(
+        
         uri,
         data: data,
         queryParameters: queryParameters,
@@ -48,7 +48,7 @@ class DioClient {
   /// * PUT
   Future<Response<dynamic>> put(
     String uri, {
-    data,
+    dynamic data,
     Map<String, dynamic>? queryParameters,
     Options? options,
     CancelToken? cancelToken,
@@ -74,7 +74,7 @@ class DioClient {
   /// * PATCH
   Future<Response<dynamic>> patch(
     String uri, {
-    data,
+    dynamic data,
     Map<String, dynamic>? queryParameters,
     Options? options,
     CancelToken? cancelToken,
@@ -100,7 +100,7 @@ class DioClient {
   /// * DELETE
   Future<dynamic> delete(
     String uri, {
-    data,
+    dynamic data,
     Map<String, dynamic>? queryParameters,
     Options? options,
     CancelToken? cancelToken,

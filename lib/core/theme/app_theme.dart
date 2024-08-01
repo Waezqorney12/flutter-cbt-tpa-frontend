@@ -24,6 +24,8 @@ class AppTheme {
       focusedBorder: _inputFormButton(),
       fillColor: AppPalette.filledInputColor,
       filled: true,
+      errorBorder: _inputFormButton(),
+      focusedErrorBorder: _inputFormButton(Colors.red),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8),
         borderSide: const BorderSide(color: Colors.transparent),

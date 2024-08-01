@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:test_potensial/core/routes/routes_pages.dart';
 import 'package:test_potensial/core/shared/positioned/dimensions.dart';
 import 'package:test_potensial/core/shared/text_style/text_app_style.dart';
 import 'package:test_potensial/core/theme/app_palette.dart';
@@ -107,7 +108,7 @@ class MateriScreen extends StatelessWidget {
                       return Padding(
                         padding: index == 0 ? const EdgeInsets.only(bottom: 16) : const EdgeInsets.symmetric(vertical: 16),
                         child: InkWell(
-                          onTap: () => print('opbe'),
+                          onTap: () => Navigator.push(context, Routes.materiDetail()),
                           child: Container(
                             width: double.infinity,
                             decoration: BoxDecoration(
