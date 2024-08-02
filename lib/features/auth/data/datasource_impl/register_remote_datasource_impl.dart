@@ -29,4 +29,10 @@ class RegisterRemoteDatasourceImpl implements RegisterRemoteDataSource {
       throw ServerException(message: e.message);
     }
   }
+
+  @override
+  Future<void> registerWithGoogle() {
+    // TODO: implement registerWithGoogle
+    throw UnimplementedError();
+  }
 }

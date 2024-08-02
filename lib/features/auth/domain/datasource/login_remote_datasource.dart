@@ -5,4 +5,6 @@ abstract interface class LoginRemoteDataSource {
     required String email,
     required String password,
   });
+
+  Future<void> loginWithGoogle();
 }

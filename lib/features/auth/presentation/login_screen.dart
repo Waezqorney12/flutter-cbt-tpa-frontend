@@ -105,6 +105,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       onPressed: () {
                         if (formKey.currentState!.validate()) {
                           _controller.signIn(context);
+                          Navigator.pushReplacement(context, Routes.nav());
                         }
                       },
                       child: Text(

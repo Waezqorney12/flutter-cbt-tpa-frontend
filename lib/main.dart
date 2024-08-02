@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:test_potensial/core/cubit/user_cubit.dart';
 import 'package:test_potensial/features/auth/bloc/auth_bloc.dart';
 import 'package:test_potensial/features/onboarding/domain/repository/onboarding_repository.dart';
 import 'package:test_potensial/init_dependencies.dart';
@@ -18,6 +19,9 @@ Future<void> main() async {
   // Run the app
   runApp(
     MultiBlocProvider(providers: [
+      BlocProvider(
+        create: (_) => getIt<UserCubit>(),
+      ),
       BlocProvider(
         create: (_) => getIt<AuthBloc>(),
       ),

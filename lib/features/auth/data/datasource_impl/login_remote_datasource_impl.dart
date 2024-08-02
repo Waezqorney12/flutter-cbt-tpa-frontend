@@ -3,7 +3,7 @@ import 'package:test_potensial/core/failure/server_exception.dart';
 import 'package:test_potensial/core/infrastructure/network/dio_client.dart';
 import 'package:test_potensial/core/model/user_model.dart';
 import 'package:test_potensial/features/auth/domain/datasource/login_remote_datasource.dart';
-import 'package:test_potensial/features/auth/domain/datasource/token_local_datasource.dart';
+import 'package:test_potensial/core/token/token_local_datasource.dart';
 
 import '../../../../core/utils/log.dart';
 
@@ -31,5 +31,11 @@ class LoginRemoteDatasourceImpl implements LoginRemoteDataSource {
       Log.loggerError("Error: ${e.message}");
       throw ServerException(message: "Server Error:${e.message}");
     }
+  }
+
+  @override
+  Future<void> loginWithGoogle() {
+    // TODO: implement loginWithGoogle
+    throw UnimplementedError();
   }
 }

@@ -7,4 +7,6 @@ abstract interface class RegisterRemoteDataSource {
     required String password,
     required String name,
   });
+
+  Future<void> registerWithGoogle();
 }
