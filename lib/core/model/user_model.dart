@@ -1,4 +1,4 @@
-import 'package:test_potensial/features/auth/domain/entities/user_entities.dart';
+import 'package:test_potensial/core/entities/user_entities.dart';
 
 class UserModel extends UserEntities {
   UserModel({
