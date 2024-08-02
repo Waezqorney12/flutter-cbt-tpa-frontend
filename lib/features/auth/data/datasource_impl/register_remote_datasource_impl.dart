@@ -3,7 +3,7 @@ import 'package:test_potensial/core/failure/server_exception.dart';
 import 'package:test_potensial/core/failure/failure_message.dart';
 import 'package:test_potensial/core/infrastructure/network/dio_client.dart';
 import 'package:test_potensial/core/utils/log.dart';
-import 'package:test_potensial/features/auth/data/model/user_model.dart';
+import 'package:test_potensial/core/model/user_model.dart';
 import 'package:test_potensial/features/auth/domain/datasource/register_remote_datasource.dart';
 
 class RegisterRemoteDatasourceImpl implements RegisterRemoteDataSource {

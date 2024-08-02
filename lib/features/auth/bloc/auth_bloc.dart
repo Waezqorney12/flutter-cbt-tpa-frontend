@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:test_potensial/features/auth/domain/usecases/user_login_usecases.dart';
 import 'package:test_potensial/features/auth/domain/usecases/user_register_usecases.dart';
 
-import '../domain/entities/user_entities.dart';
+import '../../../core/entities/user_entities.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';

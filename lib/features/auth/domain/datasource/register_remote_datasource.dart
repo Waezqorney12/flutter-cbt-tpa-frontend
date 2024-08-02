@@ -1,4 +1,4 @@
-import 'package:test_potensial/features/auth/data/model/user_model.dart';
+import 'package:test_potensial/core/model/user_model.dart';
 
 
 abstract interface class RegisterRemoteDataSource {

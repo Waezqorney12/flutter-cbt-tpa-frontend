@@ -1,15 +1,15 @@
 import 'package:dio/dio.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test_potensial/core/failure/server_exception.dart';
 import 'package:test_potensial/core/infrastructure/network/dio_client.dart';
-import 'package:test_potensial/features/auth/data/model/user_model.dart';
+import 'package:test_potensial/core/model/user_model.dart';
 import 'package:test_potensial/features/auth/domain/datasource/login_remote_datasource.dart';
+import 'package:test_potensial/features/auth/domain/datasource/token_local_datasource.dart';
 
 import '../../../../core/utils/log.dart';
 
 class LoginRemoteDatasourceImpl implements LoginRemoteDataSource {
   final DioClient _client;
-  final SharedPreferences _sharedPreferences;
+  final TokenLocalDatasource _sharedPreferences;
   const LoginRemoteDatasourceImpl(this._client, this._sharedPreferences);
   @override
   Future<UserModel> loginWithEmailPassword({
@@ -22,6 +22,7 @@ class LoginRemoteDatasourceImpl implements LoginRemoteDataSource {
         data: UserModel(name: '', email: email, password: password, phone: '', roles: '').toJson(),
       );
       Log.loggerInformation("LoginRemoteDatasourceImpl: ${request.data['access_token']}");
+      _sharedPreferences.saveToken(request.data['access_token']);
       return UserModel.fromJson(request.data['message']);
     } on DioException catch (e) {
       Log.loggerError("Dio Error: ${e.message}");
