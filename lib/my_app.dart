@@ -3,25 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_potensial/core/cubit/user_cubit.dart';
 import 'package:test_potensial/core/routes/routes_pages.dart';
 import 'package:test_potensial/core/shared/widget/loading_widget.dart';
+import 'package:test_potensial/core/utils/log.dart';
 import 'package:test_potensial/features/bottom_navigator/bottom_navigator_widget.dart';
 import 'package:test_potensial/features/onboarding/presentation/onboarding_screen.dart';
 
 import 'core/theme/app_theme.dart';
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   final bool getFirstInstall;
   const MyApp({super.key, required this.getFirstInstall});
-
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  @override
-  void initState() {
-    context.read<UserCubit>().getUser();
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,12 +20,18 @@ class _MyAppState extends State<MyApp> {
       theme: AppTheme.lightMode,
       home: BlocListener<UserCubit, UserState>(
         listener: (context, state) {
-          if (state is UserError) Navigator.pushReplacement(context, Routes.login());
+          if (!getFirstInstall) {
+            Navigator.pushReplacement(context, Routes.onboarding());
+          } else if (state is UserError) {
+            Navigator.pushReplacement(context, Routes.login());
+          }
         },
         child: BlocBuilder<UserCubit, UserState>(
           builder: (context, state) {
-            if (!widget.getFirstInstall) return const OnBoardingScreen();
-            if (widget.getFirstInstall && state is UserSuccess) {
+            Log.loggerFatal('State is $state');
+            Log.loggerFatal('First Install is $getFirstInstall');
+            if (state is UserInitial) context.read<UserCubit>().getUser();
+            if (getFirstInstall && state is UserSuccess) {
               return BottomNavigatorWidget();
             } else {
               return const Scaffold(body: Loading());

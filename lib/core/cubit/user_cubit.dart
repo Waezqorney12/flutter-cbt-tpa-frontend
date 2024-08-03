@@ -12,15 +12,13 @@ class UserCubit extends Cubit<UserState> {
   UserCubit(TokenLocalDatasource tokenLocalDatasource)
       : _tokenLocalDatasource = tokenLocalDatasource,
         super(UserInitial());
-  Future<void> getUser() async {
+  Future getUser() async {
     try {
       emit(UserLoading());
       final user = await _tokenLocalDatasource.getUser();
       emit(UserSuccess(user));
     } catch (e) {
-      emit(
-        UserError(e.toString()),
-      );
+      emit(UserError(e.toString()));
     }
   }
 }

@@ -7,6 +7,7 @@ import 'package:test_potensial/features/bottom_navigator/bottom_navigator_widget
 import 'package:test_potensial/features/home/presentation/home_screen.dart';
 import 'package:test_potensial/features/materi/presentation/materi_screen.dart';
 import 'package:test_potensial/features/materi_detail/materi_detail_screen.dart';
+import 'package:test_potensial/features/onboarding/presentation/onboarding_screen.dart';
 import 'package:test_potensial/features/quiz/quiz_screen.dart';
 import 'package:test_potensial/features/tips%20&%20trick/tips_screen.dart';
 
@@ -18,6 +19,7 @@ class Routes {
   static MaterialPageRoute regist() => MaterialPageRoute(builder: (context) => const RegisterScreen());
   static MaterialPageRoute home() => MaterialPageRoute(builder: (context) => const HomeScreen());
   static MaterialPageRoute nav() => MaterialPageRoute(builder: (context) => BottomNavigatorWidget());
+  static MaterialPageRoute onboarding() => MaterialPageRoute(builder: (context) => const OnBoardingScreen());
   static MaterialPageRoute forgot() => MaterialPageRoute(builder: (context) => const ForgotPasswordScreen());
   static MaterialPageRoute otp({required String userEmail}) => MaterialPageRoute(
         builder: (context) => OtpScreen(userEmail: userEmail),
