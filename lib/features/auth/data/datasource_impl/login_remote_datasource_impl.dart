@@ -21,7 +21,7 @@ class LoginRemoteDatasourceImpl implements LoginRemoteDataSource {
         '/api/login',
         data: UserModel(name: '', email: email, password: password, phone: '', roles: '').toJson(),
       );
-      Log.loggerInformation("LoginRemoteDatasourceImpl: ${request.data['access_token']}");
+      //Log.loggerInformation("LoginRemoteDatasourceImpl: ${request.data['access_token']}");
       _sharedPreferences.saveToken(request.data['access_token']);
       return UserModel.fromJson(request.data['message']);
     } on DioException catch (e) {

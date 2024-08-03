@@ -9,6 +9,9 @@ class AppPalette {
   static const Color filledInputColor = Color(0xFFF1F4FA);
   static const Color baseGreen = Color.fromARGB(255, 41, 188, 38);
 
+  static const Color black = Color(0xFF181D27);
+  static const Color lightBlue = Color(0xFF0601B4);
+
   static const Color box0 = Color(0xFFFCAEA3);
   static const Color box1 = Color(0xFFCCB4FF);
   static const Color box2 = Color(0xFF6A7DE3);

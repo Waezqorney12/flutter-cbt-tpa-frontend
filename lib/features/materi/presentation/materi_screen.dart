@@ -3,7 +3,7 @@ import 'package:test_potensial/core/routes/routes_pages.dart';
 import 'package:test_potensial/core/shared/positioned/dimensions.dart';
 import 'package:test_potensial/core/shared/text_style/text_app_style.dart';
 import 'package:test_potensial/core/theme/app_palette.dart';
-import 'package:test_potensial/core/utils/calculate_reading_time_utils.dart';
+import 'package:test_potensial/core/utils/regex_utils.dart';
 import 'package:test_potensial/core/utils/map_index_utils.dart';
 import 'package:test_potensial/features/materi/controller/materi_controller.dart';
 

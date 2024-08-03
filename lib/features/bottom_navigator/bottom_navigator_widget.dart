@@ -5,7 +5,7 @@ import 'package:test_potensial/core/shared/text_style/text_app_style.dart';
 import 'package:test_potensial/core/theme/app_palette.dart';
 import 'package:test_potensial/features/home/presentation/home_screen.dart';
 import 'package:test_potensial/features/materi/presentation/materi_screen.dart';
-import 'package:test_potensial/features/profile/profile_screen.dart';
+import 'package:test_potensial/features/profile/presentation/profile_screen.dart';
 import 'package:test_potensial/features/profile_detail/profile_detail_screen.dart';
 
 import '../../core/provider/navigator_provider.dart';

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_potensial/core/cubit/user_cubit.dart';
 import 'package:test_potensial/core/shared/widget/loading_widget.dart';
-import 'package:test_potensial/core/utils/log.dart';
 import 'package:test_potensial/core/utils/show_snackbar_utils.dart';
 import 'package:test_potensial/features/auth/controller/login_controller.dart';
 import 'package:test_potensial/features/auth/widget/option_auth_widget.dart';
