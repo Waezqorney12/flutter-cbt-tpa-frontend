@@ -5,7 +5,6 @@ import 'package:test_potensial/core/routes/routes_pages.dart';
 import 'package:test_potensial/core/shared/widget/loading_widget.dart';
 //import 'package:test_potensial/core/utils/log.dart';
 import 'package:test_potensial/features/bottom_navigator/bottom_navigator_widget.dart';
-import 'package:test_potensial/features/profile_detail/profile_detail_screen.dart';
 
 import 'core/theme/app_theme.dart';
 
@@ -32,7 +31,7 @@ class MyApp extends StatelessWidget {
             // Log.loggerFatal('First Install is $getFirstInstall');
             if (state is UserInitial) context.read<UserCubit>().getUser();
             if (getFirstInstall && state is UserLoggedIn) {
-              return ProfileDetailScreen();
+              return BottomNavigatorWidget();
             } else {
               return const Scaffold(body: Loading());
             }

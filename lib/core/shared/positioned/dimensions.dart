@@ -37,6 +37,10 @@ class Dimensions {
     return screenHeight(context) / -82.69;
   }
 
+  static double minHeight15(context) {
+    return screenHeight(context) / -55.13;
+  }
+
   static double minHeight20(context) {
     return screenHeight(context) / -41.35;
   }

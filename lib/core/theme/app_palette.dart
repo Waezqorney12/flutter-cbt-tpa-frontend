@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 class AppPalette {
   static const Color primaryColor = Color(0xFFF36563);
   static const Color secondaryColor = Color(0xFFFCD4D3);
+  static const Color tertiaryColor = Color(0xFFFFD4D3);
+  static const Color quaternaryColor = Color(0xFF364356);
 
   static const Color boardingTextColor = Color(0xFF0D0F44);
   static const Color loginTextColor = Color(0xFF090A0A);
