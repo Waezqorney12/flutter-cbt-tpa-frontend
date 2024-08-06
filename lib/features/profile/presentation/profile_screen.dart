@@ -106,12 +106,13 @@ class ProfileScreen extends StatelessWidget {
                                   index,
                                   value,
                                   onTap: () {
+                                    // [index]() -> for call the function at specific index that match with the menu
                                     [
-                                      Navigator.push(context, Routes.profileDetail()),
-                                      Navigator.push(context, Routes.faceId()),
-                                      Navigator.push(context, Routes.twoFactorAuthentication()),
-                                      print('sas'),
-                                    ].elementAt(index);
+                                      () => Navigator.push(context, Routes.profileDetail()),
+                                      () => Navigator.push(context, Routes.faceId()),
+                                      () => Navigator.push(context, Routes.twoFactorAuthentication()),
+                                      () => print('sas'),
+                                    ][index]();
                                   },
                                 );
                               },
