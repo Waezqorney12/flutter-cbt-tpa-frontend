@@ -34,7 +34,7 @@ class HomeScreen extends StatelessWidget {
 
               return switch (state) {
                 UserLoading() => const Loading(),
-                UserSuccess() => Column(
+                UserLoggedIn() => Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(

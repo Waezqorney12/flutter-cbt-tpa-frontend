@@ -16,7 +16,7 @@ class UserCubit extends Cubit<UserState> {
     try {
       emit(UserLoading());
       final user = await _tokenLocalDatasource.getUser();
-      emit(UserSuccess(user));
+      emit(UserLoggedIn(user));
     } catch (e) {
       emit(UserError(e.toString()));
     }

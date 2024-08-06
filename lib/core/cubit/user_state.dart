@@ -11,10 +11,10 @@ final class UserInitial extends UserState {}
 
 final class UserLoading extends UserState {}
 
-final class UserSuccess extends UserState {
+final class UserLoggedIn extends UserState {
   final UserEntities user;
 
-  const UserSuccess(this.user);
+  const UserLoggedIn(this.user);
 }
 
 final class UserError extends UserState {

@@ -51,6 +51,7 @@ void _initOnboardingFeature() {
     ..registerFactory<RegisterRemoteDataSource>(
       () => RegisterRemoteDatasourceImpl(
         getIt<DioClient>(),
+        getIt<TokenLocalDatasource>(),
       ),
     )
 

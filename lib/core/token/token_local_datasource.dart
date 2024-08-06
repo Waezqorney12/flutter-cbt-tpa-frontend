@@ -11,6 +11,7 @@ abstract interface class TokenLocalDatasource {
   Future<void> saveToken(String token);
   Future<String?> getToken();
   Future<UserEntities> getUser();
+  Future removeToken();
 }
 
 class TokenLocalDatasourceImpl implements TokenLocalDatasource {
@@ -43,4 +44,7 @@ class TokenLocalDatasourceImpl implements TokenLocalDatasource {
       throw ServerException(message: 'Server Error: $e');
     }
   }
+
+  @override
+  Future removeToken() async => await _sharedPreferences.remove('access_token');
 }

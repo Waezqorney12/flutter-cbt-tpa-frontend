@@ -31,7 +31,7 @@ class ProfileScreen extends StatelessWidget {
               builder: (context, state) {
                 return switch (state) {
                   UserLoading() => const Loading(),
-                  UserSuccess() => Column(
+                  UserLoggedIn() => Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
@@ -102,7 +102,18 @@ class ProfileScreen extends StatelessWidget {
                           child: Column(
                             children: ProfileController.menu.mapIndexed<Widget, MenuEntities>(
                               funct: (index, value) {
-                                return menu(index, value);
+                                return menu(
+                                  index,
+                                  value,
+                                  onTap: () {
+                                    [
+                                      Navigator.push(context, Routes.profileDetail()),
+                                      Navigator.push(context, Routes.faceId()),
+                                      Navigator.push(context, Routes.twoFactorAuthentication()),
+                                      print('sas'),
+                                    ].elementAt(index);
+                                  },
+                                );
                               },
                             ).toList(),
                           ),

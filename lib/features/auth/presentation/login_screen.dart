@@ -47,7 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
       body: SafeArea(
         child: BlocListener<UserCubit, UserState>(
           listener: (context, state) {
-            if (state is UserSuccess) Navigator.pushReplacement(context, Routes.nav());
+            if (state is UserLoggedIn) Navigator.pushReplacement(context, Routes.nav());
           },
           child: BlocConsumer<AuthBloc, AuthState>(
             listener: (context, state) {

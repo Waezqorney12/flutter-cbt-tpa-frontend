@@ -26,7 +26,7 @@ class LoginRemoteDatasourceImpl implements LoginRemoteDataSource {
       return UserModel.fromJson(request.data['message']);
     } on DioException catch (e) {
       Log.loggerError("Dio Error: ${e.message}");
-      rethrow;
+      throw Exception(e.message);
     } on ServerException catch (e) {
       Log.loggerError("Error: ${e.message}");
       throw ServerException(message: "Server Error:${e.message}");

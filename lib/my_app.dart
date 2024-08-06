@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
             // Log.loggerFatal('State is $state');
             // Log.loggerFatal('First Install is $getFirstInstall');
             if (state is UserInitial) context.read<UserCubit>().getUser();
-            if (getFirstInstall && state is UserSuccess) {
+            if (getFirstInstall && state is UserLoggedIn) {
               return BottomNavigatorWidget();
             } else {
               return const Scaffold(body: Loading());
