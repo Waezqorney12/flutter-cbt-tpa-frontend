@@ -8,7 +8,20 @@ Future<Either<FailureMessage, T>> helperCall<T>({required Future<T> Function() a
     final data = await apiCall();
     return right(data);
   } catch (e) {
-    Log.loggerError(e);
+    Log.loggerError("Failure error in repository: $e");
     return left(FailureMessage("Failure error in repository: $e"));
+  }
+}
+
+Future<Either<X, T>> helperCallWithException<X, T>({
+  required Future<T> Function() apiCall,
+  required Future<X> Function() networkCall,
+}) async {
+  try {
+    final data = await apiCall();
+    return right(data);
+  } catch (e) {
+    final data = await networkCall();
+    return left(data);
   }
 }

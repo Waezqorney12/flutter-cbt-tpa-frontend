@@ -1,5 +1,11 @@
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:test_potensial/features/materi/bloc/materi_bloc.dart';
+import 'package:test_potensial/features/materi/data/datasource/materi_remote_datasource_impl.dart';
+import 'package:test_potensial/features/materi/data/repository/materi_repository_impl.dart';
+import 'package:test_potensial/features/materi/domain/datasource/materi_remote_datasource.dart';
+import 'package:test_potensial/features/materi/domain/repository/materi_repository.dart';
+import 'package:test_potensial/features/materi/domain/usecases/materi_usecases.dart';
 import '../core/cubit/user_cubit.dart';
 import '../core/infrastructure/network/dio_client.dart';
 import '../features/auth/bloc/auth_bloc.dart';
@@ -24,18 +30,27 @@ import 'features/auth/domain/repository/login_repository.dart';
 final GetIt getIt = GetIt.instance;
 
 Future<void> initDependencies() async {
-  // Used for DI (Dependency Injection) Shared Preferences
   final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  getIt.registerSingleton<SharedPreferences>(sharedPreferences);
-  getIt.registerSingleton<DioClient>(DioClient());
-
-  // Used for DI (Dependency Injection) Onboarding Feature
-  _initOnboardingFeature();
+  _initNetwork(sharedPreferences);
+  // Used for DI (Dependency Injection)  Feature
+  _initFeature();
 }
 
-void _initOnboardingFeature() {
+void _initNetwork(SharedPreferences sharedPreferences) {
+  getIt
+    ..registerSingleton<DioClient>(DioClient())
+    ..registerSingleton<SharedPreferences>(sharedPreferences);
+}
+
+void _initFeature() {
   getIt
     // RemoteDatasource
+    ..registerFactory<MateriRemoteDataSource>(
+      () => MateriRemoteDatasourceImpl(
+        getIt<DioClient>(),
+        getIt<TokenLocalDatasource>(),
+      ),
+    )
     ..registerFactory<TokenLocalDatasource>(
       () => TokenLocalDatasourceImpl(
         getIt<SharedPreferences>(),
@@ -63,6 +78,11 @@ void _initOnboardingFeature() {
     )
 
     // Repository
+    ..registerFactory<MateriRepository>(
+      () => MateriRepositoryImpl(
+        getIt<MateriRemoteDataSource>(),
+      ),
+    )
     ..registerFactory<LoginRepository>(
       () => LoginRepositoryImpl(
         getIt<LoginRemoteDataSource>(),
@@ -87,6 +107,12 @@ void _initOnboardingFeature() {
     )
 
     // UseCases
+
+    ..registerFactory(
+      () => GetMateri(
+        getIt<MateriRepository>(),
+      ),
+    )
     ..registerFactory(
       () => UserLogin(
         getIt(),
@@ -105,6 +131,11 @@ void _initOnboardingFeature() {
     )
 
     // Bloc
+    ..registerLazySingleton(
+      () => MateriBloc(
+        getMateri: getIt(),
+      ),
+    )
     ..registerLazySingleton(
       () => AuthBloc(
         userLogin: getIt(),

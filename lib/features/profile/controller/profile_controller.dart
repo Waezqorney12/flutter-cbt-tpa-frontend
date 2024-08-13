@@ -1,4 +1,10 @@
+import '../../../core/token/token_local_datasource.dart';
+
 class ProfileController {
+  final TokenLocalDatasource tokenLocalDatasource;
+  ProfileController({required this.tokenLocalDatasource});
+
+  
   static final List<MenuEntities> menu = [
     const MenuEntities(
       imageMenu: 'assets/profile/account.png',

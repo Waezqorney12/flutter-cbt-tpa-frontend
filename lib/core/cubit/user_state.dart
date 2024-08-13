@@ -17,6 +17,11 @@ final class UserLoggedIn extends UserState {
   const UserLoggedIn(this.user);
 }
 
+final class UserLoggeoOut extends UserState {
+  final bool isLoggeoOut;
+  const UserLoggeoOut({this.isLoggeoOut = false});
+}
+
 final class UserError extends UserState {
   final String message;
 

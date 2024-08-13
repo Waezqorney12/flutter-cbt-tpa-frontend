@@ -38,5 +38,4 @@ class Routes {
   static MaterialPageRoute aboutUs() => MaterialPageRoute(builder: (context) => const AboutUsScreen());
   static MaterialPageRoute tipsTrick() => MaterialPageRoute(builder: (context) => const TipsScreen());
 
-  static MaterialPageRoute materiDetail() => MaterialPageRoute(builder: (context) => const MateriDetailScreen());
 }

@@ -34,6 +34,7 @@ class BottomNavigatorWidget extends StatelessWidget {
                 valueListenable: currentIndex,
                 builder: (context, index, child) {
                   return Scaffold(
+                    resizeToAvoidBottomInset: false,
                     body: [
                       isFirst ? const HomeScreen() : const ProfileDetailScreen(),
                       const MateriScreen(),

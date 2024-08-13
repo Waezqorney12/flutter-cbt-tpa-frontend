@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:test_potensial/core/cubit/user_cubit.dart';
 import 'package:test_potensial/features/auth/bloc/auth_bloc.dart';
+import 'package:test_potensial/features/materi/bloc/materi_bloc.dart';
 import 'package:test_potensial/features/onboarding/domain/repository/onboarding_repository.dart';
 import 'package:test_potensial/init_dependencies.dart';
 import 'package:test_potensial/my_app.dart';
@@ -25,6 +26,9 @@ Future<void> main() async {
       BlocProvider(
         create: (_) => getIt<AuthBloc>(),
       ),
+      BlocProvider(
+        create: (_) => getIt<MateriBloc>(),
+      )
     ], child: MyApp(getFirstInstall: getFirstInstall)),
   );
 }
