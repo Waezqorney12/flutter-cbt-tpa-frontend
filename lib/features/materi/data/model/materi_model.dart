@@ -7,6 +7,7 @@ class MateriModel extends MateriEntities {
     required super.description,
     required super.image,
     required super.dateTime,
+    required super.kategori,
     required super.value,
   });
 
@@ -17,6 +18,7 @@ class MateriModel extends MateriEntities {
       description: json['description'],
       image: json['image'],
       dateTime: DateTime.tryParse(json['created_at']) ?? DateTime.now(),
+      kategori: json['kategori'],
       value: json['value'],
     );
   }

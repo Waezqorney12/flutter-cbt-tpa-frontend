@@ -4,6 +4,7 @@ class MateriEntities {
   final String description;
   final String image;
   final DateTime dateTime;
+  final String kategori;
   final int value;
   MateriEntities({
     required this.name,
@@ -11,6 +12,7 @@ class MateriEntities {
     required this.description,
     required this.image,
     required this.dateTime,
+    required this.kategori,
     required this.value,
   });
 }

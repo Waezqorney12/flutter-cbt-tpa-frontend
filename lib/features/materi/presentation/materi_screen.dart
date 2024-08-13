@@ -186,23 +186,25 @@ class _MateriScreenState extends State<MateriScreen> {
                                         children: [
                                           Row(
                                             children: [
-                                              Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    value.name,
-                                                    style: TextAppStyle.urbanistSemiBold.copyWith(
-                                                      fontSize: 18,
+                                              Expanded(
+                                                child: Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      "Materi ${value.kategori}",
+                                                      style: TextAppStyle.urbanistSemiBold.copyWith(
+                                                        fontSize: 18,
+                                                      ),
                                                     ),
-                                                  ),
-                                                  Text(
-                                                    "${calculateReadingTime(value.description)} min read",
-                                                    style: TextAppStyle.interReguler.copyWith(
-                                                      color: Colors.grey,
-                                                      fontSize: 10,
+                                                    Text(
+                                                      "${calculateReadingTime(value.description)} min read",
+                                                      style: TextAppStyle.interReguler.copyWith(
+                                                        color: Colors.grey,
+                                                        fontSize: 10,
+                                                      ),
                                                     ),
-                                                  ),
-                                                ],
+                                                  ],
+                                                ),
                                               ),
                                               const Spacer(),
                                               Container(

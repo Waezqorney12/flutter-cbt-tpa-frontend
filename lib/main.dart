@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:test_potensial/core/cubit/user_cubit.dart';
 import 'package:test_potensial/features/auth/bloc/auth_bloc.dart';
 import 'package:test_potensial/features/materi/bloc/materi_bloc.dart';
@@ -18,17 +19,14 @@ Future<void> main() async {
   bool getFirstInstall = await onBoardingRepository.getOnboarding();
 
   // Run the app
-  runApp(
-    MultiBlocProvider(providers: [
-      BlocProvider(
-        create: (_) => getIt<UserCubit>(),
-      ),
-      BlocProvider(
-        create: (_) => getIt<AuthBloc>(),
-      ),
-      BlocProvider(
-        create: (_) => getIt<MateriBloc>(),
-      )
-    ], child: MyApp(getFirstInstall: getFirstInstall)),
-  );
+  initializeDateFormatting().then((_) => runApp(
+        MultiBlocProvider(
+          providers: [
+            BlocProvider(create: (context) => getIt<UserCubit>()),
+            BlocProvider(create: (context) => getIt<AuthBloc>()),
+            BlocProvider(create: (context) => getIt<MateriBloc>()),
+          ],
+          child: MyApp(getFirstInstall: getFirstInstall),
+        ),
+      ));
 }
