@@ -9,7 +9,15 @@ class MateriRepositoryImpl implements MateriRepository {
   final MateriRemoteDataSource _remoteDataSource;
   const MateriRepositoryImpl(this._remoteDataSource);
   @override
-  Future<Either<FailureMessage, List<MateriEntities>>> getMateri() => helperCall(
-        apiCall: () => _remoteDataSource.getMateri(),
-      );
+  Future<Either<FailureMessage, List<MateriEntities>>> getMateri() =>
+      helperCall<List<MateriEntities>>(apiCall: () => _remoteDataSource.getMateri());
+
+  @override
+  Future<Either<FailureMessage, String>> updateMateri(
+    int id,
+  ) {
+    return helperCall<String>(
+      apiCall: () => _remoteDataSource.updateMateri(id),
+    );
+  }
 }

@@ -111,7 +111,7 @@ class _MateriScreenState extends State<MateriScreen> {
                                 ),
                                 const SizedBox(width: 5),
                                 Text(
-                                  "${calculateTotalReadingTime<String>(
+                                  "${calculateTotalReadingTime<String?>(
                                     state.materi.map((e) => e.description).toList(),
                                   )}min",
                                   style: TextAppStyle.interLight.copyWith(
@@ -132,7 +132,7 @@ class _MateriScreenState extends State<MateriScreen> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 10, bottom: 25),
+                    padding: const EdgeInsets.only(top: 10),
                     child: Text(
                       textAlign: TextAlign.justify,
                       'Soal Tes Potensi Akademik penting untuk membantu Anda menjawab soal-soal dalam aplikasi ini. Konten ini berisi beberapa item yang akan membantu Anda menjawab pertanyaan. Semangat belajar!',
@@ -153,8 +153,11 @@ class _MateriScreenState extends State<MateriScreen> {
                             itemCount: state.materi.length,
                             itemBuilder: (context, index) {
                               final value = state.materi[index];
-                              Duration waktu = DateTime.now().difference(value.dateTime);
-                              int range = _calendarUtils.daysInMonth(value.dateTime.year, value.dateTime.month);
+                              Duration waktu = DateTime.now().difference(value.dateTime ?? DateTime.now());
+                              int range = _calendarUtils.daysInMonth(
+                                value.dateTime?.year ?? 0,
+                                value.dateTime?.month ?? 0,
+                              );
                               return Padding(
                                 padding:
                                     index == 0 ? const EdgeInsets.only(bottom: 16) : const EdgeInsets.symmetric(vertical: 16),
@@ -186,57 +189,76 @@ class _MateriScreenState extends State<MateriScreen> {
                                         children: [
                                           Row(
                                             children: [
-                                              Expanded(
-                                                child: Column(
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      "Materi ${value.kategori}",
-                                                      style: TextAppStyle.urbanistSemiBold.copyWith(
-                                                        fontSize: 18,
-                                                      ),
+                                              Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    "Materi ${value.kategori}",
+                                                    style: TextAppStyle.urbanistSemiBold.copyWith(
+                                                      fontSize: 18,
                                                     ),
-                                                    Text(
-                                                      "${calculateReadingTime(value.description)} min read",
-                                                      style: TextAppStyle.interReguler.copyWith(
-                                                        color: Colors.grey,
-                                                        fontSize: 10,
+                                                  ),
+                                                  Row(
+                                                    children: [
+                                                      Text(
+                                                        "${calculateReadingTime(value.description!)} min read",
+                                                        style: TextAppStyle.interReguler.copyWith(
+                                                          color: Colors.grey,
+                                                          fontSize: 10,
+                                                        ),
                                                       ),
-                                                    ),
-                                                  ],
-                                                ),
+                                                      Padding(
+                                                        padding: const EdgeInsets.symmetric(horizontal: 5),
+                                                        child: Container(
+                                                          height: 5,
+                                                          width: 5,
+                                                          decoration: const BoxDecoration(
+                                                            shape: BoxShape.circle,
+                                                            color: Colors.grey,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      Text(
+                                                        'Created ${waktu.getCalendarDiffer(month: range)}',
+                                                        style: TextAppStyle.interReguler.copyWith(
+                                                          color: Colors.grey,
+                                                          fontSize: 10,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
                                               ),
                                               const Spacer(),
                                               Container(
                                                 height: 100,
                                                 width: 100,
                                                 decoration: BoxDecoration(
-                                                  // color: Color(int.parse('0xFF${val['color']}')),
                                                   borderRadius: BorderRadius.circular(8),
                                                   image: DecorationImage(
                                                     fit: BoxFit.cover,
                                                     image: NetworkImage(
-                                                      value.image,
+                                                      value.image ?? '',
                                                     ),
                                                   ),
                                                 ),
                                               )
                                             ],
                                           ),
-                                          Text(
-                                            waktu.getCalendarDiffer(month: range),
-                                            style: TextAppStyle.interReguler.copyWith(
-                                              color: Colors.grey,
-                                            ),
+                                          const SizedBox(height: 15),
+                                          LinearProgressIndicator(
+                                            value: value.value != null ? value.value! / 100 : 0,
+                                            color: value.value == 100 ? AppPalette.baseGreen : AppPalette.primaryColor,
                                           ),
-                                          const Padding(
-                                            padding: EdgeInsets.symmetric(vertical: 15),
-                                            child: LinearProgressIndicator(
-                                              value: 1.0,
-                                              color: AppPalette.baseGreen,
-                                              //Color(int.parse('0xFF${val['color']}')),
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(vertical: 5),
+                                            child: Text(
+                                              'Progress ${value.value}%',
+                                              style: TextAppStyle.interReguler.copyWith(
+                                                color: Colors.grey,
+                                              ),
                                             ),
-                                          ),
+                                          )
                                         ],
                                       ),
                                     ),

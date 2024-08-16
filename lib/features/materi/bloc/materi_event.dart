@@ -8,3 +8,11 @@ sealed class MateriEvent extends Equatable {
 }
 
 final class GetAllMateriEvent extends MateriEvent {}
+
+final class UpdateMateriEvent extends MateriEvent {
+  final int id;
+  const UpdateMateriEvent({required this.id});
+
+  @override
+  List<Object> get props => [id];
+}

@@ -12,5 +12,18 @@ class GetMateri implements UseCase<List<MateriEntities>, NoParams> {
   GetMateri(this.repository);
 
   @override
-  Future<Either<FailureMessage, List<MateriEntities>>> call(NoParams params) async => await repository.getMateri();
+  Future<Either<FailureMessage, List<MateriEntities>>> call(NoParams params) async {
+    return await repository.getMateri();
+  }
+}
+
+class UpdateMateri implements UseCase<String, int> {
+  final MateriRepository repository;
+
+  UpdateMateri(this.repository);
+
+  @override
+  Future<Either<FailureMessage, String>> call(int id) async {
+    return await repository.updateMateri(id);
+  }
 }

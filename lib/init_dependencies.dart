@@ -114,6 +114,11 @@ void _initFeature() {
       ),
     )
     ..registerFactory(
+      () => UpdateMateri(
+        getIt<MateriRepository>(),
+      ),
+    )
+    ..registerFactory(
       () => UserLogin(
         getIt(),
       ),
@@ -134,6 +139,7 @@ void _initFeature() {
     ..registerLazySingleton(
       () => MateriBloc(
         getMateri: getIt(),
+        updateMateri: getIt(),
       ),
     )
     ..registerLazySingleton(

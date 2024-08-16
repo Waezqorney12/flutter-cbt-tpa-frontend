@@ -6,6 +6,7 @@ import 'package:test_potensial/core/shared/widget/loading_widget.dart';
 import 'package:test_potensial/core/utils/log.dart';
 //import 'package:test_potensial/core/utils/log.dart';
 import 'package:test_potensial/features/bottom_navigator/bottom_navigator_widget.dart';
+import 'package:test_potensial/features/materi/presentation/materi_screen.dart';
 
 import 'core/theme/app_theme.dart';
 
