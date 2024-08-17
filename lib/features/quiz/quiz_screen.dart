@@ -1,9 +1,13 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_potensial/core/theme/app_palette.dart';
 import 'package:test_potensial/core/utils/map_index_utils.dart';
 import 'package:test_potensial/features/profile/Widget/box_shadow.dart';
 import 'package:test_potensial/features/quiz/quiz_controller.dart';
+import 'package:test_potensial/features/quiz_detail/bloc/quiz_detail_bloc.dart';
 
+import '../../core/routes/routes_pages.dart';
 import '../../core/shared/positioned/dimensions.dart';
 import '../../core/shared/text_style/text_app_style.dart';
 
@@ -65,87 +69,127 @@ class QuizScreen extends StatelessWidget {
                 ),
                 color: Colors.white,
               ),
-              child: Column(children: [
-                Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Kategori TPA',
-                        style: TextAppStyle.poppinsSemiBold.copyWith(fontSize: 20, color: AppPalette.quaternaryColor),
-                      ),
-                      IconButton(
-                        onPressed: () {},
-                        icon: const Icon(
-                          Icons.menu,
-                          color: AppPalette.quaternaryColor,
+              child: BlocListener<QuizDetailBloc, QuizDetailState>(
+                listener: (context, state) {},
+                child: Column(children: [
+                  Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Kategori TPA',
+                          style: TextAppStyle.poppinsSemiBold.copyWith(fontSize: 20, color: AppPalette.quaternaryColor),
                         ),
-                      )
-                    ],
+                        IconButton(
+                          onPressed: () {},
+                          icon: const Icon(
+                            Icons.menu,
+                            color: AppPalette.quaternaryColor,
+                          ),
+                        )
+                      ],
+                    ),
                   ),
-                ),
-                ...QuizController.data.mapIndexed<Widget, QuizModel>(
-                  funct: (index, value) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 15),
-                      child: Container(
-                        width: 344,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(12),
-                          boxShadow: [shadow()],
-                        ),
-                        child: Row(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Container(
-                                height: 160,
-                                width: 145,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(12),
-                                  color: AppPalette.tertiaryColor,
+                  ...QuizController.data.mapIndexed<Widget, QuizCategoryModel>(
+                    funct: (index, value) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 15),
+                        child: InkWell(
+                          onTap: () {
+                            showCupertinoDialog(
+                              context: context,
+                              builder: (context) => CupertinoAlertDialog(
+                                title: Text(
+                                  'Warning',
+                                  style: TextAppStyle.urbanistBold.copyWith(fontSize: 16),
                                 ),
-                                child: Image.asset('assets/quiz-items.png'),
-                              ),
-                            ),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    value.title,
-                                    style: TextAppStyle.poppinsBold.copyWith(
-                                      fontSize: 15,
-                                      color: AppPalette.quaternaryColor,
+                                content: Text(
+                                  textAlign: TextAlign.center,
+                                  'Jika sudah berada dalam tes maka tidak bisa keluar. Anda akan mengikut Tes ${value.title}\n Apakah anda yakin?',
+                                  style: TextAppStyle.urbanistMedium.copyWith(fontSize: 14),
+                                ),
+                                actions: [
+                                  CupertinoDialogAction(
+                                    onPressed: () => Navigator.pop(context),
+                                    child: Text(
+                                      'Tidak',
+                                      style: TextAppStyle.urbanistSemiBold,
                                     ),
                                   ),
-                                  Text(
-                                    value.jenis,
-                                    style: TextAppStyle.poppinsSemiBold.copyWith(
-                                      fontSize: 12,
-                                      color: AppPalette.quaternaryColor,
+                                  CupertinoDialogAction(
+                                    child: Text(
+                                      'Ya',
+                                      style: TextAppStyle.urbanistSemiBold.copyWith(color: AppPalette.primaryColor),
                                     ),
-                                  ),
-                                  const SizedBox(height: 15),
-                                  Text(
-                                    value.content,
-                                    style: TextAppStyle.poppinsReguler.copyWith(
-                                      fontSize: 10,
-                                      color: AppPalette.quaternaryColor,
-                                    ),
+                                    onPressed: () => Navigator.of(context).push(Routes.detailQuiz(value.title)).then((_) {
+                                      Navigator.pop(context);
+                                      context.read<QuizDetailBloc>().add(GetQuizDetailEvent(value.title));
+                                    }),
                                   ),
                                 ],
                               ),
-                            )
-                          ],
+                            );
+                          },
+                          child: Container(
+                            width: 344,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(12),
+                              boxShadow: [shadow()],
+                            ),
+                            child: Row(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Container(
+                                    height: 160,
+                                    width: 145,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(12),
+                                      color: AppPalette.tertiaryColor,
+                                    ),
+                                    child: Image.asset('assets/quiz-items.png'),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Tes ${value.title}',
+                                        style: TextAppStyle.poppinsBold.copyWith(
+                                          fontSize: 15,
+                                          color: AppPalette.quaternaryColor,
+                                        ),
+                                      ),
+                                      Text(
+                                        value.jenis,
+                                        style: TextAppStyle.poppinsSemiBold.copyWith(
+                                          fontSize: 12,
+                                          color: AppPalette.quaternaryColor,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 15),
+                                      Text(
+                                        value.content,
+                                        style: TextAppStyle.poppinsReguler.copyWith(
+                                          fontSize: 10,
+                                          color: AppPalette.quaternaryColor,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
                         ),
-                      ),
-                    );
-                  },
-                ).toList(),
-              ]),
+                      );
+                    },
+                  ).toList(),
+                ]),
+              ),
             )
           ],
         ),

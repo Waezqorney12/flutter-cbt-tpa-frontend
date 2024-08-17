@@ -1,19 +1,19 @@
 class QuizController {
-  static final List<QuizModel> data = [
-    QuizModel(
-      title: 'Tes Angka',
+  static final List<QuizCategoryModel> data = [
+    QuizCategoryModel(
+      title: 'Numeric',
       jenis: 'Multiple Choice',
       content:
-          'Tes angka adalah suatu jenis tes psikometri yang dirancang untuk mengukur kemampuan individu dalam memahami, menganalisis, dan menyelesaikan masalah yang melibatkan angka dan matematika.',
+          'Tes numeric adalah suatu jenis tes psikometri yang dirancang untuk mengukur kemampuan individu dalam memahami, menganalisis, dan menyelesaikan masalah yang melibatkan angka dan matematika.',
     ),
-    QuizModel(
-      title: 'Tes Logika',
+    QuizCategoryModel(
+      title: 'Logika',
       jenis: 'True or False',
       content:
           'Tes logika adalah metode evaluasi yang digunakan untuk mengukur kemampuan seseorang dalam berpikir secara logis, analitis, dan rasional',
     ),
-    QuizModel(
-      title: 'Tes Verbal',
+    QuizCategoryModel(
+      title: 'Verbal',
       jenis: 'Multiple Choice',
       content:
           'Tes verbal adalah suatu metode evaluasi yang digunakan untuk mengukur kemampuan seseorang dalam menggunakan dan memahami bahasa lisan atau tertulis.',
@@ -21,12 +21,12 @@ class QuizController {
   ];
 }
 
-class QuizModel {
+class QuizCategoryModel {
   final String title;
   final String jenis;
   final String content;
 
-  QuizModel({
+  QuizCategoryModel({
     required this.title,
     required this.jenis,
     required this.content,

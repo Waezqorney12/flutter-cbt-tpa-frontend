@@ -7,6 +7,7 @@ import 'package:test_potensial/core/utils/log.dart';
 //import 'package:test_potensial/core/utils/log.dart';
 import 'package:test_potensial/features/bottom_navigator/bottom_navigator_widget.dart';
 import 'package:test_potensial/features/materi/presentation/materi_screen.dart';
+import 'package:test_potensial/features/quiz/quiz_screen.dart';
 
 import 'core/theme/app_theme.dart';
 
@@ -34,7 +35,7 @@ class MyApp extends StatelessWidget {
             // Log.loggerFatal('First Install is $getFirstInstall');
             if (state is UserInitial) context.read<UserCubit>().getUser();
             if (getFirstInstall && state is UserLoggedIn) {
-              return BottomNavigatorWidget();
+              return QuizScreen();
             } else {
               return const Scaffold(body: Loading());
             }

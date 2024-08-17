@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:test_potensial/features/about%20us/about_us_screen.dart';
-import 'package:test_potensial/features/auth/presentation/create_password_screen.dart';
-import 'package:test_potensial/features/auth/presentation/forgot_password_screen.dart';
-import 'package:test_potensial/features/auth/presentation/otp_screen.dart';
-import 'package:test_potensial/features/bottom_navigator/bottom_navigator_widget.dart';
-import 'package:test_potensial/features/face_id/face_id_screen.dart';
-import 'package:test_potensial/features/home/presentation/home_screen.dart';
-import 'package:test_potensial/features/materi/presentation/materi_screen.dart';
-import 'package:test_potensial/features/materi_detail/materi_detail_screen.dart';
-import 'package:test_potensial/features/onboarding/presentation/onboarding_screen.dart';
-import 'package:test_potensial/features/profile_detail/profile_detail_screen.dart';
-import 'package:test_potensial/features/quiz/quiz_screen.dart';
-import 'package:test_potensial/features/tips%20&%20trick/tips_screen.dart';
-import 'package:test_potensial/features/two_factor_auth/two_factor_auth_screen.dart';
+import '/features/about%20us/about_us_screen.dart';
+import '/features/auth/presentation/create_password_screen.dart';
+import '/features/auth/presentation/forgot_password_screen.dart';
+import '/features/auth/presentation/otp_screen.dart';
+import '/features/bottom_navigator/bottom_navigator_widget.dart';
+import '/features/face_id/face_id_screen.dart';
+import '/features/home/presentation/home_screen.dart';
+import '/features/materi/presentation/materi_screen.dart';
+import '/features/onboarding/presentation/onboarding_screen.dart';
+import '/features/profile_detail/profile_detail_screen.dart';
+import '/features/quiz/quiz_screen.dart';
+import '/features/tips%20&%20trick/tips_screen.dart';
+import '/features/two_factor_auth/two_factor_auth_screen.dart';
 
 import '../../features/auth/presentation/login_screen.dart';
 import '../../features/auth/presentation/register_screen.dart';
+import '../../features/quiz_detail/quiz_detail_screen.dart';
 
 class Routes {
   static MaterialPageRoute login() => MaterialPageRoute(builder: (context) => const LoginScreen());
@@ -38,4 +38,6 @@ class Routes {
   static MaterialPageRoute aboutUs() => MaterialPageRoute(builder: (context) => const AboutUsScreen());
   static MaterialPageRoute tipsTrick() => MaterialPageRoute(builder: (context) => const TipsScreen());
 
+  static MaterialPageRoute detailQuiz(String category) =>
+      MaterialPageRoute(builder: (context) => QuizDetailScreen(category: category));
 }

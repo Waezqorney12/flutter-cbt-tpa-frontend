@@ -163,13 +163,15 @@ class _MateriDetailScreenState extends State<MateriDetailScreen> {
           height: _showButton ? 50 : 0,
           child: Material(
             elevation: 10,
-            child: GestureDetector(
+            child: InkWell(
               onTap: () {
-                context.read<MateriBloc>().add(
-                      UpdateMateriEvent(
-                        id: widget._materi.id ?? 0,
-                      ),
-                    );
+                if (widget._materi.value != 100) {
+                  context.read<MateriBloc>().add(
+                        UpdateMateriEvent(
+                          id: widget._materi.id ?? 0,
+                        ),
+                      );
+                }
               },
               child: Container(
                 width: 150,
@@ -183,7 +185,7 @@ class _MateriDetailScreenState extends State<MateriDetailScreen> {
                     'Selesai',
                     style: TextAppStyle.montserratSemiBold.copyWith(
                       fontSize: 16,
-                      color: AppPalette.primaryColor,
+                      color: widget._materi.value != 100 ? AppPalette.primaryColor : Colors.grey,
                     ),
                   ),
                 ),

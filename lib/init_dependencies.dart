@@ -6,6 +6,12 @@ import 'package:test_potensial/features/materi/data/repository/materi_repository
 import 'package:test_potensial/features/materi/domain/datasource/materi_remote_datasource.dart';
 import 'package:test_potensial/features/materi/domain/repository/materi_repository.dart';
 import 'package:test_potensial/features/materi/domain/usecases/materi_usecases.dart';
+import 'package:test_potensial/features/quiz_detail/bloc/quiz_detail_bloc.dart';
+import 'package:test_potensial/features/quiz_detail/data/datasource/remote_quiz_detail_datasource_impl.dart';
+import 'package:test_potensial/features/quiz_detail/data/repository/quiz_detail_repository_impl.dart';
+import 'package:test_potensial/features/quiz_detail/domain/datasource/remote_quiz_detail_datasource.dart';
+import 'package:test_potensial/features/quiz_detail/domain/repository/quiz_detail_repository.dart';
+import 'package:test_potensial/features/quiz_detail/domain/usecase/quiz_usecase.dart';
 import '../core/cubit/user_cubit.dart';
 import '../core/infrastructure/network/dio_client.dart';
 import '../features/auth/bloc/auth_bloc.dart';
@@ -45,6 +51,12 @@ void _initNetwork(SharedPreferences sharedPreferences) {
 void _initFeature() {
   getIt
     // RemoteDatasource
+    ..registerFactory<RemoteQuizDetailDatasource>(
+      () => RemoteQuizDetailDatasourceImpl(
+        getIt<TokenLocalDatasource>(),
+        getIt<DioClient>(),
+      ),
+    )
     ..registerFactory<MateriRemoteDataSource>(
       () => MateriRemoteDatasourceImpl(
         getIt<DioClient>(),
@@ -78,6 +90,12 @@ void _initFeature() {
     )
 
     // Repository
+
+    ..registerFactory<QuizDetailRepository>(
+      () => QuizDetailRepositoryImpl(
+        getIt<RemoteQuizDetailDatasource>(),
+      ),
+    )
     ..registerFactory<MateriRepository>(
       () => MateriRepositoryImpl(
         getIt<MateriRemoteDataSource>(),
@@ -107,7 +125,11 @@ void _initFeature() {
     )
 
     // UseCases
-
+    ..registerFactory(
+      () => GetQuizDetail(
+        getIt<QuizDetailRepository>(),
+      ),
+    )
     ..registerFactory(
       () => GetMateri(
         getIt<MateriRepository>(),
@@ -136,6 +158,11 @@ void _initFeature() {
     )
 
     // Bloc
+    ..registerLazySingleton(
+      () => QuizDetailBloc(
+        getQuizDetail: getIt(),
+      ),
+    )
     ..registerLazySingleton(
       () => MateriBloc(
         getMateri: getIt(),
