@@ -126,27 +126,27 @@ void _initFeature() {
 
     // UseCases
     ..registerFactory(
-      () => GetQuizDetail(
+      () => GetQuizDetailUseCase(
         getIt<QuizDetailRepository>(),
       ),
     )
     ..registerFactory(
-      () => GetMateri(
+      () => GetMateriUseCase(
         getIt<MateriRepository>(),
       ),
     )
     ..registerFactory(
-      () => UpdateMateri(
+      () => UpdateMateriUseCase(
         getIt<MateriRepository>(),
       ),
     )
     ..registerFactory(
-      () => UserLogin(
+      () => UserLoginUseCase(
         getIt(),
       ),
     )
     ..registerFactory(
-      () => UserRegister(
+      () => UserRegisterUseCase(
         getIt(),
       ),
     )

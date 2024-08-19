@@ -5,10 +5,10 @@ import 'package:test_potensial/core/usecases/usecase_interface.dart';
 import 'package:test_potensial/core/entities/user_entities.dart';
 import 'package:test_potensial/features/auth/domain/repository/register_repository.dart';
 
-class UserRegister implements UseCase<UserEntities, UserRegisterParams> {
+class UserRegisterUseCase implements UseCase<UserEntities, UserRegisterParams> {
   final RegisterRepository repository;
 
-  const UserRegister(this.repository);
+  const UserRegisterUseCase(this.repository);
 
   @override
   Future<Either<FailureMessage, UserEntities>> call(UserRegisterParams params) async =>
