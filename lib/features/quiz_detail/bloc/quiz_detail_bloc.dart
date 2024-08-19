@@ -8,9 +8,13 @@ part 'quiz_detail_event.dart';
 part 'quiz_detail_state.dart';
 
 class QuizDetailBloc extends Bloc<QuizDetailEvent, QuizDetailState> {
-  final GetQuizDetail _getQuizDetail;
-  QuizDetailBloc({required GetQuizDetail getQuizDetail})
-      : _getQuizDetail = getQuizDetail,
+  final GetQuizDetailUseCase _getQuizDetail;
+  final CreateJawabanDetailUseCase _createJawaban;
+  QuizDetailBloc({
+    required GetQuizDetailUseCase getQuizDetail,
+    required CreateJawabanDetailUseCase createJawaban,
+  })  : _getQuizDetail = getQuizDetail,
+        _createJawaban = createJawaban,
         super(QuizDetailInitial()) {
     on<QuizDetailEvent>((event, emit) => QuizDetailLoading());
 
@@ -20,6 +24,15 @@ class QuizDetailBloc extends Bloc<QuizDetailEvent, QuizDetailState> {
         emit(QuizDetailLoaded(quizEntities));
       });
     });
-    on<QuizDetailReset>((event, emit) => emit(QuizDetailInitial()));
+
+    on<CreateJawabanDetailEvent>((event, emit) async {
+      final result = await _createJawaban(event.params);
+      result.fold((failure) {
+        emit(QuizDetailError(failure.message));
+      }, (message) {
+        emit(UpdateQuizDetailLoaded(message));
+        emit(QuizDetailInitial());
+      });
+    });
   }
 }

@@ -118,15 +118,15 @@ class QuizScreen extends StatelessWidget {
                                     ),
                                   ),
                                   CupertinoDialogAction(
-                                    child: Text(
-                                      'Ya',
-                                      style: TextAppStyle.urbanistSemiBold.copyWith(color: AppPalette.primaryColor),
-                                    ),
-                                    onPressed: () => Navigator.of(context).push(Routes.detailQuiz(value.title)).then((_) {
-                                      Navigator.pop(context);
-                                      context.read<QuizDetailBloc>().add(GetQuizDetailEvent(value.title));
-                                    }),
-                                  ),
+                                      child: Text(
+                                        'Ya',
+                                        style: TextAppStyle.urbanistSemiBold.copyWith(color: AppPalette.primaryColor),
+                                      ),
+                                      onPressed: () {
+                                        context.read<QuizDetailBloc>().add(GetQuizDetailEvent(value.title));
+                                        Navigator.pop(context);
+                                        Navigator.of(context).push(Routes.detailQuiz(value.title));
+                                      }),
                                 ],
                               ),
                             );

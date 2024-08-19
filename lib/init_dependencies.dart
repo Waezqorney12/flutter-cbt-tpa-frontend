@@ -126,6 +126,11 @@ void _initFeature() {
 
     // UseCases
     ..registerFactory(
+      () => CreateJawabanDetailUseCase(
+        getIt<QuizDetailRepository>(),
+      ),
+    )
+    ..registerFactory(
       () => GetQuizDetailUseCase(
         getIt<QuizDetailRepository>(),
       ),
@@ -161,6 +166,7 @@ void _initFeature() {
     ..registerLazySingleton(
       () => QuizDetailBloc(
         getQuizDetail: getIt(),
+        createJawaban: getIt(),
       ),
     )
     ..registerLazySingleton(

@@ -20,11 +20,11 @@ final class QuizDetailLoaded extends QuizDetailState {
 }
 
 final class UpdateQuizDetailLoaded extends QuizDetailState {
-  final QuizEntities quiz;
-  const UpdateQuizDetailLoaded(this.quiz);
+  final String message;
+  const UpdateQuizDetailLoaded(this.message);
 
   @override
-  List<Object> get props => [quiz];
+  List<Object> get props => [message];
 }
 
 final class QuizDetailError extends QuizDetailState {

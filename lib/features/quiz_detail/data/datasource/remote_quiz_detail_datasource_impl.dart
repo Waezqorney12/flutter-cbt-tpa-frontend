@@ -5,6 +5,7 @@ import 'package:test_potensial/core/token/token_local_datasource.dart';
 import 'package:test_potensial/core/utils/log.dart';
 import 'package:test_potensial/features/quiz_detail/data/model/quiz_model.dart';
 import 'package:test_potensial/features/quiz_detail/domain/datasource/remote_quiz_detail_datasource.dart';
+import 'package:test_potensial/features/quiz_detail/domain/usecase/quiz_usecase.dart';
 
 class RemoteQuizDetailDatasourceImpl implements RemoteQuizDetailDatasource {
   final TokenLocalDatasource _tokenLocalDatasource;
@@ -30,6 +31,24 @@ class RemoteQuizDetailDatasourceImpl implements RemoteQuizDetailDatasource {
       throw ServerException(message: 'Dio Exception: $e');
     } catch (e) {
       Log.loggerFatal('Server Exception: $e');
+      throw ServerException(message: 'Server Exception: $e');
+    }
+  }
+
+  @override
+  Future<String> createJawabanDetail(CreateJawabanParams params) async {
+    try {
+      final token = await _tokenLocalDatasource.getToken();
+      final request = await _dioClient.post(
+        '/api/answers',
+        data: params.toJson(),
+        options: Options(headers: {'Authorization': 'Bearer $token'}),
+      );
+      Log.loggerInformation('Response: ${request.data['message']}');
+      return request.data['message'];
+    } on DioException catch (e) {
+      throw ServerException(message: 'Dio Exception: $e');
+    } catch (e) {
       throw ServerException(message: 'Server Exception: $e');
     }
   }

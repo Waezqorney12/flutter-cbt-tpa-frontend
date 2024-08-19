@@ -9,11 +9,11 @@ part 'materi_event.dart';
 part 'materi_state.dart';
 
 class MateriBloc extends Bloc<MateriEvent, MateriState> {
-  final GetMateri _getMateri;
-  final UpdateMateri _updateMateri;
+  final GetMateriUseCase _getMateri;
+  final UpdateMateriUseCase _updateMateri;
   MateriBloc({
-    required GetMateri getMateri,
-    required UpdateMateri updateMateri,
+    required GetMateriUseCase getMateri,
+    required UpdateMateriUseCase updateMateri,
   })  : _getMateri = getMateri,
         _updateMateri = updateMateri,
         super(MateriInitial()) {
