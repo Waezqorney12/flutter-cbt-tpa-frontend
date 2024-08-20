@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:test_potensial/features/quiz_nilai/presentation/quiz_nilai_screen.dart';
 import '/features/about%20us/about_us_screen.dart';
 import '/features/auth/presentation/create_password_screen.dart';
 import '/features/auth/presentation/forgot_password_screen.dart';
@@ -37,6 +38,8 @@ class Routes {
   static MaterialPageRoute quiz() => MaterialPageRoute(builder: (context) => const QuizScreen());
   static MaterialPageRoute aboutUs() => MaterialPageRoute(builder: (context) => const AboutUsScreen());
   static MaterialPageRoute tipsTrick() => MaterialPageRoute(builder: (context) => const TipsScreen());
+
+  static MaterialPageRoute quizNilai() => MaterialPageRoute(builder: (context) => const QuizNilaiScreen());
 
   static MaterialPageRoute detailQuiz(String category) =>
       MaterialPageRoute(builder: (context) => QuizDetailScreen(category: category));

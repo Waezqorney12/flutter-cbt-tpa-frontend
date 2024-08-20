@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_potensial/core/theme/app_palette.dart';
 import 'package:test_potensial/core/utils/map_index_utils.dart';
+import 'package:test_potensial/core/utils/notification_dialog_utils.dart';
 import 'package:test_potensial/features/profile/Widget/box_shadow.dart';
 import 'package:test_potensial/features/quiz/quiz_controller.dart';
 import 'package:test_potensial/features/quiz_detail/bloc/quiz_detail_bloc.dart';
@@ -97,38 +98,15 @@ class QuizScreen extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(vertical: 15),
                         child: InkWell(
                           onTap: () {
-                            showCupertinoDialog(
+                            notificationDialog(
                               context: context,
-                              builder: (context) => CupertinoAlertDialog(
-                                title: Text(
-                                  'Warning',
-                                  style: TextAppStyle.urbanistBold.copyWith(fontSize: 16),
-                                ),
-                                content: Text(
-                                  textAlign: TextAlign.center,
+                              text:
                                   'Jika sudah berada dalam tes maka tidak bisa keluar. Anda akan mengikut Tes ${value.title}\n Apakah anda yakin?',
-                                  style: TextAppStyle.urbanistMedium.copyWith(fontSize: 14),
-                                ),
-                                actions: [
-                                  CupertinoDialogAction(
-                                    onPressed: () => Navigator.pop(context),
-                                    child: Text(
-                                      'Tidak',
-                                      style: TextAppStyle.urbanistSemiBold,
-                                    ),
-                                  ),
-                                  CupertinoDialogAction(
-                                      child: Text(
-                                        'Ya',
-                                        style: TextAppStyle.urbanistSemiBold.copyWith(color: AppPalette.primaryColor),
-                                      ),
-                                      onPressed: () {
-                                        context.read<QuizDetailBloc>().add(GetQuizDetailEvent(value.title));
-                                        Navigator.pop(context);
-                                        Navigator.of(context).push(Routes.detailQuiz(value.title));
-                                      }),
-                                ],
-                              ),
+                              onTap: () {
+                                context.read<QuizDetailBloc>().add(GetQuizDetailEvent(value.title));
+                                Navigator.pop(context);
+                                Navigator.of(context).pushReplacement(Routes.detailQuiz(value.title));
+                              },
                             );
                           },
                           child: Container(
