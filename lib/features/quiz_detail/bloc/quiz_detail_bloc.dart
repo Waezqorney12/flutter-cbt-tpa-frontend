@@ -16,7 +16,7 @@ class QuizDetailBloc extends Bloc<QuizDetailEvent, QuizDetailState> {
   })  : _getQuizDetail = getQuizDetail,
         _createJawaban = createJawaban,
         super(QuizDetailInitial()) {
-    on<QuizDetailEvent>((event, emit) => QuizDetailLoading());
+    on<QuizDetailEvent>((event, emit) => emit(QuizDetailLoading()));
 
     on<GetQuizDetailEvent>((event, emit) async {
       final result = await _getQuizDetail(event.kategori);

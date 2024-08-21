@@ -22,4 +22,6 @@ class QuizDetailRepositoryImpl implements QuizDetailRepository {
       apiCall: () => _remoteQuizDetailDatasource.createJawabanDetail(params),
     );
   }
+
+
 }

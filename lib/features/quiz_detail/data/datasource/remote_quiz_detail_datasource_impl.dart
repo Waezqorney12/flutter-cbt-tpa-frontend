@@ -44,7 +44,6 @@ class RemoteQuizDetailDatasourceImpl implements RemoteQuizDetailDatasource {
         data: params.toJson(),
         options: Options(headers: {'Authorization': 'Bearer $token'}),
       );
-      Log.loggerInformation('Response: ${request.data['message']}');
       return request.data['message'];
     } on DioException catch (e) {
       throw ServerException(message: 'Dio Exception: $e');

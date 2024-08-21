@@ -15,10 +15,12 @@ final class GetQuizDetailEvent extends QuizDetailEvent {
   List<Object> get props => [kategori];
 }
 
-final class CreateJawabanDetailEvent extends QuizDetailEvent{
+final class CreateJawabanDetailEvent extends QuizDetailEvent {
   final CreateJawabanParams params;
   const CreateJawabanDetailEvent(this.params);
 
-  @override 
+  @override
   List<Object> get props => [params];
 }
+
+

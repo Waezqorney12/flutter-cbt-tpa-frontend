@@ -22,3 +22,11 @@ extension PaddingWidget on Widget {
     );
   }
 }
+
+extension WidgetExtension on Widget {
+  SizedBox sized({double? w, double? h}) => SizedBox(
+        width: w,
+        height: h,
+        child: this,
+      );
+}

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_potensial/core/shared/text_style/text_app_style.dart';
-import 'package:test_potensial/core/shared/widget/padding_widget.dart';
+import 'package:test_potensial/core/utils/extension_utils.dart';
 import 'package:test_potensial/core/theme/app_palette.dart';
 import 'package:test_potensial/core/utils/custom_date_utils.dart';
 import 'package:test_potensial/core/utils/debouncer.dart';

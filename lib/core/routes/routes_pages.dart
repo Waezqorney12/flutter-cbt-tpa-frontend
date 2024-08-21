@@ -39,7 +39,10 @@ class Routes {
   static MaterialPageRoute aboutUs() => MaterialPageRoute(builder: (context) => const AboutUsScreen());
   static MaterialPageRoute tipsTrick() => MaterialPageRoute(builder: (context) => const TipsScreen());
 
-  static MaterialPageRoute quizNilai() => MaterialPageRoute(builder: (context) => const QuizNilaiScreen());
+  static MaterialPageRoute quizNilai({required String category}) => MaterialPageRoute(
+      builder: (context) => QuizNilaiScreen(
+            category: category,
+          ));
 
   static MaterialPageRoute detailQuiz(String category) =>
       MaterialPageRoute(builder: (context) => QuizDetailScreen(category: category));

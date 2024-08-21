@@ -12,6 +12,11 @@ import 'package:test_potensial/features/quiz_detail/data/repository/quiz_detail_
 import 'package:test_potensial/features/quiz_detail/domain/datasource/remote_quiz_detail_datasource.dart';
 import 'package:test_potensial/features/quiz_detail/domain/repository/quiz_detail_repository.dart';
 import 'package:test_potensial/features/quiz_detail/domain/usecase/quiz_usecase.dart';
+import 'package:test_potensial/features/quiz_nilai/bloc/quiz_nilai_bloc.dart';
+import 'package:test_potensial/features/quiz_nilai/data/repository/quiz_nilai_repository_impl.dart';
+import 'package:test_potensial/features/quiz_nilai/domain/datasource/quiz_nilai_datasource.dart';
+import 'package:test_potensial/features/quiz_nilai/domain/repository/quiz_nilai_repository.dart';
+import 'package:test_potensial/features/quiz_nilai/domain/usecase/quiz_nilai_usecase.dart';
 import '../core/cubit/user_cubit.dart';
 import '../core/infrastructure/network/dio_client.dart';
 import '../features/auth/bloc/auth_bloc.dart';
@@ -32,6 +37,7 @@ import 'features/auth/data/datasource_impl/login_remote_datasource_impl.dart';
 import 'features/auth/data/repository_impl/login_repository_impl.dart';
 import 'features/auth/domain/datasource/login_remote_datasource.dart';
 import 'features/auth/domain/repository/login_repository.dart';
+import 'features/quiz_nilai/data/datasource/quiz_nilai_datasource_impl.dart';
 
 final GetIt getIt = GetIt.instance;
 
@@ -51,6 +57,12 @@ void _initNetwork(SharedPreferences sharedPreferences) {
 void _initFeature() {
   getIt
     // RemoteDatasource
+    ..registerFactory<QuizNilaiDatasource>(
+      () => QuizNilaiDatasourceImpl(
+        getIt<DioClient>(),
+        getIt<TokenLocalDatasource>(),
+      ),
+    )
     ..registerFactory<RemoteQuizDetailDatasource>(
       () => RemoteQuizDetailDatasourceImpl(
         getIt<TokenLocalDatasource>(),
@@ -91,6 +103,11 @@ void _initFeature() {
 
     // Repository
 
+    ..registerFactory<QuizNilaiRepository>(
+      () => QuizNilaiRepositoryImpl(
+        getIt<QuizNilaiDatasource>(),
+      ),
+    )
     ..registerFactory<QuizDetailRepository>(
       () => QuizDetailRepositoryImpl(
         getIt<RemoteQuizDetailDatasource>(),
@@ -125,6 +142,12 @@ void _initFeature() {
     )
 
     // UseCases
+
+    ..registerFactory(
+      () => GetNilaiJawabanUseCase(
+        getIt<QuizNilaiRepository>(),
+      ),
+    )
     ..registerFactory(
       () => CreateJawabanDetailUseCase(
         getIt<QuizDetailRepository>(),
@@ -163,6 +186,12 @@ void _initFeature() {
     )
 
     // Bloc
+
+    ..registerLazySingleton(
+      () => QuizNilaiBloc(
+        nilaiUsecase: getIt(),
+      ),
+    )
     ..registerLazySingleton(
       () => QuizDetailBloc(
         getQuizDetail: getIt(),

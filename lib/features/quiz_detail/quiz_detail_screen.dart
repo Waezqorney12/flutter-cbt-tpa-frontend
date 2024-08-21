@@ -2,15 +2,18 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:test_potensial/core/routes/routes_pages.dart';
 import 'package:test_potensial/core/shared/positioned/dimensions.dart';
 import 'package:test_potensial/core/shared/text_style/text_app_style.dart';
 import 'package:test_potensial/core/shared/widget/button_blended_widget.dart';
 import 'package:test_potensial/core/shared/widget/loading_widget.dart';
-import 'package:test_potensial/core/shared/widget/padding_widget.dart';
+import 'package:test_potensial/core/utils/extension_utils.dart';
 import 'package:test_potensial/core/theme/app_palette.dart';
 import 'package:test_potensial/core/utils/log.dart';
+import 'package:test_potensial/core/utils/notification_dialog_utils.dart';
 import 'package:test_potensial/core/utils/show_snackbar_utils.dart';
 import 'package:test_potensial/features/quiz_detail/domain/entities/quiz_entities.dart';
+import 'package:test_potensial/features/quiz_nilai/bloc/quiz_nilai_bloc.dart';
 
 import '../profile/Widget/box_shadow.dart';
 import 'bloc/quiz_detail_bloc.dart';
@@ -30,94 +33,96 @@ class _QuizDetailScreenState extends State<QuizDetailScreen> {
   bool isButtonEnabled = true;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back,
-            color: AppPalette.primaryColor,
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) {
+        notificationDialog(
+            context: context,
+            onTap: () => context.read<QuizNilaiBloc>().add(GetNilaiQuizEvent(widget.category)),
+            text: 'Jika anda keluar maka test tidak akan diulang kembali. Anda yakin ingin keluar?');
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          title: Text(
+            'Tes ${widget.category}',
+            style: TextAppStyle.montserratSemiBold.copyWith(
+              fontSize: 18,
+              color: AppPalette.primaryColor,
+            ),
           ),
-          onPressed: () => Navigator.pop(context),
         ),
-        centerTitle: true,
-        title: Text(
-          'Tes ${widget.category}',
-          style: TextAppStyle.montserratSemiBold.copyWith(
-            fontSize: 18,
-            color: AppPalette.primaryColor,
-          ),
-        ),
-      ),
-      body: BlocConsumer<QuizDetailBloc, QuizDetailState>(
-        listener: (context, state) {
-          if (state is QuizDetailError) {
-            showSnackBar(context, state.message);
-          } else if (state is QuizDetailLoaded) {
-            widget.quiz = state.quizEntities;
-          }
-        },
-        builder: (context, state) {
-          if (state is QuizDetailInitial) context.read<QuizDetailBloc>().add(GetQuizDetailEvent(widget.category));
-          return switch (state) {
-            QuizDetailLoading() => const Loading(),
-            QuizDetailLoaded() => Column(
-                children: [
-                  const SizedBox(height: 50),
-                  Container(
-                    width: Dimensions.screenWidht(context),
-                    decoration: BoxDecoration(
-                      boxShadow: [shadow()],
-                      borderRadius: BorderRadius.circular(12),
-                      color: Colors.white,
-                    ),
-                    child: Text(
-                      state.quizEntities[currentIndex].pertanyaan,
-                      style: TextAppStyle.montserratMedium.copyWith(
-                        fontSize: 16,
+        body: BlocConsumer<QuizDetailBloc, QuizDetailState>(
+          listener: (context, state) {
+            if (state is QuizDetailError) {
+              showSnackBar(context, state.message);
+            } else if (state is QuizDetailLoaded) {
+              widget.quiz = state.quizEntities;
+            }
+          },
+          builder: (context, state) {
+            if (state is QuizDetailInitial) context.read<QuizDetailBloc>().add(GetQuizDetailEvent(widget.category));
+            return switch (state) {
+              QuizDetailLoading() => const Loading(),
+              QuizDetailLoaded() => Column(
+                  children: [
+                    const SizedBox(height: 50),
+                    Container(
+                      width: Dimensions.screenWidht(context),
+                      decoration: BoxDecoration(
+                        boxShadow: [shadow()],
+                        borderRadius: BorderRadius.circular(12),
+                        color: Colors.white,
                       ),
-                    ).paddingAll(30),
-                  ),
-                  const SizedBox(height: 50),
-                  buttonBlendedWidget(
-                    text: state.quizEntities[currentIndex].jawabanA,
-                    onTap: () => handlingAnswer(
-                      soalId: state.quizEntities[currentIndex].id,
-                      answer: state.quizEntities[currentIndex].jawabanA,
+                      child: Text(
+                        state.quizEntities[currentIndex].pertanyaan,
+                        style: TextAppStyle.montserratMedium.copyWith(
+                          fontSize: 16,
+                        ),
+                      ).paddingAll(30),
                     ),
-                    context: context,
-                  ),
-                  buttonBlendedWidget(
-                    text: state.quizEntities[currentIndex].jawabanB,
-                    onTap: () => handlingAnswer(
-                      soalId: state.quizEntities[currentIndex].id,
-                      answer: state.quizEntities[currentIndex].jawabanB,
+                    const SizedBox(height: 50),
+                    buttonBlendedWidget(
+                      text: state.quizEntities[currentIndex].jawabanA,
+                      onTap: () => handlingAnswer(
+                        soalId: state.quizEntities[currentIndex].id,
+                        answer: 'a',
+                      ),
+                      context: context,
                     ),
-                    context: context,
-                  ).paddingSymmetric(vertical: 20),
-                  buttonBlendedWidget(
-                    text: state.quizEntities[currentIndex].jawabanC,
-                    onTap: () => handlingAnswer(
-                      soalId: state.quizEntities[currentIndex].id,
-                      answer: state.quizEntities[currentIndex].jawabanC,
+                    buttonBlendedWidget(
+                      text: state.quizEntities[currentIndex].jawabanB,
+                      onTap: () => handlingAnswer(
+                        soalId: state.quizEntities[currentIndex].id,
+                        answer: 'b',
+                      ),
+                      context: context,
+                    ).paddingSymmetric(vertical: 20),
+                    buttonBlendedWidget(
+                      text: state.quizEntities[currentIndex].jawabanC,
+                      onTap: () => handlingAnswer(
+                        soalId: state.quizEntities[currentIndex].id,
+                        answer: 'c',
+                      ),
+                      context: context,
                     ),
-                    context: context,
-                  ),
-                  buttonBlendedWidget(
-                    text: state.quizEntities[currentIndex].jawabanD,
-                    onTap: () => handlingAnswer(
-                      soalId: state.quizEntities[currentIndex].id,
-                      answer: state.quizEntities[currentIndex].jawabanD,
-                    ),
-                    context: context,
-                  ).paddingSymmetric(vertical: 20)
-                ],
-              ).paddingAll(20),
-            _ => const Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [Loading()],
-              )
-          };
-        },
+                    buttonBlendedWidget(
+                      text: state.quizEntities[currentIndex].jawabanD,
+                      onTap: () => handlingAnswer(
+                        soalId: state.quizEntities[currentIndex].id,
+                        answer: 'd',
+                      ),
+                      context: context,
+                    ).paddingSymmetric(vertical: 20)
+                  ],
+                ).paddingAll(20),
+              _ => const Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [Loading()],
+                )
+            };
+          },
+        ),
       ),
     );
   }
@@ -135,9 +140,8 @@ class _QuizDetailScreenState extends State<QuizDetailScreen> {
           isButtonEnabled = true;
           currentIndex++;
         });
-        //setState(() => currentIndex++);
       } else {
-        showSnackBar(context, 'Quiz selesai');
+        Navigator.pushReplacement(context, Routes.quizNilai(category: widget.category));
       }
     }
   }

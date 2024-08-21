@@ -28,6 +28,7 @@ final class CreateJawabanDetailUseCase implements UseCase<String, CreateJawabanP
   }
 }
 
+
 final class CreateJawabanParams extends Equatable {
   final int soalId;
   final String jawaban;
