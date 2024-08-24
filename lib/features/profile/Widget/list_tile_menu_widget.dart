@@ -4,11 +4,7 @@ import '../../../core/shared/text_style/text_app_style.dart';
 import '../../../core/theme/app_palette.dart';
 import '../controller/profile_controller.dart';
 
-ListTile menu(
-  int index,
-  MenuEntities value, {
-  void Function()? onTap,
-}) {
+ListTile menu(int index, MenuEntities value, {void Function()? onTap, Widget? trailingWidget}) {
   return ListTile(
     onTap: onTap,
     leading: Container(
@@ -32,10 +28,6 @@ ListTile menu(
         fontSize: 12,
       ),
     ),
-    trailing: const Icon(
-      Icons.arrow_forward_ios,
-      color: Colors.grey,
-      size: 16,
-    ),
+    trailing: index == 2 ? trailingWidget : const Icon(Icons.arrow_forward_ios),
   );
 }

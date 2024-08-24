@@ -5,6 +5,8 @@ int calculateReadingTime(String content) {
 
 String nameEmail(String email) => email.split(RegExp(r'@')).first;
 
+String removeSpace(String content) => content.split(RegExp(r' ')).join();
+
 int calculateTotalReadingTime<T>(List<T> contents) {
   int totalReadingTime = 0;
   for (String content in contents as List) {

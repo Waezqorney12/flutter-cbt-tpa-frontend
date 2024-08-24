@@ -14,8 +14,25 @@ import '../../../core/shared/widget/loading_widget.dart';
 import '../Widget/box_shadow.dart';
 import '../Widget/list_tile_menu_widget.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  late final ProfileController _controller;
+
+  @override
+  void initState() {
+    _controller = ProfileController();
+    Future.microtask(() async {
+      _controller.isSwitch = await _controller.getBiometric();
+      setState(() {});
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -101,17 +118,35 @@ class ProfileScreen extends StatelessWidget {
                             boxShadow: [shadow()],
                           ),
                           child: Column(
-                            children: ProfileController.menu.mapIndexed<Widget, MenuEntities>(
+                            children: _controller.menu.mapIndexed<Widget, MenuEntities>(
                               funct: (index, value) {
                                 return menu(
                                   index,
                                   value,
+                                  trailingWidget: Switch(
+                                    activeColor: AppPalette.primaryColor,
+                                    thumbColor: WidgetStateProperty.all(Colors.white),
+                                    trackOutlineColor: WidgetStateProperty.all(Colors.transparent),
+                                    value: _controller.isSwitch,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _controller.isSwitch = value;
+                                        if (_controller.isSwitch) {
+                                          _controller.saveBiometric(value);
+                                        } else {
+                                          _controller.removeBiometric();
+                                        }
+                                      });
+                                    },
+                                  ),
                                   onTap: () async {
                                     // [index]() -> for call the function at specific index that match with the menu
                                     [
                                       () => Navigator.push(context, Routes.profileDetail()),
                                       () => Navigator.push(context, Routes.faceId()),
+                                      () {},
                                       () => Navigator.push(context, Routes.twoFactorAuthentication()),
+                                      () => Navigator.push(context, Routes.history()),
                                       () => context.read<UserCubit>().removeToken(),
                                     ][index]();
                                   },
@@ -137,7 +172,7 @@ class ProfileScreen extends StatelessWidget {
                               boxShadow: [shadow()],
                             ),
                             child: Column(
-                              children: ProfileController.moreMenu
+                              children: _controller.moreMenu
                                   .mapIndexed<Widget, MenuEntities>(
                                     funct: (index, value) => menu(index, value),
                                   )

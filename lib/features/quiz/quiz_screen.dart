@@ -1,7 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_potensial/core/theme/app_palette.dart';
+import 'package:test_potensial/core/utils/extension_utils.dart';
 import 'package:test_potensial/core/utils/map_index_utils.dart';
 import 'package:test_potensial/core/utils/notification_dialog_utils.dart';
 import 'package:test_potensial/features/profile/Widget/box_shadow.dart';
@@ -28,7 +28,8 @@ class QuizScreen extends StatelessWidget {
                 clipBehavior: Clip.none,
                 children: [
                   Positioned(
-                    bottom: -5,
+                    top: 0,
+                    bottom: Dimensions.minHeight5(context),
                     child: SizedBox(
                       width: Dimensions.screenWidht(context),
                       child: Image.asset(
@@ -132,6 +133,7 @@ class QuizScreen extends StatelessWidget {
                                 ),
                                 Expanded(
                                   child: Column(
+                                    mainAxisSize: MainAxisSize.min,
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(
@@ -149,7 +151,9 @@ class QuizScreen extends StatelessWidget {
                                         ),
                                       ),
                                       const SizedBox(height: 15),
+                                      // This text
                                       Text(
+                                        textAlign: TextAlign.start,
                                         value.content,
                                         style: TextAppStyle.poppinsReguler.copyWith(
                                           fontSize: 10,
@@ -158,9 +162,9 @@ class QuizScreen extends StatelessWidget {
                                       ),
                                     ],
                                   ),
-                                )
+                                ),
                               ],
-                            ),
+                            ).paddingAll(10),
                           ),
                         ),
                       );

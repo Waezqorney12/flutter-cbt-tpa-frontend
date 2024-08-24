@@ -4,7 +4,8 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:test_potensial/core/cubit/user_cubit.dart';
 import 'package:test_potensial/features/auth/bloc/auth_bloc.dart';
-import 'package:test_potensial/features/materi/bloc/materi_bloc.dart';
+import 'package:test_potensial/features/history_nilai/presentation/cubit/history_nilai_cubit.dart';
+import 'package:test_potensial/features/materi/presentation/bloc/materi_bloc.dart';
 import 'package:test_potensial/features/onboarding/domain/repository/onboarding_repository.dart';
 import 'package:test_potensial/features/quiz_detail/bloc/quiz_detail_bloc.dart';
 import 'package:test_potensial/features/quiz_nilai/bloc/quiz_nilai_bloc.dart';
@@ -29,6 +30,7 @@ Future<void> main() async {
             BlocProvider(create: (context) => getIt<MateriBloc>()),
             BlocProvider(create: (context) => getIt<QuizDetailBloc>()),
             BlocProvider(create: (context) => getIt<QuizNilaiBloc>()),
+            BlocProvider(create: (context) => getIt<HistoryNilaiCubit>()),
           ],
           child: MyApp(getFirstInstall: getFirstInstall),
         ),

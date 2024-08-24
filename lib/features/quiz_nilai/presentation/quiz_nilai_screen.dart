@@ -181,22 +181,14 @@ class QuizNilaiScreen extends StatelessWidget {
                       ],
                     ).paddingSymmetric(horizontal: 15),
                   ).paddingSymmetric(vertical: 30),
-                  InkWell(
-                    onTap: () => Navigator.push(context, Routes.nav()),
-                    child: Container(
-                      height: 50,
-                      width: Dimensions.screenWidht(context),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(6),
-                        color: AppPalette.primaryColor,
-                      ),
-                      child: Center(
-                        child: Text(
-                          'Kembali ke beranda',
-                          style: TextAppStyle.montserratSemiBold.copyWith(
-                            fontSize: 14,
-                            color: Colors.white,
-                          ),
+                  ElevatedButton(
+                    onPressed: () => Navigator.push(context, Routes.nav()),
+                    child: Center(
+                      child: Text(
+                        'Kembali ke beranda',
+                        style: TextAppStyle.montserratSemiBold.copyWith(
+                          fontSize: 14,
+                          color: Colors.white,
                         ),
                       ),
                     ),

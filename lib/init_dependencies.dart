@@ -1,6 +1,14 @@
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:test_potensial/features/materi/bloc/materi_bloc.dart';
+import 'package:test_potensial/core/token/token_local_secure_datasource.dart';
+import 'package:test_potensial/features/history_nilai/presentation/cubit/history_nilai_cubit.dart';
+import 'package:test_potensial/features/history_nilai/data/datasource_impl/history_nilai_remote_datasource_impl.dart';
+import 'package:test_potensial/features/history_nilai/data/repository_impl/history_nilai_repository_impl.dart';
+import 'package:test_potensial/features/history_nilai/domain/datasource/history_nilai_remote_datasource.dart';
+import 'package:test_potensial/features/history_nilai/domain/repository/history_nilai_repository.dart';
+import 'package:test_potensial/features/history_nilai/domain/usecase/history_nilai_usecase.dart';
+import 'package:test_potensial/features/materi/presentation/bloc/materi_bloc.dart';
 import 'package:test_potensial/features/materi/data/datasource/materi_remote_datasource_impl.dart';
 import 'package:test_potensial/features/materi/data/repository/materi_repository_impl.dart';
 import 'package:test_potensial/features/materi/domain/datasource/materi_remote_datasource.dart';
@@ -43,20 +51,29 @@ final GetIt getIt = GetIt.instance;
 
 Future<void> initDependencies() async {
   final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  _initNetwork(sharedPreferences);
+  const FlutterSecureStorage secureStorage = FlutterSecureStorage();
+
+  _initNetwork(sharedPreferences, secureStorage);
   // Used for DI (Dependency Injection)  Feature
   _initFeature();
 }
 
-void _initNetwork(SharedPreferences sharedPreferences) {
+void _initNetwork(SharedPreferences sharedPreferences, FlutterSecureStorage secureStorage) {
   getIt
     ..registerSingleton<DioClient>(DioClient())
-    ..registerSingleton<SharedPreferences>(sharedPreferences);
+    ..registerSingleton<SharedPreferences>(sharedPreferences)
+    ..registerSingleton<FlutterSecureStorage>(secureStorage);
 }
 
 void _initFeature() {
   getIt
     // RemoteDatasource
+    ..registerFactory<HistoryNilaiRemoteDatasource>(
+      () => HistoryNilaiRemoteDatasourceImpl(
+        getIt<TokenLocalDatasource>(),
+        getIt<DioClient>(),
+      ),
+    )
     ..registerFactory<QuizNilaiDatasource>(
       () => QuizNilaiDatasourceImpl(
         getIt<DioClient>(),
@@ -95,6 +112,11 @@ void _initFeature() {
     )
 
     // LocalDatasource
+    ..registerSingleton<SharedPrefStorageInterface>(
+      SharedPrefStorageImpl(
+        getIt<FlutterSecureStorage>(),
+      ),
+    )
     ..registerSingleton<LocalDataSourceOnboarding>(
       LocalDataSourceOnboardingImpl(
         sharedPreferences: getIt<SharedPreferences>(),
@@ -102,7 +124,11 @@ void _initFeature() {
     )
 
     // Repository
-
+    ..registerFactory<HistoryNilaiRepository>(
+      () => HistoryNilaiRepositoryImpl(
+        historyNilaiRemoteDatasource: getIt<HistoryNilaiRemoteDatasource>(),
+      ),
+    )
     ..registerFactory<QuizNilaiRepository>(
       () => QuizNilaiRepositoryImpl(
         getIt<QuizNilaiDatasource>(),
@@ -144,6 +170,11 @@ void _initFeature() {
     // UseCases
 
     ..registerFactory(
+      () => HistoryNilaiUsecase(
+        getIt<HistoryNilaiRepository>(),
+      ),
+    )
+    ..registerFactory(
       () => GetNilaiJawabanUseCase(
         getIt<QuizNilaiRepository>(),
       ),
@@ -179,6 +210,12 @@ void _initFeature() {
       ),
     )
     // Cubit
+
+    ..registerLazySingleton(
+      () => HistoryNilaiCubit(
+        useCase: getIt(),
+      ),
+    )
     ..registerLazySingleton(
       () => UserCubit(
         getIt(),

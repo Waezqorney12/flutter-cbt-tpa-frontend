@@ -42,6 +42,7 @@ class BottomNavigatorWidget extends StatelessWidget {
                       const ProfileScreen(),
                     ][index],
                     bottomNavigationBar: BottomNavigationBar(
+                      backgroundColor: Colors.white,
                       onTap: (value) {
                         if (isFirstValue.value == false) isFirstValue.value = true;
                         currentIndex.value = value;

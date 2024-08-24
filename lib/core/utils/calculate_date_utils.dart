@@ -32,7 +32,7 @@ extension DurationExtension on Duration {
       if (totalMonth > 0) {
         return "$totalMonth month ago";
       }
-      return "${inDays}h";
+      return "$inDays days ago";
     } else if (inHours > 0) {
       return "$inHours hours ago";
     } else {

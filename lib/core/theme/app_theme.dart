@@ -3,7 +3,7 @@ import 'package:test_potensial/core/theme/app_palette.dart';
 
 class AppTheme {
   static _elevatedButton([Color color = AppPalette.primaryColor]) => ElevatedButton.styleFrom(
-        fixedSize: const Size(450, 64),
+        fixedSize: const Size(450, 50),
         backgroundColor: color,
         shadowColor: color,
         shape: RoundedRectangleBorder(

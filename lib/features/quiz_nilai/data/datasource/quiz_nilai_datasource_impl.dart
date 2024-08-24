@@ -17,7 +17,7 @@ final class QuizNilaiDatasourceImpl implements QuizNilaiDatasource {
     try {
       final token = await _tokenLocalDatasource.getToken();
       final request = await _dioClient.get(
-        '/api/get-nilai',
+        '/api/get-hasil-nilai',
         queryParameters: {'kategori': params},
         options: Options(
           headers: {'Authorization': 'Bearer $token'},
