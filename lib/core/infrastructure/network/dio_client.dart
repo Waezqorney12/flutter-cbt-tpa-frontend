@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:test_potensial/core/utils/log.dart';
 
 import '../../config/api_config.dart';
 
@@ -11,7 +12,6 @@ class DioClient {
     _dio = Dio();
     _dio.options
       ..baseUrl = ApiConfig.baseUrl!
-      
       ..headers = {
         HttpHeaders.contentTypeHeader: 'application/json',
       };
@@ -31,7 +31,6 @@ class DioClient {
   }) async {
     try {
       final response = await _dio.post(
-        
         uri,
         data: data,
         queryParameters: queryParameters,
@@ -45,27 +44,29 @@ class DioClient {
       rethrow;
     }
   }
+
   /// * GET
-Future<Response<dynamic>> get(
-  String uri, {
-  Map<String, dynamic>? queryParameters,
-  Options? options,
-  CancelToken? cancelToken,
-  ProgressCallback? onReceiveProgress,
-}) async {
-  try {
-    final response = await _dio.get(
-      uri,
-      queryParameters: queryParameters,
-      options: options,
-      cancelToken: cancelToken,
-      onReceiveProgress: onReceiveProgress,
-    );
-    return response;
-  } on DioException {
-    rethrow;
+  Future<Response<dynamic>> get(
+    String uri, {
+    Map<String, dynamic>? queryParameters,
+    Options? options,
+    CancelToken? cancelToken,
+    ProgressCallback? onReceiveProgress,
+  }) async {
+    try {
+      final response = await _dio.get(
+        uri,
+        queryParameters: queryParameters,
+        options: options,
+        cancelToken: cancelToken,
+        onReceiveProgress: onReceiveProgress,
+      );
+      return response;
+    } on DioException catch (e) {
+      Log.loggerFatal('Dio Exception: $e');
+      throw Exception('Dio Exception: $e');
+    }
   }
-}
 
   /// * PUT
   Future<Response<dynamic>> put(
@@ -88,8 +89,9 @@ Future<Response<dynamic>> get(
         onReceiveProgress: onReceiveProgress,
       );
       return response;
-    } on DioException {
-      rethrow;
+    } on DioException catch (e) {
+      Log.loggerFatal('Dio Exception: $e');
+      throw Exception('Dio Exception: $e');
     }
   }
 
@@ -114,8 +116,9 @@ Future<Response<dynamic>> get(
         onReceiveProgress: onReceiveProgress,
       );
       return response;
-    } on DioException {
-      rethrow;
+    } on DioException catch (e) {
+      Log.loggerFatal('Dio Exception: $e');
+      throw Exception('Dio Exception: $e');
     }
   }
 
@@ -138,8 +141,9 @@ Future<Response<dynamic>> get(
         cancelToken: cancelToken,
       );
       return response;
-    } on DioException {
-      rethrow;
+    } on DioException catch (e) {
+      Log.loggerFatal('Dio Exception: $e');
+      throw Exception('Dio Exception: $e');
     }
   }
 }
