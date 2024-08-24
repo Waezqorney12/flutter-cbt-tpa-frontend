@@ -1,11 +1,13 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_potensial/core/shared/text_style/text_app_style.dart';
+import 'package:test_potensial/core/shared/widget/loading_widget.dart';
 import 'package:test_potensial/core/utils/extension_utils.dart';
 import 'package:test_potensial/core/theme/app_palette.dart';
 import 'package:test_potensial/core/utils/custom_date_utils.dart';
 import 'package:test_potensial/core/utils/debouncer.dart';
-import 'package:test_potensial/features/materi/bloc/materi_bloc.dart';
+import 'package:test_potensial/features/materi/presentation/bloc/materi_bloc.dart';
 import 'package:test_potensial/features/materi/domain/entities/materi_entities.dart';
 import 'package:test_potensial/features/profile/Widget/box_shadow.dart';
 
@@ -142,11 +144,15 @@ class _MateriDetailScreenState extends State<MateriDetailScreen> {
                     ),
                   ],
                 ).paddingAll(15),
-                Image.network(
-                  widget._materi.image ?? '',
-                  width: double.infinity,
-                  height: 200,
-                  fit: BoxFit.cover,
+                Hero(
+                  tag: "image${widget._materi.id}",
+                  child: CachedNetworkImage(
+                    imageUrl: widget._materi.image ?? '',
+                    width: double.infinity,
+                    height: 200,
+                    fit: BoxFit.cover,
+                    errorWidget: (context, url, error) => const Loading(),
+                  ),
                 ),
                 Text(
                   widget._materi.description ?? '',

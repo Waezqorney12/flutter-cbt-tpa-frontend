@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:test_potensial/core/usecases/usescase_no_params.dart';
 import 'package:test_potensial/features/materi/domain/usecases/materi_usecases.dart';
 
-import '../domain/entities/materi_entities.dart';
+import '../../domain/entities/materi_entities.dart';
 
 part 'materi_event.dart';
 part 'materi_state.dart';

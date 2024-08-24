@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:test_potensial/core/routes/routes_pages.dart';
 import 'package:test_potensial/core/shared/positioned/dimensions.dart';
 import 'package:test_potensial/core/shared/text_style/text_app_style.dart';
 import 'package:test_potensial/core/shared/widget/loading_widget.dart';
@@ -11,7 +10,7 @@ import 'package:test_potensial/core/utils/regex_utils.dart';
 import 'package:test_potensial/core/utils/show_snackbar_utils.dart';
 
 import '../../materi_detail/materi_detail_screen.dart';
-import '../bloc/materi_bloc.dart';
+import 'bloc/materi_bloc.dart';
 
 class MateriScreen extends StatefulWidget {
   const MateriScreen({super.key});
@@ -44,7 +43,8 @@ class _MateriScreenState extends State<MateriScreen> {
               clipBehavior: Clip.none,
               children: [
                 Positioned(
-                  bottom: -5,
+                  top: 0,
+                  bottom: Dimensions.minHeight5(context),
                   child: SizedBox(
                     width: Dimensions.screenWidht(context),
                     child: Image.asset(
@@ -231,14 +231,17 @@ class _MateriScreenState extends State<MateriScreen> {
                                                 ],
                                               ),
                                               const Spacer(),
-                                              Container(
-                                                height: 100,
-                                                width: 100,
-                                                decoration: BoxDecoration(
-                                                  borderRadius: BorderRadius.circular(8),
-                                                  image: DecorationImage(
-                                                    fit: BoxFit.cover,
-                                                    image: CachedNetworkImageProvider(value.image ?? ''),
+                                              Hero(
+                                                tag: 'image${value.id}',
+                                                child: Container(
+                                                  height: 100,
+                                                  width: 100,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius: BorderRadius.circular(8),
+                                                    image: DecorationImage(
+                                                      fit: BoxFit.cover,
+                                                      image: CachedNetworkImageProvider(value.image ?? ''),
+                                                    ),
                                                   ),
                                                 ),
                                               )
