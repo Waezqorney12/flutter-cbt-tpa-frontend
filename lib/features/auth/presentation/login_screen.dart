@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_potensial/core/cubit/user_cubit.dart';
 import 'package:test_potensial/core/shared/widget/loading_widget.dart';
+import 'package:test_potensial/core/utils/extension_utils.dart';
 import 'package:test_potensial/core/utils/show_snackbar_utils.dart';
 import 'package:test_potensial/features/auth/controller/login_controller.dart';
 import 'package:test_potensial/features/auth/widget/option_auth_widget.dart';
@@ -29,6 +30,12 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     _controller = LoginController();
+
+    Future.microtask(() async {
+      _controller.isSwitch = await _controller.checkBiometric();
+      print(_controller.isSwitch);
+      setState(() {});
+    });
     super.initState();
   }
 
@@ -94,30 +101,63 @@ class _LoginScreenState extends State<LoginScreen> {
                         controller: _controller.passwordController,
                         obscureText: true,
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 14, bottom: 42),
-                        child: InkWell(
-                          onTap: () => Navigator.push(context, Routes.forgot()),
-                          child: Text(
-                            'Forgot Password',
-                            style: TextAppStyle.poppinsMedium.copyWith(
-                              fontSize: 15,
-                              color: AppPalette.primaryColor,
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 14, bottom: 42),
+                          child: InkWell(
+                            onTap: () => Navigator.push(context, Routes.forgot()),
+                            child: Text(
+                              'Forgot Password',
+                              style: TextAppStyle.poppinsMedium.copyWith(
+                                fontSize: 15,
+                                color: AppPalette.primaryColor,
+                              ),
                             ),
                           ),
                         ),
                       ),
-                      ElevatedButton(
-                        onPressed: () {
-                          if (formKey.currentState!.validate()) _controller.signIn(context);
-                        },
-                        child: Text(
-                          'LOG IN',
-                          style: TextAppStyle.poppinsMedium.copyWith(
-                            fontSize: 16,
-                            color: Colors.white,
+                      Row(
+                        children: [
+                          Expanded(
+                            child: ElevatedButton(
+                              onPressed: () {
+                                if (formKey.currentState!.validate()) _controller.signIn(context);
+                              },
+                              child: Text(
+                                'LOG IN',
+                                style: TextAppStyle.poppinsMedium.copyWith(
+                                  fontSize: 16,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
+                          Container(
+                            width: 50,
+                            height: 50,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                              color: AppPalette.primaryColor,
+                            ),
+                            child: InkWell(
+                              onTap: () {
+                                if (_controller.isSwitch) {
+                                  _controller.authenticate().then((value) {
+                                    if (value) _controller.signIn(context);
+                                  });
+                                } else {
+                                  showSnackBar(context, 'Please enable biometric first');
+                                }
+                              },
+                              child: const Icon(
+                                Icons.fingerprint,
+                                color: Colors.white,
+                                size: 30,
+                              ),
+                            ),
+                          ).paddingOnly(left: 10),
+                        ],
                       ),
                       optionAuthWidget(
                         context,
