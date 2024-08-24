@@ -23,4 +23,11 @@ final class CreateJawabanDetailEvent extends QuizDetailEvent {
   List<Object> get props => [params];
 }
 
+final class UserExitEvent extends QuizDetailEvent {
+  final List<int> soalId;
 
+  const UserExitEvent(this.soalId);
+
+  @override
+  List<Object> get props => [soalId];
+}

@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:test_potensial/core/usecases/usecase_interface.dart';
+import 'package:test_potensial/core/usecases/usescase_no_params.dart';
 
 import '../../../../core/failure/failure_message.dart';
 import '../entities/quiz_entities.dart';
@@ -28,6 +29,16 @@ final class CreateJawabanDetailUseCase implements UseCase<String, CreateJawabanP
   }
 }
 
+final class UserExitUseCase implements UseCase<void, List<int>> {
+  final QuizDetailRepository _repository;
+
+  const UserExitUseCase(this._repository);
+
+  @override
+  Future<Either<FailureMessage, void>> call(List<int> soalId) async {
+    return _repository.userExit(soalId);
+  }
+}
 
 final class CreateJawabanParams extends Equatable {
   final int soalId;

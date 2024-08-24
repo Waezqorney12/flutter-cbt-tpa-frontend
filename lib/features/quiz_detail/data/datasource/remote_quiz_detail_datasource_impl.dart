@@ -24,11 +24,8 @@ class RemoteQuizDetailDatasourceImpl implements RemoteQuizDetailDatasource {
       );
 
       ///Log.loggerInformation('Response: ${response.data['data']}');
-      final data = response.data['data'] as List;
-      return data.map((e) => QuizModel.fromJson(e)).toList();
-    } on DioException catch (e) {
-      Log.loggerFatal('Dio Exception: $e');
-      throw ServerException(message: 'Dio Exception: $e');
+      final List<QuizModel> quizList = (response.data['data'] as List).map((value) => QuizModel.fromJson(value)).toList();
+      return quizList;
     } catch (e) {
       Log.loggerFatal('Server Exception: $e');
       throw ServerException(message: 'Server Exception: $e');
@@ -45,8 +42,22 @@ class RemoteQuizDetailDatasourceImpl implements RemoteQuizDetailDatasource {
         options: Options(headers: {'Authorization': 'Bearer $token'}),
       );
       return request.data['message'];
-    } on DioException catch (e) {
-      throw ServerException(message: 'Dio Exception: $e');
+    } catch (e) {
+      throw ServerException(message: 'Server Exception: $e');
+    }
+  }
+
+  @override
+  void userExit(List<int> soalId) async {
+    try {
+      final String? token = await _tokenLocalDatasource.getToken();
+      _dioClient.post(
+        '/api/exit',
+        data: {'soal_id': soalId},
+        options: Options(
+          headers: {'Authorization': 'Bearer $token'},
+        ),
+      );
     } catch (e) {
       throw ServerException(message: 'Server Exception: $e');
     }

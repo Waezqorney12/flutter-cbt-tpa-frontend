@@ -6,6 +6,8 @@ import 'package:test_potensial/features/quiz_detail/domain/entities/quiz_entitie
 import 'package:test_potensial/features/quiz_detail/domain/repository/quiz_detail_repository.dart';
 import 'package:test_potensial/features/quiz_detail/domain/usecase/quiz_usecase.dart';
 
+import '../../../../core/utils/log.dart';
+
 class QuizDetailRepositoryImpl implements QuizDetailRepository {
   final RemoteQuizDetailDatasource _remoteQuizDetailDatasource;
   const QuizDetailRepositoryImpl(this._remoteQuizDetailDatasource);
@@ -23,5 +25,14 @@ class QuizDetailRepositoryImpl implements QuizDetailRepository {
     );
   }
 
-
+  @override
+  Either<FailureMessage, void> userExit(List<int> soalId) {
+    try {
+      final data = _remoteQuizDetailDatasource.userExit(soalId);
+      return right(data);
+    } catch (e) {
+      Log.loggerError("Failure error in repository: $e");
+      return left(FailureMessage("Failure error in repository: $e"));
+    }
+  }
 }

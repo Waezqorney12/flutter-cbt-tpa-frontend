@@ -27,6 +27,8 @@ final class UpdateQuizDetailLoaded extends QuizDetailState {
   List<Object> get props => [message];
 }
 
+final class QuizUserExit extends QuizDetailState {}
+
 final class QuizDetailError extends QuizDetailState {
   final String message;
   const QuizDetailError(this.message);

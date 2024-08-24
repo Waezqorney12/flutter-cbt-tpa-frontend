@@ -31,6 +31,13 @@ class QuizDetailScreen extends StatefulWidget {
 class _QuizDetailScreenState extends State<QuizDetailScreen> {
   int currentIndex = 0;
   bool isButtonEnabled = true;
+
+  List<int> quizIds = [];
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return PopScope(
@@ -38,7 +45,7 @@ class _QuizDetailScreenState extends State<QuizDetailScreen> {
       onPopInvoked: (didPop) {
         notificationDialog(
             context: context,
-            onTap: () => context.read<QuizNilaiBloc>().add(GetNilaiQuizEvent(widget.category)),
+            onTap: () => context.read<QuizDetailBloc>().add(UserExitEvent(quizIds)),
             text: 'Jika anda keluar maka test tidak akan diulang kembali. Anda yakin ingin keluar?');
       },
       child: Scaffold(
@@ -54,10 +61,14 @@ class _QuizDetailScreenState extends State<QuizDetailScreen> {
         ),
         body: BlocConsumer<QuizDetailBloc, QuizDetailState>(
           listener: (context, state) {
+            if (state is QuizUserExit) {
+              Navigator.pushReplacement(context, Routes.nav());
+            }
             if (state is QuizDetailError) {
               showSnackBar(context, state.message);
             } else if (state is QuizDetailLoaded) {
               widget.quiz = state.quizEntities;
+              quizIds = widget.quiz.map((e) => e.id).toList();
             }
           },
           builder: (context, state) {

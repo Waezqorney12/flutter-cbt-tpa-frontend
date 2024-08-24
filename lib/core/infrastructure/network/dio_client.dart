@@ -40,8 +40,9 @@ class DioClient {
         onReceiveProgress: onReceiveProgress,
       );
       return response;
-    } on DioException {
-      rethrow;
+    } on DioException catch (e) {
+      Log.loggerFatal('Dio Exception: $e');
+      throw Exception('Dio Exception: $e');
     }
   }
 

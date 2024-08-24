@@ -5,5 +5,5 @@ import '../usecase/quiz_usecase.dart';
 abstract interface class RemoteQuizDetailDatasource {
   Future<List<QuizModel>> getQuizDetail(String kategori);
   Future<String> createJawabanDetail(CreateJawabanParams params);
-  
+  void userExit(List<int> soalId);
 }

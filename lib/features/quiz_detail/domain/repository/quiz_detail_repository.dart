@@ -7,4 +7,5 @@ import '../entities/quiz_entities.dart';
 abstract interface class QuizDetailRepository {
   Future<Either<FailureMessage, List<QuizEntities>>> getQuizDetail(String kategori);
   Future<Either<FailureMessage, String>> createJawabanDetail(CreateJawabanParams params);
+  Either<FailureMessage,  void> userExit(List<int> soalId);
 }

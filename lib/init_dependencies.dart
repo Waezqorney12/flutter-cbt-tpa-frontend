@@ -175,6 +175,11 @@ void _initFeature() {
       ),
     )
     ..registerFactory(
+      () => UserExitUseCase(
+        getIt<QuizDetailRepository>(),
+      ),
+    )
+    ..registerFactory(
       () => GetNilaiJawabanUseCase(
         getIt<QuizNilaiRepository>(),
       ),
@@ -231,6 +236,7 @@ void _initFeature() {
     )
     ..registerLazySingleton(
       () => QuizDetailBloc(
+        userExitUseCase: getIt(),
         getQuizDetail: getIt(),
         createJawaban: getIt(),
       ),
