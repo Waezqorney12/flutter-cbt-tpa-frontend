@@ -1,9 +1,8 @@
-import 'package:fpdart/fpdart.dart';
-import 'package:test_potensial/core/failure/failure_message.dart';
 import 'package:test_potensial/core/entities/user_entities.dart';
+import 'package:test_potensial/core/utils/typedef_utils.dart';
 
 abstract interface class RegisterRepository {
-  Future<Either<FailureMessage, UserEntities>> registerWithEmailPassword({
+  FutureEither<UserEntities> registerWithEmailPassword({
     required String name,
     required String email,
     required String password,

@@ -1,9 +1,5 @@
-import 'package:fpdart/fpdart.dart';
-
-import '../failure/failure_message.dart';
+import 'package:test_potensial/core/utils/typedef_utils.dart';
 
 abstract interface class UseCase<T, Params> {
-  Future<Either<FailureMessage, T>> call(Params params);
+  FutureEither<T> call(Params params);
 }
-
-

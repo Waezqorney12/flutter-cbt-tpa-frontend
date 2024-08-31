@@ -5,7 +5,7 @@ import 'package:test_potensial/core/utils/log.dart';
 import 'package:test_potensial/features/quiz_nilai/data/model/quiz_nilai_model.dart';
 import 'package:test_potensial/features/quiz_nilai/domain/datasource/quiz_nilai_datasource.dart';
 
-import '../../../../core/failure/server_exception.dart';
+import '../../../../core/message/server_exception.dart';
 
 final class QuizNilaiDatasourceImpl implements QuizNilaiDatasource {
   final DioClient _dioClient;

@@ -1,0 +1,16 @@
+The detachSocket() method in Dart's HttpClientResponse class is used to detach the underlying 
+socket from the HTTP client. This allows you to continue using the socket even after 
+the HTTP client is closed or garbage collected. This is useful in some cases where you want 
+to keep the connection open for further use.
+
+However, in the context of Dio, which is a third-party HTTP client for Dart, there's no equivalent method
+to detachSocket(). Dio handles the connection lifecycle for you, including closing the connection 
+when it's no longer needed.
+
+In your code, you're using Dio to make HTTP requests. When you make a request with Dio, 
+it automatically closes the connection after the request is complete. You don't need to manually 
+close the connection or detach the socket.
+
+In general, you don't need to worry about closing connections when using high-level HTTP 
+clients like Dio. They handle these details for you, so you can focus on making requests 
+and handling responses.

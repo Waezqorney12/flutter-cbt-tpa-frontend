@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:test_potensial/core/failure/server_exception.dart';
+import 'package:test_potensial/core/message/server_exception.dart';
 import 'package:test_potensial/core/infrastructure/network/dio_client.dart';
 import 'package:test_potensial/core/model/user_model.dart';
 import 'package:test_potensial/features/auth/domain/datasource/login_remote_datasource.dart';

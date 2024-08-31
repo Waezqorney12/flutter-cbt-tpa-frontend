@@ -1,6 +1,6 @@
 import 'package:fpdart/fpdart.dart';
 
-import '../../../../core/failure/failure_message.dart';
+import '../../../../core/message/failure_message.dart';
 import '../../../../core/usecases/usecase_interface.dart';
 import '../../../../core/usecases/usescase_no_params.dart';
 import '../entities/materi_entities.dart';

@@ -4,7 +4,7 @@ import 'package:test_potensial/core/entities/user_entities.dart';
 import 'package:test_potensial/core/infrastructure/network/dio_client.dart';
 import 'package:test_potensial/core/utils/log.dart';
 
-import '../failure/server_exception.dart';
+import '../message/server_exception.dart';
 import '../model/user_model.dart';
 
 abstract interface class TokenLocalDatasource {

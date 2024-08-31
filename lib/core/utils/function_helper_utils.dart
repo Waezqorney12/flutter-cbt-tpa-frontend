@@ -1,7 +1,8 @@
 import 'package:fpdart/fpdart.dart';
 import 'package:test_potensial/core/utils/log.dart';
+import 'package:test_potensial/core/utils/typedef_utils.dart';
 
-import '../failure/failure_message.dart';
+import '../message/failure_message.dart';
 
 Future<Either<FailureMessage, T>> helperCall<T>({required Future<T> Function() apiCall}) async {
   try {
@@ -13,15 +14,22 @@ Future<Either<FailureMessage, T>> helperCall<T>({required Future<T> Function() a
   }
 }
 
-Future<Either<X, T>> helperCallWithException<X, T>({
-  required Future<T> Function() apiCall,
-  required Future<X> Function() networkCall,
+FutureEither<T> helperCallWithException<T>({
+  required Future<T> Function() firstConnection,
+  required Future<T> Function() secondConnection,
 }) async {
   try {
-    final data = await apiCall();
-    return right(data);
+    final firstData = await firstConnection();
+    final secondData = await secondConnection();
+    if (firstData != null) {
+      return right(firstData);
+    } else if (secondData != null) {
+      return right(secondData);
+    } else {
+      return left(FailureMessage('Both connections returned null'));
+    }
   } catch (e) {
-    final data = await networkCall();
-    return left(data);
+    Log.loggerError("Failure error in repository: $e");
+    return left(FailureMessage('Catch error in repository: $e'));
   }
 }

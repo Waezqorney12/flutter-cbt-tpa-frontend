@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:test_potensial/core/failure/server_exception.dart';
+import 'package:test_potensial/core/message/server_exception.dart';
 import 'package:test_potensial/core/utils/log.dart';
 
 void errorHandling(dynamic e){

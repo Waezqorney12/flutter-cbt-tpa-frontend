@@ -2,7 +2,6 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:test_potensial/features/quiz_detail/domain/usecase/quiz_usecase.dart';
 
-import '../../../core/usecases/usescase_no_params.dart';
 import '../domain/entities/quiz_entities.dart';
 
 part 'quiz_detail_event.dart';

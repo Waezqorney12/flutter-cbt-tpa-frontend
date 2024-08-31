@@ -2,8 +2,9 @@ import 'package:equatable/equatable.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:test_potensial/core/usecases/usecase_interface.dart';
 import 'package:test_potensial/core/usecases/usescase_no_params.dart';
+import 'package:test_potensial/core/utils/typedef_utils.dart';
 
-import '../../../../core/failure/failure_message.dart';
+import '../../../../core/message/failure_message.dart';
 import '../entities/quiz_entities.dart';
 import '../repository/quiz_detail_repository.dart';
 
@@ -13,7 +14,7 @@ final class GetQuizDetailUseCase implements UseCase<List<QuizEntities>, String> 
   const GetQuizDetailUseCase(this._repository);
 
   @override
-  Future<Either<FailureMessage, List<QuizEntities>>> call(String kategori) async {
+  FutureEither<List<QuizEntities>> call(String kategori) async {
     return await _repository.getQuizDetail(kategori);
   }
 }
@@ -24,7 +25,7 @@ final class CreateJawabanDetailUseCase implements UseCase<String, CreateJawabanP
   const CreateJawabanDetailUseCase(this._repository);
 
   @override
-  Future<Either<FailureMessage, String>> call(CreateJawabanParams params) async {
+  FutureEither<String> call(CreateJawabanParams params) async {
     return await _repository.createJawabanDetail(params);
   }
 }
@@ -35,7 +36,7 @@ final class UserExitUseCase implements UseCase<void, List<int>> {
   const UserExitUseCase(this._repository);
 
   @override
-  Future<Either<FailureMessage, void>> call(List<int> soalId) async {
+  FutureEither<void> call(List<int> soalId) async {
     return _repository.userExit(soalId);
   }
 }

@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:test_potensial/core/failure/server_exception.dart';
+import 'package:test_potensial/core/message/server_exception.dart';
 import 'package:test_potensial/core/infrastructure/network/dio_client.dart';
 import 'package:test_potensial/core/token/token_local_datasource.dart';
 import 'package:test_potensial/core/utils/log.dart';

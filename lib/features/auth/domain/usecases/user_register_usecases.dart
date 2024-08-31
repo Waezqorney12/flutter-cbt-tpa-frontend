@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:test_potensial/core/failure/failure_message.dart';
+import 'package:test_potensial/core/message/failure_message.dart';
 import 'package:test_potensial/core/usecases/usecase_interface.dart';
 import 'package:test_potensial/core/entities/user_entities.dart';
 import 'package:test_potensial/features/auth/domain/repository/register_repository.dart';
