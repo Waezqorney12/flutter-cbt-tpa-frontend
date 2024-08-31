@@ -1,7 +1,7 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-abstract class SharedPrefStorageInterface {
-  const SharedPrefStorageInterface();
+abstract class TokenLocalSecure {
+  const TokenLocalSecure();
 
   Future<bool> hasData(String key);
 
@@ -14,10 +14,10 @@ abstract class SharedPrefStorageInterface {
   Future<void> reset();
 }
 
-class SharedPrefStorageImpl extends SharedPrefStorageInterface {
+class TokenLocalSecureImpl extends TokenLocalSecure {
   final FlutterSecureStorage _storage;
 
-  const SharedPrefStorageImpl(this._storage);
+  const TokenLocalSecureImpl(this._storage);
 
   @override
   Future<String?> get(String key) {
