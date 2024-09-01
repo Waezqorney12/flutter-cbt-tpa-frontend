@@ -144,7 +144,11 @@ class _LoginScreenState extends State<LoginScreen> {
                               onTap: () {
                                 if (_controller.isSwitch) {
                                   _controller.authenticate().then((value) {
-                                    if (value) _controller.signIn(context);
+                                    if (value) {
+                                      _controller.checkBiometric().then((_) {
+                                        context.read<UserCubit>().getUser();
+                                      });
+                                    }
                                   });
                                 } else {
                                   showSnackBar(context, 'Please enable biometric first');

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test_potensial/core/utils/log.dart';
@@ -29,9 +30,16 @@ class LoginController {
     return authenticated;
   }
 
-  Future<bool> checkBiometric() async {
+  Future checkBiometric() async {
     final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    return sharedPreferences.getBool('isSwitch') ?? false;
+    const FlutterSecureStorage secureStorage = FlutterSecureStorage();
+    try {
+      if (await secureStorage.read(key: 'access_token') != null) {
+        sharedPreferences.setString('refresh_token', await secureStorage.read(key: 'access_token') ?? '');
+      }
+    } catch (e) {
+      rethrow;
+    }
   }
 
   void signIn(BuildContext context) {

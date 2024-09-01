@@ -7,4 +7,5 @@ abstract interface class LoginRepository {
     required String email,
     required String password,
   });
+
 }

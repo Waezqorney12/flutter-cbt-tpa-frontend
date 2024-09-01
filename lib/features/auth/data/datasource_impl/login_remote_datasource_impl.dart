@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:test_potensial/core/message/server_exception.dart';
 import 'package:test_potensial/core/infrastructure/network/dio_client.dart';
 import 'package:test_potensial/core/model/user_model.dart';
@@ -10,7 +9,10 @@ import '../../../../core/utils/log.dart';
 class LoginRemoteDatasourceImpl implements LoginRemoteDataSource {
   final DioClient _client;
   final TokenLocalDatasource _sharedPreferences;
-  const LoginRemoteDatasourceImpl(this._client, this._sharedPreferences);
+  const LoginRemoteDatasourceImpl(
+    this._client,
+    this._sharedPreferences,
+  );
   @override
   Future<UserModel> loginWithEmailPassword({
     required String email,
@@ -22,11 +24,13 @@ class LoginRemoteDatasourceImpl implements LoginRemoteDataSource {
         data: UserModel(name: '', email: email, password: password, phone: '', roles: '').toJson(),
       );
       //Log.loggerInformation("LoginRemoteDatasourceImpl: ${request.data['access_token']}");
-      _sharedPreferences.saveToken(request.data['access_token']);
+      _sharedPreferences.saveAccessToken(request.data['access_token']);
+      //Log.loggerInformation("RegisterRemoteDatasourceImpl: ${await _sharedPreferences.getAccessToken()}");
+      if (await _sharedPreferences.getAccessToken() != null) {
+        Log.loggerInformation("RegisterRemoteDatasourceImpl: ${await _sharedPreferences.getAccessToken()}");
+        _sharedPreferences.saveRefreshToken(await _sharedPreferences.getAccessToken() ?? '');
+      }
       return UserModel.fromJson(request.data['message']);
-    } on DioException catch (e) {
-      Log.loggerError("Dio Error: ${e.message}");
-      throw Exception(e.message);
     } on ServerException catch (e) {
       Log.loggerError("Error: ${e.message}");
       throw ServerException(message: "Server Error:${e.message}");

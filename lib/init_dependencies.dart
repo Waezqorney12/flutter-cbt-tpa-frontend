@@ -1,7 +1,8 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:test_potensial/core/token/token_local_secure_datasource.dart';
+import 'package:test_potensial/core/token/flutter_secure_store.dart';
+import 'package:test_potensial/core/token/shared_preferences.dart';
 import 'package:test_potensial/features/history_nilai/presentation/cubit/history_nilai_cubit.dart';
 import 'package:test_potensial/features/history_nilai/data/datasource_impl/history_nilai_remote_datasource_impl.dart';
 import 'package:test_potensial/features/history_nilai/data/repository_impl/history_nilai_repository_impl.dart';
@@ -67,6 +68,7 @@ void _initNetwork(SharedPreferences sharedPreferences, FlutterSecureStorage secu
 
 void _initFeature() {
   getIt
+
     // RemoteDatasource
     ..registerFactory<HistoryNilaiRemoteDatasource>(
       () => HistoryNilaiRemoteDatasourceImpl(
@@ -94,8 +96,9 @@ void _initFeature() {
     )
     ..registerFactory<TokenLocalDatasource>(
       () => TokenLocalDatasourceImpl(
-        getIt<SharedPreferences>(),
         getIt<DioClient>(),
+        getIt<SharedPreferencesInterface>(),
+        getIt<SharedPreferencesSecureInterface>(),
       ),
     )
     ..registerFactory<LoginRemoteDataSource>(
@@ -112,9 +115,14 @@ void _initFeature() {
     )
 
     // LocalDatasource
-    ..registerSingleton<SharedPrefStorageInterface>(
-      SharedPrefStorageImpl(
+    ..registerSingleton<SharedPreferencesSecureInterface>(
+      SharedPreferencesSecureImpl(
         getIt<FlutterSecureStorage>(),
+      ),
+    )
+    ..registerSingleton<SharedPreferencesInterface>(
+      SharedPreferencesImpl(
+        getIt<SharedPreferences>(),
       ),
     )
     ..registerSingleton<LocalDataSourceOnboarding>(

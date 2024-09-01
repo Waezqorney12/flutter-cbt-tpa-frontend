@@ -8,8 +8,8 @@ import 'package:test_potensial/features/auth/domain/datasource/register_remote_d
 
 class RegisterRemoteDatasourceImpl implements RegisterRemoteDataSource {
   final DioClient _client;
-  final TokenLocalDatasource _tokenLocalDatasource;
-  const RegisterRemoteDatasourceImpl(this._client, this._tokenLocalDatasource);
+  final TokenLocalDatasource _sharedPreferences;
+  const RegisterRemoteDatasourceImpl(this._client, this._sharedPreferences);
   @override
   Future<UserModel> registerWithEmailPassword({
     required String email,
@@ -21,9 +21,12 @@ class RegisterRemoteDatasourceImpl implements RegisterRemoteDataSource {
         '/api/register',
         data: UserModel(name: name, email: email, password: password, phone: '', roles: '').toJson(),
       );
-
-      _tokenLocalDatasource.saveToken(request.data['access_token']);
-
+      _sharedPreferences.saveAccessToken(request.data['access_token']);
+      Log.loggerInformation("RegisterRemoteDatasourceImpl: ${await _sharedPreferences.getAccessToken()}");
+      if (await _sharedPreferences.getAccessToken() != null) {
+        Log.loggerInformation("RegisterRemoteDatasourceImpl: ${await _sharedPreferences.getAccessToken()}");
+        _sharedPreferences.saveRefreshToken(await _sharedPreferences.getAccessToken() ?? '');
+      }
       return UserModel.fromJson(request.data['user']);
     } on DioException catch (e) {
       Log.loggerError("Error: ${e.message}");
