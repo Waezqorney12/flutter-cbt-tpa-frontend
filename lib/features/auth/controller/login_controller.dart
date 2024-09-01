@@ -30,13 +30,15 @@ class LoginController {
     return authenticated;
   }
 
-  Future checkBiometric() async {
+  Future<bool> checkBiometric() async {
     final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     const FlutterSecureStorage secureStorage = FlutterSecureStorage();
     try {
       if (await secureStorage.read(key: 'access_token') != null) {
         sharedPreferences.setString('refresh_token', await secureStorage.read(key: 'access_token') ?? '');
+        return true;
       }
+      return false;
     } catch (e) {
       rethrow;
     }

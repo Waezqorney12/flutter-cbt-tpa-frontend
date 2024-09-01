@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test_potensial/core/cubit/user_cubit.dart';
 import 'package:test_potensial/core/shared/widget/loading_widget.dart';
 import 'package:test_potensial/core/utils/extension_utils.dart';
+import 'package:test_potensial/core/utils/log.dart';
 import 'package:test_potensial/core/utils/show_snackbar_utils.dart';
 import 'package:test_potensial/features/auth/controller/login_controller.dart';
 import 'package:test_potensial/features/auth/widget/option_auth_widget.dart';
@@ -32,9 +34,13 @@ class _LoginScreenState extends State<LoginScreen> {
     _controller = LoginController();
 
     Future.microtask(() async {
-      _controller.isSwitch = await _controller.checkBiometric();
-      print(_controller.isSwitch);
-      setState(() {});
+      final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+      Log.loggerWarning(sharedPreferences.getBool('isOnBoarding'));
+      if (sharedPreferences.getBool('isOnBoarding') ?? false) {
+        _controller.isSwitch = await _controller.checkBiometric();
+        Log.loggerWarning(_controller.isSwitch);
+        setState(() {});
+      }
     });
     super.initState();
   }
