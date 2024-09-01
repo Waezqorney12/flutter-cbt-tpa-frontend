@@ -35,10 +35,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
     Future.microtask(() async {
       final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-      Log.loggerWarning(sharedPreferences.getBool('isOnBoarding'));
+      Log.loggerWarning(sharedPreferences.getString('refresh_token'));
       if (sharedPreferences.getBool('isOnBoarding') ?? false) {
         _controller.isSwitch = await _controller.checkBiometric();
-        Log.loggerWarning(_controller.isSwitch);
         setState(() {});
       }
     });
@@ -151,7 +150,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 if (_controller.isSwitch) {
                                   _controller.authenticate().then((value) {
                                     if (value) {
-                                      _controller.checkBiometric().then((_) {
+                                      _controller.useFingerPrint().then((_) {
                                         context.read<UserCubit>().getUser();
                                       });
                                     }

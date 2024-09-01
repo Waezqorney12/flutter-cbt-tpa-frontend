@@ -6,6 +6,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test_potensial/core/utils/log.dart';
 import 'package:test_potensial/features/auth/bloc/auth_bloc.dart';
 
+typedef sharedPref = SharedPreferences;
+typedef securePref = FlutterSecureStorage;
+
 class LoginController {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -31,8 +34,13 @@ class LoginController {
   }
 
   Future<bool> checkBiometric() async {
-    final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    const FlutterSecureStorage secureStorage = FlutterSecureStorage();
+    final sharedPref sharedPreferences = await sharedPref.getInstance();
+    return sharedPreferences.getBool('isSwitch') ?? false;
+  }
+
+  Future useFingerPrint() async {
+    final sharedPref sharedPreferences = await sharedPref.getInstance();
+    const securePref secureStorage = securePref();
     try {
       if (await secureStorage.read(key: 'access_token') != null) {
         sharedPreferences.setString('refresh_token', await secureStorage.read(key: 'access_token') ?? '');
