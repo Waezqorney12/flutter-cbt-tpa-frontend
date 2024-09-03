@@ -21,6 +21,7 @@ class RegisterRemoteDatasourceImpl implements RegisterRemoteDataSource {
         '/api/register',
         data: UserModel(name: name, email: email, password: password, phone: '', roles: '').toJson(),
       );
+      Log.loggerInformation("RegisterRemoteDatasourceImpl: ${request.data}");
       _sharedPreferences.saveAccessToken(request.data['access_token']);
       Log.loggerInformation("RegisterRemoteDatasourceImpl: ${await _sharedPreferences.getAccessToken()}");
       if (await _sharedPreferences.getAccessToken() != null) {

@@ -4,7 +4,7 @@ import 'package:test_potensial/core/shared/text_style/text_app_style.dart';
 import 'package:test_potensial/core/shared/widget/form_widget.dart';
 import 'package:test_potensial/core/shared/widget/phone_form_field_widget.dart';
 import 'package:test_potensial/features/profile/Widget/box_shadow.dart';
-import 'package:test_potensial/features/profile_detail/profile_detail_controller.dart';
+import 'package:test_potensial/features/profile_detail/controller/profile_detail_controller.dart';
 
 class ProfileDetailScreen extends StatefulWidget {
   const ProfileDetailScreen({super.key});
