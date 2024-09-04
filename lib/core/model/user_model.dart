@@ -2,11 +2,11 @@ import 'package:test_potensial/core/entities/user_entities.dart';
 
 class UserModel extends UserEntities {
   UserModel({
-    required super.name,
-    required super.email,
-    required super.password,
-    required super.phone,
-    required super.roles,
+    super.name,
+    super.email,
+    super.password,
+    super.phone,
+    super.roles,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
@@ -19,7 +19,7 @@ class UserModel extends UserEntities {
     );
   }
 
-  factory UserModel.fromEntities (UserEntities userEntities) {
+  factory UserModel.fromEntities(UserEntities userEntities) {
     return UserModel(
       name: userEntities.name,
       email: userEntities.email,

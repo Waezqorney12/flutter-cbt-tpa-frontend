@@ -43,8 +43,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 15),
             child: BlocConsumer<UserCubit, UserState>(
               listener: (context, state) {
-                if (state is UserLoggeoOut) Navigator.pushReplacement(context, Routes.login());
-                if (state is UserError) Navigator.pushReplacement(context, Routes.login());
+                if (state is UserLoggeoOut || state is UserError) Navigator.pushReplacement(context, Routes.login());
               },
               builder: (context, state) {
                 return switch (state) {
@@ -142,7 +141,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   onTap: () async {
                                     // [index]() -> for call the function at specific index that match with the menu
                                     [
-                                      () => Navigator.push(context, Routes.profileDetail()),
+                                      () => Navigator.push(context, Routes.profileDetail(state.user)),
                                       () => Navigator.push(context, Routes.faceId()),
                                       () {},
                                       () => Navigator.push(context, Routes.twoFactorAuthentication()),

@@ -54,7 +54,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               },
               child: BlocConsumer<AuthBloc, AuthState>(
                 listener: (context, state) {
-                  if (state is AuthSuccess) context.read<UserCubit>().getUser();
+                  if (state is AuthSuccess) context.read<UserCubit>().stream;
                   if (state is AuthError) showSnackBar(context, state.message);
                 },
                 builder: (context, state) {

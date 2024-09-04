@@ -15,6 +15,10 @@ import 'package:test_potensial/features/materi/data/repository/materi_repository
 import 'package:test_potensial/features/materi/domain/datasource/materi_remote_datasource.dart';
 import 'package:test_potensial/features/materi/domain/repository/materi_repository.dart';
 import 'package:test_potensial/features/materi/domain/usecases/materi_usecases.dart';
+import 'package:test_potensial/features/profile_detail/data/datasource_impl/profile_detail_remote_impl_datasource.dart';
+import 'package:test_potensial/features/profile_detail/data/repository_impl/profile_detail_repository_impl.dart';
+import 'package:test_potensial/features/profile_detail/domain/datasource/profile_detail_datasource.dart';
+import 'package:test_potensial/features/profile_detail/domain/usecase/profile_detail_usecase.dart';
 import 'package:test_potensial/features/quiz_detail/bloc/quiz_detail_bloc.dart';
 import 'package:test_potensial/features/quiz_detail/data/datasource/remote_quiz_detail_datasource_impl.dart';
 import 'package:test_potensial/features/quiz_detail/data/repository/quiz_detail_repository_impl.dart';
@@ -46,6 +50,8 @@ import 'features/auth/data/datasource_impl/login_remote_datasource_impl.dart';
 import 'features/auth/data/repository_impl/login_repository_impl.dart';
 import 'features/auth/domain/datasource/login_remote_datasource.dart';
 import 'features/auth/domain/repository/login_repository.dart';
+import 'features/profile_detail/cubit/profile_detail_cubit.dart';
+import 'features/profile_detail/domain/repository/profile_detail_repository.dart';
 import 'features/quiz_nilai/data/datasource/quiz_nilai_datasource_impl.dart';
 
 final GetIt getIt = GetIt.instance;
@@ -70,6 +76,12 @@ void _initFeature() {
   getIt
 
     // RemoteDatasource
+    ..registerFactory<ProfileDetailDatasource>(
+      () => ProfileDetailRemoteImplDatasource(
+        getIt<DioClient>(),
+        getIt<TokenLocalDatasource>(),
+      ),
+    )
     ..registerFactory<HistoryNilaiRemoteDatasource>(
       () => HistoryNilaiRemoteDatasourceImpl(
         getIt<TokenLocalDatasource>(),
@@ -115,6 +127,7 @@ void _initFeature() {
     )
 
     // LocalDatasource
+
     ..registerSingleton<SharedPreferencesSecureInterface>(
       SharedPreferencesSecureImpl(
         getIt<FlutterSecureStorage>(),
@@ -132,6 +145,11 @@ void _initFeature() {
     )
 
     // Repository
+    ..registerFactory<ProfileDetailRepository>(
+      () => ProfileDetailRepositoryImpl(
+        getIt<ProfileDetailDatasource>(),
+      ),
+    )
     ..registerFactory<HistoryNilaiRepository>(
       () => HistoryNilaiRepositoryImpl(
         historyNilaiRemoteDatasource: getIt<HistoryNilaiRemoteDatasource>(),
@@ -176,7 +194,11 @@ void _initFeature() {
     )
 
     // UseCases
-
+    ..registerFactory(
+      () => ProfileDetailUseCase(
+        getIt<ProfileDetailRepository>(),
+      ),
+    )
     ..registerFactory(
       () => HistoryNilaiUsecase(
         getIt<HistoryNilaiRepository>(),
@@ -224,6 +246,11 @@ void _initFeature() {
     )
     // Cubit
 
+    ..registerLazySingleton(
+      () => ProfileDetailCubit(
+        useCase: getIt(),
+      ),
+    )
     ..registerLazySingleton(
       () => HistoryNilaiCubit(
         useCase: getIt(),

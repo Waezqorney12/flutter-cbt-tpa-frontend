@@ -6,6 +6,5 @@ abstract interface class ProfileDetailRepository {
     String? phone,
     String? name,
     String? email,
-    String? password,
   );
 }

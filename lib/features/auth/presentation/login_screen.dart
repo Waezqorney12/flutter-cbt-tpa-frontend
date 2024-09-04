@@ -63,7 +63,7 @@ class _LoginScreenState extends State<LoginScreen> {
           },
           child: BlocConsumer<AuthBloc, AuthState>(
             listener: (context, state) {
-              if (state is AuthSuccess) context.read<UserCubit>().getUser();
+              if (state is AuthSuccess) context.read<UserCubit>().stream;
               if (state is AuthError) showSnackBar(context, state.message);
             },
             builder: (context, state) {
@@ -151,7 +151,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   _controller.authenticate().then((value) {
                                     if (value) {
                                       _controller.useFingerPrint().then((_) {
-                                        context.read<UserCubit>().getUser();
+                                        context.read<UserCubit>().stream;
                                       });
                                     }
                                   });

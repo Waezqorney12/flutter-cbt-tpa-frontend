@@ -5,6 +5,5 @@ abstract interface class ProfileDetailDatasource {
     String? phone,
     String? name,
     String? email,
-    String? password,
   );
 }

@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_initicon/flutter_initicon.dart';
+import 'package:test_potensial/core/entities/user_entities.dart';
 import 'package:test_potensial/core/shared/text_style/text_app_style.dart';
 import 'package:test_potensial/core/shared/widget/form_widget.dart';
 import 'package:test_potensial/core/shared/widget/phone_form_field_widget.dart';
 import 'package:test_potensial/features/profile/Widget/box_shadow.dart';
 import 'package:test_potensial/features/profile_detail/controller/profile_detail_controller.dart';
 
+import 'cubit/profile_detail_cubit.dart';
+
 class ProfileDetailScreen extends StatefulWidget {
-  const ProfileDetailScreen({super.key});
+  final UserEntities user;
+  const ProfileDetailScreen({super.key, required this.user});
 
   @override
   State<ProfileDetailScreen> createState() => _ProfileDetailScreenState();
@@ -15,6 +20,14 @@ class ProfileDetailScreen extends StatefulWidget {
 
 class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
   final _controller = ProfileDetailController();
+
+  @override
+  void initState() {
+    _controller.emailController.text = widget.user.email ?? '';
+    _controller.nameController.text = widget.user.name ?? '';
+    _controller.phoneController.text = widget.user.phone ?? '';
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -81,7 +94,13 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
             ),
             const SizedBox(height: 35),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                context.read<ProfileDetailCubit>().changeProfile(
+                      email: _controller.emailController.text,
+                      name: _controller.nameController.text,
+                      phone: _controller.phoneController.text,
+                    );
+              },
               child: Text(
                 'Update Profile',
                 style: TextAppStyle.poppinsMedium.copyWith(

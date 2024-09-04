@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:test_potensial/core/entities/user_entities.dart';
 import 'package:test_potensial/features/history_nilai/presentation/history_nilai_screen.dart';
 import 'package:test_potensial/features/quiz_nilai/presentation/quiz_nilai_screen.dart';
 import '/features/about%20us/about_us_screen.dart';
@@ -30,7 +31,8 @@ class Routes {
         builder: (context) => OtpScreen(userEmail: userEmail),
       );
   static MaterialPageRoute createPassword() => MaterialPageRoute(builder: (context) => const CreatePasswordScreen());
-  static MaterialPageRoute profileDetail() => MaterialPageRoute(builder: (context) => const ProfileDetailScreen());
+  static MaterialPageRoute profileDetail(UserEntities user) =>
+      MaterialPageRoute(builder: (context) => ProfileDetailScreen(user: user));
   static MaterialPageRoute twoFactorAuthentication() => MaterialPageRoute(builder: (context) => const TwoFactorAuthScreen());
   static MaterialPageRoute faceId() => MaterialPageRoute(builder: (context) => const FaceIdScreen());
 

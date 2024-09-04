@@ -15,14 +15,12 @@ class ProfileDetailRepositoryImpl implements ProfileDetailRepository {
     String? phone,
     String? name,
     String? email,
-    String? password,
   ) {
     return helperCall<UserEntities>(
       apiCall: () => _profileDetailDatasource.changeProfile(
         phone,
         name,
         email,
-        password,
       ),
     );
   }

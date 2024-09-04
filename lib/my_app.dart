@@ -6,7 +6,6 @@ import 'package:test_potensial/core/shared/widget/loading_widget.dart';
 import 'package:test_potensial/core/utils/log.dart';
 //import 'package:test_potensial/core/utils/log.dart';
 import 'package:test_potensial/features/bottom_navigator/bottom_navigator_widget.dart';
-import 'package:test_potensial/features/quiz_nilai/presentation/quiz_nilai_screen.dart';
 
 import 'core/theme/app_theme.dart';
 
@@ -30,9 +29,6 @@ class MyApp extends StatelessWidget {
         },
         child: BlocBuilder<UserCubit, UserState>(
           builder: (context, state) {
-            // Log.loggerFatal('State is $state');
-            // Log.loggerFatal('First Install is $getFirstInstall');
-            if (state is UserInitial) context.read<UserCubit>().getUser();
             if (getFirstInstall && state is UserLoggedIn) {
               return BottomNavigatorWidget();
             } else {
