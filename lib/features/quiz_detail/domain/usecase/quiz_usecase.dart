@@ -1,10 +1,7 @@
 import 'package:equatable/equatable.dart';
-import 'package:fpdart/fpdart.dart';
 import 'package:test_potensial/core/usecases/usecase_interface.dart';
-import 'package:test_potensial/core/usecases/usescase_no_params.dart';
 import 'package:test_potensial/core/utils/typedef_utils.dart';
 
-import '../../../../core/message/failure_message.dart';
 import '../entities/quiz_entities.dart';
 import '../repository/quiz_detail_repository.dart';
 

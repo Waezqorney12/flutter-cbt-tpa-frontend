@@ -34,23 +34,21 @@ class TokenLocalDatasourceImpl implements TokenLocalDatasource {
 
   @override
   Stream<UserEntities> getUser() async* {
-    while (true) {
-      try {
-        final token = await _sharedPreferences.readString('refresh_token');
-        if (token == null) throw const ServerException(message: 'Token is null');
-        final response = await _client.get(
-          '/api/user',
-          options: Options(
-            headers: {'Authorization': 'Bearer $token'},
-          ),
-        );
-        // Assuming you have a way to convert the response to a UserEntities
-        final user = UserModel.fromJson(response.data);
-        yield user;
-        await Future.delayed(const Duration(minutes: 1)); // wait for 1 minute before the next request
-      } catch (e) {
-        // Handle or rethrow the error
-      }
+    try {
+      final token = await _sharedPreferences.readString('refresh_token');
+      if (token == null) throw const ServerException(message: 'Token is null');
+      final response = await _client.get(
+        '/api/user',
+        options: Options(
+          headers: {'Authorization': 'Bearer $token'},
+        ),
+      );
+      // Assuming you have a way to convert the response to a UserEntities
+      final user = UserModel.fromJson(response.data);
+      yield user;
+      await Future.delayed(const Duration(minutes: 1)); // wait for 1 minute before the next request
+    } catch (e) {
+      // Handle or rethrow the error
     }
   }
 

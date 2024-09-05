@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_potensial/core/cubit/user_cubit.dart';
 import 'package:test_potensial/core/routes/routes_pages.dart';
-import 'package:test_potensial/core/shared/widget/loading_widget.dart';
-import 'package:test_potensial/core/utils/log.dart';
+import 'package:test_potensial/features/auth/presentation/login_screen.dart';
 //import 'package:test_potensial/core/utils/log.dart';
 import 'package:test_potensial/features/bottom_navigator/bottom_navigator_widget.dart';
+import 'package:test_potensial/features/onboarding/presentation/onboarding_screen.dart';
 
 import 'core/theme/app_theme.dart';
 
@@ -18,24 +18,20 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightMode,
-      home: BlocListener<UserCubit, UserState>(
+      home: BlocConsumer<UserCubit, UserState>(
         listener: (context, state) {
-          Log.loggerInformation('State is $state');
-          if (!getFirstInstall) {
-            Navigator.pushReplacement(context, Routes.onboarding());
-          } else if (state is UserError || state is UserLoggeoOut) {
-            Navigator.pushReplacement(context, Routes.login());
+          if (state is UserError || state is UserLoggeoOut) Navigator.pushReplacement(context, Routes.login());
+        },
+        builder: (context, state) {
+          if (getFirstInstall == true) {
+            if (state is UserLoggedIn)
+              return BottomNavigatorWidget();
+            else
+              return const LoginScreen();
+          } else {
+            return const OnBoardingScreen();
           }
         },
-        child: BlocBuilder<UserCubit, UserState>(
-          builder: (context, state) {
-            if (getFirstInstall && state is UserLoggedIn) {
-              return BottomNavigatorWidget();
-            } else {
-              return const Scaffold(body: Loading());
-            }
-          },
-        ),
       ),
     );
   }

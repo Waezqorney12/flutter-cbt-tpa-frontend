@@ -1,5 +1,4 @@
 import 'package:test_potensial/core/entities/user_entities.dart';
-import 'package:test_potensial/core/model/user_model.dart';
 import 'package:test_potensial/core/utils/function_helper_utils.dart';
 
 import 'package:test_potensial/core/utils/typedef_utils.dart';
