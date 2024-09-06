@@ -23,11 +23,9 @@ class LoginRemoteDatasourceImpl implements LoginRemoteDataSource {
         '/api/login',
         data: UserModel(name: '', email: email, password: password, phone: '', roles: '').toJson(),
       );
-      //Log.loggerInformation("LoginRemoteDatasourceImpl: ${request.data['access_token']}");
       _sharedPreferences.saveAccessToken(request.data['access_token']);
-      //Log.loggerInformation("RegisterRemoteDatasourceImpl: ${await _sharedPreferences.getAccessToken()}");
+
       if (await _sharedPreferences.getAccessToken() != null) {
-        Log.loggerInformation("RegisterRemoteDatasourceImpl: ${await _sharedPreferences.getAccessToken()}");
         _sharedPreferences.saveRefreshToken(await _sharedPreferences.getAccessToken() ?? '');
       }
       return UserModel.fromJson(request.data['message']);

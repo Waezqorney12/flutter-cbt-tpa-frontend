@@ -2,17 +2,15 @@ import 'package:equatable/equatable.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:test_potensial/core/message/failure_message.dart';
 import 'package:test_potensial/core/usecases/usecase_interface.dart';
-import 'package:test_potensial/core/entities/user_entities.dart';
 import 'package:test_potensial/features/auth/domain/repository/register_repository.dart';
 
-class UserRegisterUseCase implements UseCase<UserEntities, UserRegisterParams> {
+class UserRegisterUseCase implements UseCase<String, UserRegisterParams> {
   final RegisterRepository repository;
 
   const UserRegisterUseCase(this.repository);
 
   @override
-  Future<Either<FailureMessage, UserEntities>> call(UserRegisterParams params) async =>
-      await repository.registerWithEmailPassword(
+  Future<Either<FailureMessage, String>> call(UserRegisterParams params) async => await repository.registerWithEmailPassword(
         email: params.email,
         password: params.password,
         name: params.name,

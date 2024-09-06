@@ -20,8 +20,10 @@ class UserCubit extends Cubit<UserState> {
   }
 
   void _startListeningToUserUpdates() {
+    emit(UserLoading());
     _userSubscription?.cancel();
     _userSubscription = _tokenLocalDatasource.getUser().listen((user) {
+      Log.loggerFatal('UserCubit Start Listening To User : $user');
       if (user.email?.isEmpty ?? false) {
         emit(const UserLoggeoOut(isLoggeoOut: true));
       } else {
@@ -30,6 +32,7 @@ class UserCubit extends Cubit<UserState> {
     }, onError: (e) {
       emit(UserError(e.toString()));
     });
+    Log.loggerTrace('UserCubit Start Listening To User Updates:$_userSubscription');
   }
 
   @override
@@ -42,7 +45,7 @@ class UserCubit extends Cubit<UserState> {
     try {
       emit(UserLoading());
       final user = await _tokenLocalDatasource.removeToken();
-      Log.loggerTrace('UserCubit: $user');
+      Log.loggerTrace('UserCubit Remove Token: $user');
       emit(UserLoggeoOut(isLoggeoOut: user));
     } catch (e) {
       emit(UserError(e.toString()));

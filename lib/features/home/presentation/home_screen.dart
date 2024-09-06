@@ -9,6 +9,7 @@ import 'package:test_potensial/core/shared/text_style/text_app_style.dart';
 import 'package:test_potensial/core/shared/widget/loading_widget.dart';
 import 'package:test_potensial/core/theme/app_palette.dart';
 import 'package:flutter_initicon/flutter_initicon.dart';
+import 'package:test_potensial/core/utils/log.dart';
 //import 'package:test_potensial/core/utils/log.dart';
 import 'package:test_potensial/core/utils/show_snackbar_utils.dart';
 import 'package:test_potensial/features/home/controller/home_controller.dart';
@@ -27,7 +28,7 @@ class HomeScreen extends StatelessWidget {
             listener: (context, state) {
               if (state is UserError) {
                 showSnackBar(context, state.message);
-                Navigator.pushReplacement(context, Routes.login());
+                Navigator.pushAndRemoveUntil(context, Routes.login(), (route) => false);
               }
             },
             builder: (context, state) {

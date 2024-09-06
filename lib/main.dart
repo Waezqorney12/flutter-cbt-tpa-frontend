@@ -15,32 +15,26 @@ import 'package:test_potensial/init_dependencies.dart';
 import 'package:test_potensial/my_app.dart';
 
 Future<void> main() async {
-  try {
-    // Used for loading .env file from root project, so it's more safe to store sensitive data
-    await dotenv.load(fileName: '.env');
-    await initDependencies();
+  await dotenv.load(fileName: '.env');
+  await initDependencies();
 
-    // Used for checking if the app is first install or not
-    final onBoardingRepository = getIt<OnboardingRepository>();
-    bool getFirstInstall = await onBoardingRepository.getOnboarding();
-    Log.loggerDebug('First Install: $getFirstInstall');
+  // Used for checking if the app is first install or not
+  final onBoardingRepository = getIt<OnboardingRepository>();
+  bool getFirstInstall = await onBoardingRepository.getOnboarding();
 
-    // Run the app
-    initializeDateFormatting().then((_) => runApp(
-          MultiBlocProvider(
-            providers: [
-              BlocProvider(create: (context) => getIt<UserCubit>()),
-              BlocProvider(create: (context) => getIt<AuthBloc>()),
-              BlocProvider(create: (context) => getIt<MateriBloc>()),
-              BlocProvider(create: (context) => getIt<QuizDetailBloc>()),
-              BlocProvider(create: (context) => getIt<QuizNilaiBloc>()),
-              BlocProvider(create: (context) => getIt<HistoryNilaiCubit>()),
-              BlocProvider(create: (context) => getIt<ProfileDetailCubit>()),
-            ],
-            child: MyApp(getFirstInstall: getFirstInstall),
-          ),
-        ));
-  } catch (e) {
-    Log.loggerFatal(e);
-  }
+  // Run the app
+  initializeDateFormatting().then((_) => runApp(
+        MultiBlocProvider(
+          providers: [
+            BlocProvider(create: (context) => getIt<UserCubit>()),
+            BlocProvider(create: (context) => getIt<AuthBloc>()),
+            BlocProvider(create: (context) => getIt<MateriBloc>()),
+            BlocProvider(create: (context) => getIt<QuizDetailBloc>()),
+            BlocProvider(create: (context) => getIt<QuizNilaiBloc>()),
+            BlocProvider(create: (context) => getIt<HistoryNilaiCubit>()),
+            BlocProvider(create: (context) => getIt<ProfileDetailCubit>()),
+          ],
+          child: MyApp(getFirstInstall: getFirstInstall),
+        ),
+      ));
 }

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dio/dio.dart';
 import 'package:test_potensial/core/entities/user_entities.dart';
 import 'package:test_potensial/core/infrastructure/network/dio_client.dart';
@@ -14,17 +16,22 @@ abstract interface class TokenLocalDatasource {
   Stream<UserEntities> getUser();
   Future<bool> removeToken();
   Future<void> saveAccessToken(String token);
+  void _startUserPolling();
+  void _fetchUserData();
 }
 
 class TokenLocalDatasourceImpl implements TokenLocalDatasource {
   final DioClient _client;
   final SharedPreferencesInterface _sharedPreferences;
   final SharedPreferencesSecureInterface _secureStorage;
-  const TokenLocalDatasourceImpl(
+  final _streamController = StreamController<UserEntities>();
+  TokenLocalDatasourceImpl(
     this._client,
     this._sharedPreferences,
     this._secureStorage,
-  );
+  ) {
+    _startUserPolling();
+  }
 
   @override
   Future<bool> saveRefreshToken(String token) async => await _sharedPreferences.addString('refresh_token', token);
@@ -33,23 +40,17 @@ class TokenLocalDatasourceImpl implements TokenLocalDatasource {
   Future<String?> getToken() async => _sharedPreferences.readString('refresh_token');
 
   @override
-  Stream<UserEntities> getUser() async* {
-    try {
-      final token = await _sharedPreferences.readString('refresh_token');
-      if (token == null) throw const ServerException(message: 'Token is null');
-      final response = await _client.get(
-        '/api/user',
-        options: Options(
-          headers: {'Authorization': 'Bearer $token'},
-        ),
-      );
-      // Assuming you have a way to convert the response to a UserEntities
-      final user = UserModel.fromJson(response.data);
-      yield user;
-      await Future.delayed(const Duration(minutes: 1)); // wait for 1 minute before the next request
-    } catch (e) {
-      // Handle or rethrow the error
-    }
+  Stream<UserEntities> getUser() => _streamController.stream;
+
+  @override
+  void _startUserPolling() {
+    _fetchUserData();
+    Timer.periodic(
+      const Duration(minutes: 1),
+      (timer) async {
+        _fetchUserData();
+      },
+    );
   }
 
   @override
@@ -62,4 +63,34 @@ class TokenLocalDatasourceImpl implements TokenLocalDatasource {
 
   @override
   Future<String?> getAccessToken() async => _secureStorage.get('access_token');
+
+  @override
+  void _fetchUserData() async {
+    try {
+      final token = await _sharedPreferences.readString('refresh_token');
+      if (token == null) throw const ServerException(message: 'Token is null');
+      final response = await _client.get(
+        '/api/user',
+        options: Options(
+          headers: {'Authorization': 'Bearer $token'},
+          validateStatus: (status) {
+            switch (status) {
+              case 401:
+                throw const ServerException(message: 'Unauthorized');
+              case 403:
+                throw const ServerException(message: 'Forbidden');
+              case 429:
+                throw const ServerException(message: 'Too Many Requests');
+              default:
+            }
+            return status! < 500;
+          },
+        ),
+      );
+      final user = UserModel.fromJson(response.data);
+      _streamController.add(user);
+    } catch (e) {
+      _streamController.addError(e);
+    }
+  }
 }

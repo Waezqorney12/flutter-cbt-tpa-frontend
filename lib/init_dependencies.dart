@@ -122,7 +122,7 @@ void _initFeature() {
     ..registerFactory<RegisterRemoteDataSource>(
       () => RegisterRemoteDatasourceImpl(
         getIt<DioClient>(),
-        getIt<TokenLocalDatasource>(),
+        //getIt<TokenLocalDatasource>(),
       ),
     )
 

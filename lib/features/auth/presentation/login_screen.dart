@@ -35,7 +35,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
     Future.microtask(() async {
       final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-      Log.loggerWarning(sharedPreferences.getString('refresh_token'));
       if (sharedPreferences.getBool('isOnBoarding') ?? false) {
         _controller.isSwitch = await _controller.checkBiometric();
         setState(() {});
@@ -59,11 +58,13 @@ class _LoginScreenState extends State<LoginScreen> {
       body: SafeArea(
         child: BlocListener<UserCubit, UserState>(
           listener: (context, state) {
-            if (state is UserLoggedIn) Navigator.pushReplacement(context, Routes.nav());
+            Log.loggerInformation(state);
+            if (state is UserLoggedIn) Navigator.pushAndRemoveUntil(context, Routes.nav(), (route) => false);
           },
           child: BlocConsumer<AuthBloc, AuthState>(
             listener: (context, state) {
-              if (state is AuthSuccess) context.read<UserCubit>().stream;
+              Log.loggerWarning(state);
+              if (state is AuthLogin) Navigator.pushAndRemoveUntil(context, Routes.nav(), (route) => false);
               if (state is AuthError) showSnackBar(context, state.message);
             },
             builder: (context, state) {
