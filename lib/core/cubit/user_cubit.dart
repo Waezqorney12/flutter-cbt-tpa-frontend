@@ -16,14 +16,14 @@ class UserCubit extends Cubit<UserState> {
   UserCubit(TokenLocalDatasource tokenLocalDatasource)
       : _tokenLocalDatasource = tokenLocalDatasource,
         super(UserInitial()) {
-    _startListeningToUserUpdates();
+    startListeningToUserUpdates();
   }
 
-  void _startListeningToUserUpdates() {
+  void startListeningToUserUpdates() {
     emit(UserLoading());
     _userSubscription?.cancel();
     _userSubscription = _tokenLocalDatasource.getUser().listen((user) {
-      Log.loggerFatal('UserCubit Start Listening To User : $user');
+      Log.loggerFatal('UserCubit Start Listening To User : ${user.name}');
       if (user.email?.isEmpty ?? false) {
         emit(const UserLoggeoOut(isLoggeoOut: true));
       } else {

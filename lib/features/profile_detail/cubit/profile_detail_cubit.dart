@@ -25,7 +25,9 @@ class ProfileDetailCubit extends Cubit<ProfileDetailState> {
     ));
     resp.fold(
       (l) => emit(ProfileDetailFailed(l.message)),
-      (r) => emit(ProfileDetailSuccess(r)),
+      (r) {
+        emit(ProfileDetailSuccess(r));
+      },
     );
   }
 }

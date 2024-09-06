@@ -32,6 +32,7 @@ class HomeScreen extends StatelessWidget {
               }
             },
             builder: (context, state) {
+              Log.loggerInformation("HomeScreen: $state");
               return switch (state) {
                 UserLoading() => const Loading(),
                 UserLoggedIn() => Column(

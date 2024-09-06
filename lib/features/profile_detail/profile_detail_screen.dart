@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_initicon/flutter_initicon.dart';
+import 'package:test_potensial/core/cubit/user_cubit.dart';
 import 'package:test_potensial/core/entities/user_entities.dart';
 import 'package:test_potensial/core/shared/text_style/text_app_style.dart';
 import 'package:test_potensial/core/shared/widget/form_widget.dart';
@@ -100,6 +101,9 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
                       name: _controller.nameController.text,
                       phone: _controller.phoneController.text,
                     );
+
+                context.read<UserCubit>().startListeningToUserUpdates();
+                Navigator.pop(context, widget.user);
               },
               child: Text(
                 'Update Profile',

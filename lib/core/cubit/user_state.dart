@@ -15,15 +15,24 @@ final class UserLoggedIn extends UserState {
   final UserEntities user;
 
   const UserLoggedIn(this.user);
+
+  @override
+  List<Object> get props => [user];
 }
 
 final class UserLoggeoOut extends UserState {
   final bool isLoggeoOut;
   const UserLoggeoOut({this.isLoggeoOut = false});
+
+  @override
+  List<Object> get props => [isLoggeoOut];
 }
 
 final class UserError extends UserState {
   final String message;
 
   const UserError(this.message);
+
+  @override
+  List<Object> get props => [message];
 }

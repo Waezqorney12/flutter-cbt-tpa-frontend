@@ -1,15 +1,21 @@
-class UserEntities {
-  String? name;
-  String? email;
-  String? password;
-  String? phone;
-  String? roles;
+import 'package:equatable/equatable.dart';
 
-  UserEntities({
+class UserEntities extends Equatable {
+  final String? name;
+  final String? email;
+  final String? password;
+  final String? phone;
+  final String? roles;
+
+  const UserEntities({
     this.name,
     this.email,
     this.password,
     this.phone,
     this.roles,
   });
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [name, email, password, phone, roles];
 }

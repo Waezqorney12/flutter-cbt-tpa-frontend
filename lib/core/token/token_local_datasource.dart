@@ -5,6 +5,7 @@ import 'package:test_potensial/core/entities/user_entities.dart';
 import 'package:test_potensial/core/infrastructure/network/dio_client.dart';
 import 'package:test_potensial/core/token/flutter_secure_store.dart';
 import 'package:test_potensial/core/token/shared_preferences.dart';
+import 'package:test_potensial/core/utils/log.dart';
 
 import '../message/server_exception.dart';
 import '../model/user_model.dart';
@@ -16,15 +17,18 @@ abstract interface class TokenLocalDatasource {
   Stream<UserEntities> getUser();
   Future<bool> removeToken();
   Future<void> saveAccessToken(String token);
-  void _startUserPolling();
-  void _fetchUserData();
+  Future _startUserPolling();
+  Future _fetchUserData();
+
+  void updateUserData(UserModel user);
 }
 
 class TokenLocalDatasourceImpl implements TokenLocalDatasource {
   final DioClient _client;
   final SharedPreferencesInterface _sharedPreferences;
   final SharedPreferencesSecureInterface _secureStorage;
-  final _streamController = StreamController<UserEntities>();
+  final StreamController<UserModel> _streamController = StreamController<UserModel>.broadcast();
+
   TokenLocalDatasourceImpl(
     this._client,
     this._sharedPreferences,
@@ -43,12 +47,12 @@ class TokenLocalDatasourceImpl implements TokenLocalDatasource {
   Stream<UserEntities> getUser() => _streamController.stream;
 
   @override
-  void _startUserPolling() {
-    _fetchUserData();
+  Future _startUserPolling() async {
+    await _fetchUserData();
     Timer.periodic(
-      const Duration(minutes: 1),
+      const Duration(seconds: 15),
       (timer) async {
-        _fetchUserData();
+        await _fetchUserData();
       },
     );
   }
@@ -65,7 +69,7 @@ class TokenLocalDatasourceImpl implements TokenLocalDatasource {
   Future<String?> getAccessToken() async => _secureStorage.get('access_token');
 
   @override
-  void _fetchUserData() async {
+  Future _fetchUserData() async {
     try {
       final token = await _sharedPreferences.readString('refresh_token');
       if (token == null) throw const ServerException(message: 'Token is null');
@@ -88,9 +92,13 @@ class TokenLocalDatasourceImpl implements TokenLocalDatasource {
         ),
       );
       final user = UserModel.fromJson(response.data);
+      Log.loggerWarning('TokenLocalDatasourceImpl Fetch User Data: ${user.toJson()}');
       _streamController.add(user);
     } catch (e) {
       _streamController.addError(e);
     }
   }
+
+  @override
+  void updateUserData(UserModel user) => _streamController.add(user);
 }

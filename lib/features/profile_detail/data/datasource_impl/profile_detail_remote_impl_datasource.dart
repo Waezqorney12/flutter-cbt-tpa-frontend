@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dio/dio.dart';
 import 'package:test_potensial/core/infrastructure/network/dio_client.dart';
 import 'package:test_potensial/core/message/server_exception.dart';
@@ -37,7 +39,10 @@ class ProfileDetailRemoteImplDatasource implements ProfileDetailDatasource {
         ),
       );
       Log.loggerInformation('Change Profile: ${request.data}');
-      return UserModel.fromJson(request.data['data']);
+
+      final UserModel updateUser = UserModel.fromJson(request.data['data']);
+      _tokenLocalDatasource.updateUserData(updateUser);
+      return updateUser;
     } catch (e) {
       throw ServerException(message: 'Server Error: $e');
     }
