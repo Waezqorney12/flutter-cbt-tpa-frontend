@@ -35,12 +35,14 @@ class TokenLocalDatasourceImpl implements TokenLocalDatasource {
   final SharedPreferencesInterface _sharedPreferences;
   final SharedPreferencesSecureInterface _secureStorage;
   final StreamController<UserModel> _streamController = StreamController<UserModel>.broadcast();
+  Timer? _userPollingTimer;
 
   TokenLocalDatasourceImpl(
     this._client,
     this._sharedPreferences,
     this._secureStorage,
   ) {
+    _startUserPolling();
     isLoggedIn.addListener(() {
       if (isLoggedIn.value == true) {
         _isTokenAvailable();
@@ -61,7 +63,7 @@ class TokenLocalDatasourceImpl implements TokenLocalDatasource {
   Future _startUserPolling() async {
     Log.loggerDebug("This is _startUserPolling");
     await _fetchUserData();
-    Timer.periodic(
+    _userPollingTimer = Timer.periodic(
       const Duration(seconds: 15),
       (timer) async {
         Log.loggerWarning('Duluan Timer');
@@ -126,5 +128,6 @@ class TokenLocalDatasourceImpl implements TokenLocalDatasource {
     final isToken = await isTokenAvailable();
     Log.loggerInformation('This is _isTokenAvailable: $isToken');
     if (isToken) _startUserPolling();
+    else _userPollingTimer?.cancel();
   }
 }
