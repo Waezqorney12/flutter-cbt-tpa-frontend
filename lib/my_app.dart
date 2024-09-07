@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
           return true;
         },
         builder: (context, state) {
-          Log.loggerWarning('causing rebuild here: $state');
+          Log.loggerInformation("MyApp: $state");
           if (getFirstInstall == true) {
             switch (state) {
               case UserLoading():

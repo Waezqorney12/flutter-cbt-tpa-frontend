@@ -28,7 +28,9 @@ class LoginRemoteDatasourceImpl implements LoginRemoteDataSource {
       if (await _sharedPreferences.getAccessToken() != null) {
         _sharedPreferences.saveRefreshToken(await _sharedPreferences.getAccessToken() ?? '');
       }
-      return UserModel.fromJson(request.data['message']);
+      final user = UserModel.fromJson(request.data['message']);
+      _sharedPreferences.updateUserData(user);
+      return user;
     } on ServerException catch (e) {
       Log.loggerError("Error: ${e.message}");
       throw ServerException(message: "Server Error:${e.message}");
@@ -37,7 +39,6 @@ class LoginRemoteDatasourceImpl implements LoginRemoteDataSource {
 
   @override
   Future<void> loginWithGoogle() {
-    // TODO: implement loginWithGoogle
     throw UnimplementedError();
   }
 }

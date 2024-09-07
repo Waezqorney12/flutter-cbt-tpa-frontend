@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:test_potensial/core/cubit/user_cubit.dart';
-import 'package:test_potensial/core/utils/log.dart';
 import 'package:test_potensial/features/auth/bloc/auth_bloc.dart';
 import 'package:test_potensial/features/history_nilai/presentation/cubit/history_nilai_cubit.dart';
 import 'package:test_potensial/features/materi/presentation/bloc/materi_bloc.dart';

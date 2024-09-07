@@ -1,6 +1,9 @@
+// ignore_for_file: unused_element
+
 import 'dart:async';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:test_potensial/core/entities/user_entities.dart';
 import 'package:test_potensial/core/infrastructure/network/dio_client.dart';
 import 'package:test_potensial/core/token/flutter_secure_store.dart';
@@ -10,6 +13,8 @@ import 'package:test_potensial/core/utils/log.dart';
 import '../message/server_exception.dart';
 import '../model/user_model.dart';
 
+ValueNotifier<bool> isLoggedIn = ValueNotifier<bool>(false);
+
 abstract interface class TokenLocalDatasource {
   Future<bool> saveRefreshToken(String token);
   Future<String?> getToken();
@@ -17,10 +22,12 @@ abstract interface class TokenLocalDatasource {
   Stream<UserEntities> getUser();
   Future<bool> removeToken();
   Future<void> saveAccessToken(String token);
+  Future<bool> isTokenAvailable();
   Future _startUserPolling();
   Future _fetchUserData();
 
   void updateUserData(UserModel user);
+  void _isTokenAvailable();
 }
 
 class TokenLocalDatasourceImpl implements TokenLocalDatasource {
@@ -34,7 +41,11 @@ class TokenLocalDatasourceImpl implements TokenLocalDatasource {
     this._sharedPreferences,
     this._secureStorage,
   ) {
-    _startUserPolling();
+    isLoggedIn.addListener(() {
+      if (isLoggedIn.value == true) {
+        _isTokenAvailable();
+      }
+    });
   }
 
   @override
@@ -48,10 +59,12 @@ class TokenLocalDatasourceImpl implements TokenLocalDatasource {
 
   @override
   Future _startUserPolling() async {
+    Log.loggerDebug("This is _startUserPolling");
     await _fetchUserData();
     Timer.periodic(
       const Duration(seconds: 15),
       (timer) async {
+        Log.loggerWarning('Duluan Timer');
         await _fetchUserData();
       },
     );
@@ -73,6 +86,7 @@ class TokenLocalDatasourceImpl implements TokenLocalDatasource {
     try {
       final token = await _sharedPreferences.readString('refresh_token');
       if (token == null) throw const ServerException(message: 'Token is null');
+
       final response = await _client.get(
         '/api/user',
         options: Options(
@@ -92,7 +106,6 @@ class TokenLocalDatasourceImpl implements TokenLocalDatasource {
         ),
       );
       final user = UserModel.fromJson(response.data);
-      Log.loggerWarning('TokenLocalDatasourceImpl Fetch User Data: ${user.toJson()}');
       _streamController.add(user);
     } catch (e) {
       _streamController.addError(e);
@@ -101,4 +114,17 @@ class TokenLocalDatasourceImpl implements TokenLocalDatasource {
 
   @override
   void updateUserData(UserModel user) => _streamController.add(user);
+
+  @override
+  Future<bool> isTokenAvailable() async {
+    final token = await _sharedPreferences.readString('refresh_token');
+    return token != null;
+  }
+
+  @override
+  void _isTokenAvailable() async {
+    final isToken = await isTokenAvailable();
+    Log.loggerInformation('This is _isTokenAvailable: $isToken');
+    if (isToken) _startUserPolling();
+  }
 }

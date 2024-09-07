@@ -4,6 +4,7 @@ import 'package:test_potensial/features/auth/domain/usecases/user_login_usecases
 import 'package:test_potensial/features/auth/domain/usecases/user_register_usecases.dart';
 
 import '../../../core/entities/user_entities.dart';
+import '../../../core/token/token_local_datasource.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
@@ -36,7 +37,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         );
         response.fold(
           (l) => emit(AuthError(l.message)),
-          (r) => emit(AuthLogin(r)),
+          (r) {
+            isLoggedIn.value = true;
+            emit(AuthLogin(r));
+          },
         );
       },
     );

@@ -1,7 +1,7 @@
 import 'package:test_potensial/core/entities/user_entities.dart';
 
 class UserModel extends UserEntities {
-  UserModel({
+  const UserModel({
     super.name,
     super.email,
     super.password,

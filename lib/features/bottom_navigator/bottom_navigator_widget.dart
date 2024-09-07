@@ -15,6 +15,7 @@ class BottomNavigatorWidget extends StatelessWidget {
 
   ValueNotifier<int> currentIndex = ValueNotifier<int>(0);
   ValueNotifier<bool> isFirstValue = ValueNotifier<bool>(true);
+  
 
   @override
   Widget build(BuildContext context) {
