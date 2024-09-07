@@ -16,10 +16,10 @@ class UserCubit extends Cubit<UserState> {
   UserCubit(TokenLocalDatasource tokenLocalDatasource)
       : _tokenLocalDatasource = tokenLocalDatasource,
         super(UserInitial()) {
-    startListeningToUserUpdates();
+    _startListeningToUserUpdates();
   }
 
-  void startListeningToUserUpdates() {
+  void _startListeningToUserUpdates() {
     emit(UserLoading());
     _userSubscription?.cancel();
     _userSubscription = _tokenLocalDatasource.getUser().listen((user) {

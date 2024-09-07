@@ -101,8 +101,6 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
                       name: _controller.nameController.text,
                       phone: _controller.phoneController.text,
                     );
-
-                context.read<UserCubit>().startListeningToUserUpdates();
                 Navigator.pop(context, widget.user);
               },
               child: Text(
