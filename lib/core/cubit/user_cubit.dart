@@ -51,6 +51,8 @@ class UserCubit extends Cubit<UserState> {
     try {
       emit(UserLoading());
       final user = await _tokenLocalDatasource.removeToken();
+      //Log.loggerTrace('UserCubit Remove Token: $user');
+      isLoggedIn.value = false;
       emit(UserLoggeoOut(isLoggeoOut: user));
     } catch (e) {
       emit(UserError(e.toString()));
