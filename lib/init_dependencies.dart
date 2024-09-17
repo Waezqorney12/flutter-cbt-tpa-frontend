@@ -108,7 +108,7 @@ void _initFeature() {
     )
     ..registerFactory<TokenLocalDatasource>(
       () => TokenLocalDatasourceImpl(
-        getIt<DioClient>(),
+        //getIt<DioClient>(),
         getIt<SharedPreferencesInterface>(),
         getIt<SharedPreferencesSecureInterface>(),
       ),

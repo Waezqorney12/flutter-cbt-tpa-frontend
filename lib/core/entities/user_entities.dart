@@ -16,6 +16,6 @@ class UserEntities extends Equatable {
   });
 
   @override
-  // TODO: implement props
+  // TODO: implement props7u8ip7p
   List<Object?> get props => [name, email, password, phone, roles];
 }

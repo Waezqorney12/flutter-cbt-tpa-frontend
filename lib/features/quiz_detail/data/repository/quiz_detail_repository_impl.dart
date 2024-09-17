@@ -36,4 +36,5 @@ class QuizDetailRepositoryImpl implements QuizDetailRepository {
       return left(FailureMessage("Failure error in repository: $e"));
     }
   }
+  
 }

@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_potensial/core/cubit/user_cubit.dart';
 import 'package:test_potensial/core/routes/routes_pages.dart';
 import 'package:test_potensial/core/shared/widget/loading_widget.dart';
-import 'package:test_potensial/core/utils/log.dart';
 import 'package:test_potensial/features/auth/presentation/login_screen.dart';
 //import 'package:test_potensial/core/utils/log.dart';
 import 'package:test_potensial/features/bottom_navigator/bottom_navigator_widget.dart';
@@ -31,7 +30,6 @@ class MyApp extends StatelessWidget {
           return true;
         },
         builder: (context, state) {
-          Log.loggerInformation("MyApp: $state");
           if (getFirstInstall == true) {
             switch (state) {
               case UserLoading():

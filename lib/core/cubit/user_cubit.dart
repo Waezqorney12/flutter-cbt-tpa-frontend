@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:test_potensial/core/token/token_local_datasource.dart';
+import 'package:test_potensial/core/utils/log.dart';
 
 import '../entities/user_entities.dart';
 
@@ -23,15 +24,18 @@ class UserCubit extends Cubit<UserState> {
     _userSubscription?.cancel();
     _userSubscription = _tokenLocalDatasource.getUser().listen(
       (user) {
-        //Log.loggerFatal('UserCubit Start Listening To User : ${user.name}');
         if (user.email?.isEmpty ?? false) {
+          Log.loggerInformation('User Logged Out');
           emit(const UserLoggeoOut(isLoggeoOut: true));
         } else {
+          Log.loggerInformation('User Logged In: $user');
           emit(UserLoggedIn(user));
         }
+        Log.loggerInformation('User: $user');
       },
       onError: (e) {
         emit(UserError(e.toString()));
+        Log.loggerFatal('Error receiving user updates: $e');
       },
     );
   }
@@ -39,6 +43,7 @@ class UserCubit extends Cubit<UserState> {
   @override
   Future<void> close() {
     _userSubscription?.cancel();
+    _tokenLocalDatasource.disposeWebSocket();
     return super.close();
   }
 
@@ -46,7 +51,6 @@ class UserCubit extends Cubit<UserState> {
     try {
       emit(UserLoading());
       final user = await _tokenLocalDatasource.removeToken();
-      //Log.loggerTrace('UserCubit Remove Token: $user');
       emit(UserLoggeoOut(isLoggeoOut: user));
     } catch (e) {
       emit(UserError(e.toString()));
