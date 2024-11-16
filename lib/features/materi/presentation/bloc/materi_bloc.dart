@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:test_potensial/core/usecases/usescase_no_params.dart';
@@ -30,13 +32,13 @@ class MateriBloc extends Bloc<MateriEvent, MateriState> {
 
     on<UpdateMateriEvent>(
       (event, emit) async {
-        final response = await _updateMateri.call(event.id);
+        final response = await _updateMateri.call(UpdateParams(
+          id: event.id,
+          status: event.status,
+        ));
         response.fold(
           (failure) => emit(MateriError(failure.message)),
-          (materi) {
-            emit(MateriSuccess(materi));
-            add(const GetAllMateriEvent());
-          },
+          (materi) => emit(MateriSuccess(materi)),
         );
       },
     );

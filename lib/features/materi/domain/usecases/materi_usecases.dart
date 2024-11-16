@@ -2,7 +2,6 @@ import 'package:fpdart/fpdart.dart';
 
 import '../../../../core/message/failure_message.dart';
 import '../../../../core/usecases/usecase_interface.dart';
-import '../../../../core/usecases/usescase_no_params.dart';
 import '../entities/materi_entities.dart';
 import '../repository/materi_repository.dart';
 
@@ -17,13 +16,19 @@ class GetMateriUseCase implements UseCase<List<MateriEntities>, String?> {
   }
 }
 
-class UpdateMateriUseCase implements UseCase<String, int> {
+class UpdateMateriUseCase implements UseCase<String, UpdateParams> {
   final MateriRepository repository;
 
   UpdateMateriUseCase(this.repository);
 
   @override
-  Future<Either<FailureMessage, String>> call(int id) async {
-    return await repository.updateMateri(id);
+  Future<Either<FailureMessage, String>> call(UpdateParams params) async {
+    return await repository.updateMateri(params.id, params.status);
   }
+}
+class UpdateParams{
+  final int id;
+  final int status;
+
+  UpdateParams({required this.id, required this.status});
 }

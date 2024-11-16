@@ -12,9 +12,9 @@ class MateriRepositoryImpl implements MateriRepository {
       helperCall<List<MateriEntities>>(apiCall: () => _remoteDataSource.getMateri(kategori: kategori));
 
   @override
-  FutureEither<String> updateMateri(int id) {
+  FutureEither<String> updateMateri(int id, int status) {
     return helperCall<String>(
-      apiCall: () => _remoteDataSource.updateMateri(id),
+      apiCall: () => _remoteDataSource.updateMateri(id, status),
     );
   }
 }

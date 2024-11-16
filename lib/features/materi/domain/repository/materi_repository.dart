@@ -4,5 +4,5 @@ import '../entities/materi_entities.dart';
 
 abstract interface class MateriRepository {
   FutureEither<List<MateriEntities>> getMateri({String? kategori});
-  FutureEither<String> updateMateri(int id);
+  FutureEither<String> updateMateri(int id, int status);
 }

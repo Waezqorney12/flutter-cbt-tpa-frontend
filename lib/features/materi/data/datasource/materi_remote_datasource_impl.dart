@@ -31,14 +31,16 @@ class MateriRemoteDatasourceImpl implements MateriRemoteDataSource {
   @override
   Future<String> updateMateri(
     int id,
+    int status,
   ) async {
     try {
       final token = await _tokenLocalDatasource.getToken();
-      Log.loggerDebug('Token: $token');
-      Log.loggerDebug('Data: ${MateriModel(id: id, status: 100).toJson()}');
       final response = await _dioClient.put(
-        '/api/update-value',
-        data: MateriModel(id: id, status: 100).toJson(),
+        '/api/update-status',
+        data: {
+          'materi_id': id,
+          'status': status,
+        },
         options: Options(
           headers: {'Authorization': 'Bearer $token'},
           validateStatus: (status) {

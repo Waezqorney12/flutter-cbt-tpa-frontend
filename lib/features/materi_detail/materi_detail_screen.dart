@@ -68,7 +68,11 @@ class _MateriDetailScreenState extends State<MateriDetailScreen> {
         ),
         body: BlocListener<MateriBloc, MateriState>(
           listener: (context, state) {
-            if (state is MateriSuccess) Navigator.pop(context, widget._materi);
+            if (state is MateriSuccess) {
+              context.read<MateriBloc>().add(const GetAllMateriEvent());
+              Navigator.pop(context, widget._materi);
+            }
+            if (state is MateriError) context.read<MateriBloc>().add(const GetAllMateriEvent());
           },
           child: SingleChildScrollView(
             scrollDirection: Axis.vertical,
@@ -146,6 +150,7 @@ class _MateriDetailScreenState extends State<MateriDetailScreen> {
                   context.read<MateriBloc>().add(
                         UpdateMateriEvent(
                           id: widget._materi.id ?? 0,
+                          status: 100,
                         ),
                       );
                 }

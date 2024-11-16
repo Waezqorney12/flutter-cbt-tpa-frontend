@@ -17,7 +17,11 @@ final class GetAllMateriEvent extends MateriEvent {
 
 final class UpdateMateriEvent extends MateriEvent {
   final int id;
-  const UpdateMateriEvent({required this.id});
+  final int status;
+  const UpdateMateriEvent({
+    required this.id,
+    required this.status,
+  });
 
   @override
   List<Object> get props => [id];
