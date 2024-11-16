@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:test_potensial/core/shared/widget/loading_widget.dart';
 import 'package:test_potensial/core/theme/app_palette.dart';
 import 'package:test_potensial/core/utils/extension_utils.dart';
 import 'package:test_potensial/core/utils/map_index_utils.dart';
 import 'package:test_potensial/core/utils/notification_dialog_utils.dart';
 import 'package:test_potensial/features/profile/Widget/box_shadow.dart';
-import 'package:test_potensial/features/quiz/quiz_controller.dart';
+import 'package:test_potensial/features/quiz/cubit/quiz_thumbnail_cubit.dart';
 import 'package:test_potensial/features/quiz_detail/bloc/quiz_detail_bloc.dart';
 
 import '../../core/routes/routes_pages.dart';
@@ -78,132 +79,140 @@ class _QuizScreenState extends State<QuizScreen> {
                 ),
                 color: Colors.white,
               ),
-              child: BlocListener<QuizDetailBloc, QuizDetailState>(
-                listener: (context, state) {},
-                child: Column(children: [
-                  Padding(
-                    padding: const EdgeInsets.all(20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Kategori TPA',
-                          style: TextAppStyle.poppinsSemiBold.copyWith(fontSize: 20, color: AppPalette.quaternaryColor),
-                        ),
-                        IconButton(
-                          onPressed: () {
-                            showDialog(
-                              context: context,
-                              builder: (context) {
-                                return AlertDialog(
-                                  title: Text(
-                                    'Select Category',
-                                    style: TextAppStyle.poppinsMedium.copyWith(fontSize: 16),
-                                  ),
-                                  actions: _categories.mapIndexed<Widget, String>(
-                                    funct: (index, value) {
-                                      return RadioListTile(
-                                        groupValue: _selectedCategory,
-                                        value: value,
-                                        title: Text(value),
-                                        onChanged: (value) {
-                                          setState(() => _selectedCategory = value ?? '');
-                                          //QuizController.data.where((element) => element.jenis == _selectedCategory).toList();
-                                          Navigator.pop(context);
-                                        },
-                                      );
-                                    },
-                                  ).toList(),
-                                );
-                              },
-                            );
-                          },
-                          icon: const Icon(
-                            Icons.menu,
-                            color: AppPalette.quaternaryColor,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  ...QuizController.data.mapIndexed<Widget, QuizCategoryModel>(
-                    funct: (index, value) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 15),
-                        child: InkWell(
-                          onTap: () {
-                            notificationDialog(
-                              context: context,
-                              text:
-                                  'Jika sudah berada dalam tes maka tidak bisa keluar. Anda akan mengikut Tes ${value.title}\n Apakah anda yakin?',
-                              onTap: () {
-                                context.read<QuizDetailBloc>().add(GetQuizDetailEvent(value.title));
-                                Navigator.pop(context);
-                                Navigator.of(context).pushReplacement(Routes.detailQuiz(value.title));
-                              },
-                            );
-                          },
-                          child: Container(
-                            width: 344,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(12),
-                              boxShadow: [shadow()],
-                            ),
+              child: BlocBuilder<QuizThumbnailCubit, QuizThumbnailState>(
+                builder: (context, state) {
+                  if (state is QuizThumbnailInitial) context.read<QuizThumbnailCubit>().getQuizThumbnail();
+                  return switch (state) {
+                    QuizThumbnailLoading() => const Loading(),
+                    QuizThumbnailLoaded() => Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(20),
                             child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Container(
-                                    height: 160,
-                                    width: 145,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(12),
-                                      color: AppPalette.tertiaryColor,
-                                    ),
-                                    child: Image.asset('assets/quiz-items.png'),
-                                  ),
+                                Text(
+                                  'Kategori TPA',
+                                  style: TextAppStyle.poppinsSemiBold.copyWith(fontSize: 20, color: AppPalette.quaternaryColor),
                                 ),
-                                Expanded(
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        'Tes ${value.title}',
-                                        style: TextAppStyle.poppinsBold.copyWith(
-                                          fontSize: 15,
-                                          color: AppPalette.quaternaryColor,
-                                        ),
-                                      ),
-                                      Text(
-                                        value.jenis,
-                                        style: TextAppStyle.poppinsSemiBold.copyWith(
-                                          fontSize: 12,
-                                          color: AppPalette.quaternaryColor,
-                                        ),
-                                      ),
-                                      const SizedBox(height: 15),
-                                      // This text
-                                      Text(
-                                        textAlign: TextAlign.start,
-                                        value.content,
-                                        style: TextAppStyle.poppinsReguler.copyWith(
-                                          fontSize: 10,
-                                          color: AppPalette.quaternaryColor,
-                                        ),
-                                      ),
-                                    ],
+                                IconButton(
+                                  onPressed: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                          title: Text(
+                                            'Select Category',
+                                            style: TextAppStyle.poppinsMedium.copyWith(fontSize: 16),
+                                          ),
+                                          actions: _categories.mapIndexed<Widget, String>(
+                                            funct: (index, value) {
+                                              return RadioListTile(
+                                                groupValue: _selectedCategory,
+                                                value: value,
+                                                title: Text(value),
+                                                onChanged: (value) {
+                                                  setState(() => _selectedCategory = value ?? '');
+                                                  //QuizController.data.where((element) => element.jenis == _selectedCategory).toList();
+                                                  Navigator.pop(context);
+                                                },
+                                              );
+                                            },
+                                          ).toList(),
+                                        );
+                                      },
+                                    );
+                                  },
+                                  icon: const Icon(
+                                    Icons.menu,
+                                    color: AppPalette.quaternaryColor,
                                   ),
-                                ),
+                                )
                               ],
-                            ).paddingAll(10),
+                            ),
                           ),
-                        ),
-                      );
-                    },
-                  )
-                ]),
+                          ...state.quizThumbnail.map(
+                            (value) {
+                              return Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 15),
+                                child: InkWell(
+                                  onTap: () {
+                                    notificationDialog(
+                                      context: context,
+                                      text:
+                                          'Jika sudah berada dalam tes maka tidak bisa keluar. Anda akan mengikut Tes ${value.title}\n Apakah anda yakin?',
+                                      onTap: () {
+                                        context.read<QuizDetailBloc>().add(GetQuizDetailEvent(value.title));
+                                        Navigator.pop(context);
+                                        Navigator.of(context).pushReplacement(Routes.detailQuiz(value.title));
+                                      },
+                                    );
+                                  },
+                                  child: Container(
+                                    width: 344,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(12),
+                                      boxShadow: [shadow()],
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Container(
+                                            height: 160,
+                                            width: 145,
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(12),
+                                              color: AppPalette.tertiaryColor,
+                                            ),
+                                            child: Image.asset('assets/quiz-items.png'),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                'Tes ${value.title}',
+                                                style: TextAppStyle.poppinsBold.copyWith(
+                                                  fontSize: 15,
+                                                  color: AppPalette.quaternaryColor,
+                                                ),
+                                              ),
+                                              Text(
+                                                value.type,
+                                                style: TextAppStyle.poppinsSemiBold.copyWith(
+                                                  fontSize: 12,
+                                                  color: AppPalette.quaternaryColor,
+                                                ),
+                                              ),
+                                              const SizedBox(height: 15),
+                                              // This text
+                                              Text(
+                                                textAlign: TextAlign.start,
+                                                value.category,
+                                                style: TextAppStyle.poppinsReguler.copyWith(
+                                                  fontSize: 10,
+                                                  color: AppPalette.quaternaryColor,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ).paddingAll(10),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                    _ => const SizedBox(),
+                  };
+                },
               ),
             )
           ],

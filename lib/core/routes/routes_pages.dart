@@ -13,8 +13,6 @@ import '/features/materi/presentation/materi_screen.dart';
 import '/features/onboarding/presentation/onboarding_screen.dart';
 import '/features/profile_detail/profile_detail_screen.dart';
 import '/features/quiz/quiz_screen.dart';
-import '/features/tips%20&%20trick/tips_screen.dart';
-import '/features/two_factor_auth/two_factor_auth_screen.dart';
 
 import '../../features/auth/presentation/login_screen.dart';
 import '../../features/auth/presentation/register_screen.dart';
@@ -33,14 +31,12 @@ class Routes {
   static MaterialPageRoute createPassword() => MaterialPageRoute(builder: (context) => const CreatePasswordScreen());
   static MaterialPageRoute profileDetail(UserEntities user) =>
       MaterialPageRoute(builder: (context) => ProfileDetailScreen(user: user));
-  static MaterialPageRoute twoFactorAuthentication() => MaterialPageRoute(builder: (context) => const TwoFactorAuthScreen());
   static MaterialPageRoute faceId() => MaterialPageRoute(builder: (context) => const FaceIdScreen());
 
   // Home Menu
   static MaterialPageRoute materi() => MaterialPageRoute(builder: (context) => const MateriScreen());
   static MaterialPageRoute quiz() => MaterialPageRoute(builder: (context) => const QuizScreen());
   static MaterialPageRoute aboutUs() => MaterialPageRoute(builder: (context) => const AboutUsScreen());
-  static MaterialPageRoute tipsTrick() => MaterialPageRoute(builder: (context) => const TipsScreen());
   static MaterialPageRoute history() => MaterialPageRoute(builder: (context) => const HistoryNilaiScreen());
 
   static MaterialPageRoute quizNilai({required String category}) => MaterialPageRoute(

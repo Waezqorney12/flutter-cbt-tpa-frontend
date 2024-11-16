@@ -15,7 +15,7 @@ class HomeController {
   static List<Color> boxColor = [AppPalette.box0, AppPalette.box1, AppPalette.box2, AppPalette.box3];
   static List<int> routesNumber = [0, 1, 2, 3];
   static List<MaterialPageRoute Function()> routes = [
-    () => Routes.tipsTrick(),
+    () => Routes.materi(),
     () => Routes.materi(),
     () => Routes.quiz(),
     () => Routes.aboutUs(),

@@ -22,7 +22,8 @@ class QuizThumbnailRemoteDatasourceImpl implements QuizThumbnailRemoteDatasource
           },
         ),
       );
-      final List<QuizThumbnailModel> quiz = response.data.map((e) => QuizThumbnailModel.fromJson(e)).toList();
+      final List<dynamic> data = response.data['data'];
+      final List<QuizThumbnailModel> quiz = data.map((e) => QuizThumbnailModel.fromJson(e)).toList();
       return quiz;
     } catch (e) {
       throw ServerException(message: e.toString());

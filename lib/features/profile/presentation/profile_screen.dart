@@ -148,7 +148,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               //     ),
                               () => Navigator.push(context, Routes.faceId()),
                               () {},
-                              () => Navigator.push(context, Routes.twoFactorAuthentication()),
+                              () => Navigator.push(context, Routes.materi()),
                               () => Navigator.push(context, Routes.history()),
                               () => notificationDialog(
                                     context: context,

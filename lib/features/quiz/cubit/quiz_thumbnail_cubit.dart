@@ -12,7 +12,7 @@ class QuizThumbnailCubit extends Cubit<QuizThumbnailState> {
       : _usecase = thumbnailUsecase,
         super(QuizThumbnailInitial());
 
-  Future getQuizThumbnail(String? kategori) async {
+  Future getQuizThumbnail({String? kategori}) async {
     emit(QuizThumbnailLoading());
     final result = await _usecase(kategori);
     result.fold(

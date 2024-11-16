@@ -10,6 +10,7 @@ import 'package:test_potensial/features/history_nilai/presentation/cubit/history
 import 'package:test_potensial/features/materi/presentation/bloc/materi_bloc.dart';
 import 'package:test_potensial/features/onboarding/domain/repository/onboarding_repository.dart';
 import 'package:test_potensial/features/profile_detail/cubit/profile_detail_cubit.dart';
+import 'package:test_potensial/features/quiz/cubit/quiz_thumbnail_cubit.dart';
 import 'package:test_potensial/features/quiz_detail/bloc/quiz_detail_bloc.dart';
 import 'package:test_potensial/features/quiz_nilai/bloc/quiz_nilai_bloc.dart';
 import 'package:test_potensial/init_dependencies.dart';
@@ -36,6 +37,7 @@ Future<void> main() async {
             BlocProvider(create: (context) => getIt<HistoryNilaiCubit>()),
             BlocProvider(create: (context) => getIt<ProfileDetailCubit>()),
             BlocProvider(create: (context) => getIt<ForgotPasswordBloc>()),
+            BlocProvider(create: (context) => getIt<QuizThumbnailCubit>()),
           ],
           child: MyApp(getFirstInstall: getFirstInstall),
         ),
