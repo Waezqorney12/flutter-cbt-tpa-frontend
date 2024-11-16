@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:test_potensial/core/infrastructure/network/dio_client.dart';
@@ -20,18 +21,23 @@ class ProfileDetailRemoteImplDatasource implements ProfileDetailDatasource {
   @override
   Future<UserModel> changeProfile(
     String? phone,
-    String? name,
+    String? firstName,
+    String? lastName,
     String? email,
+    File? image,
   ) async {
     try {
       final String? token = await _tokenLocalDatasource.getToken();
+      final userdata = FormData.fromMap({
+        'email': email,
+        'first_name': firstName,
+        'last_name': lastName,
+        'phone_number': phone,
+        if (image != null) 'image': await MultipartFile.fromFile(image.path, filename: 'profile_images.jpg'),
+      });
       final request = await _dio.post(
-        '/api/change',
-        data: UserModel(
-          email: email ?? '',
-          name: name ?? '',
-          phone: phone ?? '',
-        ).toJson(),
+        '/api/change-profile',
+        data: userdata,
         options: Options(
           headers: {
             'Authorization': 'Bearer $token',
@@ -41,7 +47,7 @@ class ProfileDetailRemoteImplDatasource implements ProfileDetailDatasource {
       Log.loggerInformation('Change Profile: ${request.data}');
 
       final UserModel updateUser = UserModel.fromJson(request.data['data']);
-      _tokenLocalDatasource.updateUserData(updateUser);
+      // _tokenLocalDatasource.updateUserData(updateUser);
       return updateUser;
     } catch (e) {
       throw ServerException(message: 'Server Error: $e');

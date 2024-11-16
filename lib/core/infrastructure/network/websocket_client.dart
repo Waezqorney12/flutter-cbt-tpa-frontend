@@ -3,59 +3,53 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:test_potensial/core/message/server_exception.dart';
 import 'package:test_potensial/core/model/user_model.dart';
 import 'package:test_potensial/core/utils/log.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
-class WebsocketClient {
-  late WebSocketChannel _webSocketChannel;
-  late StreamController<UserModel> _controller;
+class WebsocketService {
+  late WebSocketChannel webSocketChannel;
   final String url = dotenv.env['WebSocket_URL']!;
-  final int id = 52;
 
-  Stream<UserModel> get userStream => _controller.stream;
-
-  Future getWebSocket({required String authToken}) async {
-    _controller = StreamController<UserModel>.broadcast();
-
-    _webSocketChannel = WebSocketChannel.connect(Uri.parse(url));
-    Log.loggerInformation('WebSocket connected: $url/App.Models.User.$id \n with token: $authToken');
+  Future<WebSocketChannel> getWebSocket({required String authToken}) async {
+    final Completer<WebSocketChannel> completer = Completer<WebSocketChannel>();
+    webSocketChannel = IOWebSocketChannel.connect(
+      Uri.parse('$url/app/bb0da739e4917b7fe49e?protocol=7&client=js&version=4.4.0&flash=false').replace(
+        scheme: 'ws',
+      ),
+      headers: {'Authorization': 'Bearer $authToken'},
+    );
 
     try {
-      await _webSocketChannel.ready;
-
-      _webSocketChannel.stream.listen(
+      await webSocketChannel.ready.then((_) {
+        completer.complete(webSocketChannel);
+      }).catchError((error) {
+        completer.completeError(error);
+      });
+      webSocketChannel.stream.listen(
         (data) {
           Log.loggerInformation('Received data from WebSocket: $data');
           Map<String, dynamic> json = jsonDecode(data);
           final user = UserModel.fromJson(json);
-          _webSocketChannel.sink.add(user);
-          _controller.sink.add(user);
+
+          webSocketChannel.sink.add(user);
         },
         onError: (err) => error(err),
         onDone: () => disconnect(),
       );
+      return completer.future;
     } on SocketException catch (e) {
-      Log.loggerFatal("This is SocketException: ${e.message}, ${e.address}, ${e.port}");
-      rethrow;
+      throw ServerException(message: 'SocketException: ${e.message}, ${e.address}, ${e.port}');
     } on WebSocketChannelException catch (e) {
-      Log.loggerFatal("This is WebsocketException: ${e.message}, ${e.inner}");
-      rethrow;
+      throw ServerException(message: 'WebSocketChannelException: ${e.message}, ${e.inner}');
     } catch (e) {
-      Log.loggerFatal("This is Exception: $e");
-      rethrow;
+      throw ServerException(message: 'Exception: $e');
     }
   }
 
-  void error(dynamic error) {
-    Log.loggerFatal('This is Error function connecting to WebSocket: $error');
-    _controller.sink.addError(error);
-  }
+  void error(dynamic error) => webSocketChannel.sink.addError(error);
 
-  Future disconnect() async {
-    Log.loggerFatal('WebSocket connection closed');
-    await _webSocketChannel.sink.close();
-    _controller.sink.close();
-  }
+  Future disconnect() async => await webSocketChannel.sink.close();
 }

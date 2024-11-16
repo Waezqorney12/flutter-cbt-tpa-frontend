@@ -1,20 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:test_potensial/core/cubit/user_cubit.dart';
+import 'package:test_potensial/core/entities/user_entities.dart';
 import 'package:test_potensial/core/provider/navigator_provider.dart';
 import 'package:test_potensial/core/shared/positioned/dimensions.dart';
 import 'package:test_potensial/core/shared/text_style/text_app_style.dart';
-import 'package:test_potensial/core/shared/widget/loading_widget.dart';
 import 'package:test_potensial/core/theme/app_palette.dart';
 import 'package:flutter_initicon/flutter_initicon.dart';
-import 'package:test_potensial/core/utils/show_snackbar_utils.dart';
 import 'package:test_potensial/features/home/controller/home_controller.dart';
 
-import '../../../core/utils/log.dart';
-
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+  final UserEntities? user;
+  const HomeScreen({super.key, this.user});
 
   @override
   Widget build(BuildContext context) {
@@ -35,57 +31,46 @@ class HomeScreen extends StatelessWidget {
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(20),
-                  child: BlocConsumer<UserCubit, UserState>(
-                    listener: (context, state) {
-                      if (state is UserError) showSnackBar(context, state.message);
-                    },
-                    builder: (context, state) {
-                      if (state is UserLoading) {
-                        final stream = context.read<UserCubit>().stream;
-                        final data = context.read<UserCubit>().state.props;
-                        Log.loggerFatal("This Stream: $stream \n and This is data: $data");
-                      }
-                      return switch (state) {
-                        UserLoading() => const Loading(),
-                        UserLoggedIn() => Column(
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Row(
-                                children: [
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      const Text('Hello, welcome👋'),
-                                      Text('${state.user.name}'),
-                                    ],
-                                  ),
-                                  const Spacer(),
-                                  InkWell(
-                                    onTap: () => NavigatorProvider.of(context)?.isFirst.value = false,
-                                    child: Initicon(text: '${state.user.name}'),
-                                  ),
-                                ],
-                              ),
-                              const Spacer(),
-                              TextField(
-                                controller: HomeController.searchController,
-                                decoration: InputDecoration(
-                                  hintText: 'Search',
-                                  prefixIcon: const Icon(Icons.search),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide.none,
-                                    borderRadius: BorderRadius.circular(32),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide.none,
-                                    borderRadius: BorderRadius.circular(32),
-                                  ),
-                                ),
-                              ),
+                              const Text('Hello, welcome👋'),
+                              Text('${user?.firstName} ${user?.lastName}'),
                             ],
                           ),
-                        _ => const SizedBox(),
-                      };
-                    },
+                          const Spacer(),
+                          InkWell(
+                            onTap: () => NavigatorProvider.of(context)?.isFirst.value = false,
+                            child: (user?.image == null)
+                                ? Initicon(text: '${user?.firstName} ${user?.lastName}')
+                                : CircleAvatar(
+                                    radius: 25,
+                                    backgroundImage: NetworkImage(user?.image ?? ''),
+                                  ),
+                          ),
+                        ],
+                      ),
+                      const Spacer(),
+                      TextField(
+                        controller: HomeController.searchController,
+                        decoration: InputDecoration(
+                          hintText: 'Search',
+                          prefixIcon: const Icon(Icons.search),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide.none,
+                            borderRadius: BorderRadius.circular(32),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide.none,
+                            borderRadius: BorderRadius.circular(32),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),

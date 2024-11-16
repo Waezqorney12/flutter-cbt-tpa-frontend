@@ -1,5 +1,9 @@
+import 'dart:io';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:path/path.dart';
+import 'package:test_potensial/core/cubit/user_cubit.dart';
 import 'package:test_potensial/features/profile_detail/domain/usecase/profile_detail_usecase.dart';
 
 import '../../../core/entities/user_entities.dart';
@@ -14,20 +18,22 @@ class ProfileDetailCubit extends Cubit<ProfileDetailState> {
 
   void changeProfile({
     String? phone,
-    String? name,
+    String? firstName,
+    String? lastName,
     String? email,
+    File? image,
   }) async {
     emit(ProfileDetailLoading());
     final resp = await _useCase.call(ProfileParams(
       email: email,
-      name: name,
+      firstName: firstName,
+      lastName: lastName,
       phone: phone,
+      image: image,
     ));
     resp.fold(
       (l) => emit(ProfileDetailFailed(l.message)),
-      (r) {
-        emit(ProfileDetailSuccess(r));
-      },
+      (r) async => emit(ProfileDetailSuccess(r)),
     );
   }
 }

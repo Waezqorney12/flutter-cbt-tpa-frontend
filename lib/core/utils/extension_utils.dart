@@ -30,3 +30,21 @@ extension WidgetExtension on Widget {
         child: this,
       );
 }
+
+extension ImageProviderExtension on ImageProvider {
+  CircleAvatar imageProviderCircleAvatar({double? radius}) => CircleAvatar(
+        radius: radius ?? 25,
+        backgroundImage: this,
+      );
+  Container imageProviderContainer({double? w, double? h}) => Container(
+        width: w,
+        height: h,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: this,
+            fit: BoxFit.cover,
+          ),
+          shape: BoxShape.circle,
+        ),
+      );
+}

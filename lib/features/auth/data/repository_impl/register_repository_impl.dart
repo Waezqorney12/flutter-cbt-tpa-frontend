@@ -8,15 +8,17 @@ class RegisterRepositoryImpl implements RegisterRepository {
   const RegisterRepositoryImpl(this._remoteDataSource);
   @override
   FutureEither<String> registerWithEmailPassword({
-    required String name,
     required String email,
+    required String firstName,
+    required String lastName,
     required String password,
   }) =>
       helperCall<String>(
         apiCall: () => _remoteDataSource.registerWithEmailPassword(
           email: email,
+          firstName: firstName,
+          lastName: lastName,
           password: password,
-          name: name,
         ),
       );
 }

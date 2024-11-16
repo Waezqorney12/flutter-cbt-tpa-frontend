@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:test_potensial/core/entities/user_entities.dart';
 import 'package:test_potensial/core/utils/function_helper_utils.dart';
 
@@ -12,14 +14,18 @@ class ProfileDetailRepositoryImpl implements ProfileDetailRepository {
   @override
   FutureEither<UserEntities> changeProfile(
     String? phone,
-    String? name,
+    String? firstName,
+    String? lastName,
     String? email,
+    File? image,
   ) {
     return helperCall<UserEntities>(
       apiCall: () => _profileDetailDatasource.changeProfile(
-        phone,
-        name,
         email,
+        firstName,
+        lastName,
+        phone,
+        image,
       ),
     );
   }

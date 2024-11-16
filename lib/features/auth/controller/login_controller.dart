@@ -6,7 +6,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test_potensial/core/utils/log.dart';
 import 'package:test_potensial/features/auth/bloc/auth_bloc.dart';
 
+// ignore: camel_case_types
 typedef sharedPref = SharedPreferences;
+// ignore: camel_case_types
 typedef securePref = FlutterSecureStorage;
 
 class LoginController {

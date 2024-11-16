@@ -12,9 +12,16 @@ import '../../core/routes/routes_pages.dart';
 import '../../core/shared/positioned/dimensions.dart';
 import '../../core/shared/text_style/text_app_style.dart';
 
-class QuizScreen extends StatelessWidget {
+class QuizScreen extends StatefulWidget {
   const QuizScreen({super.key});
 
+  @override
+  State<QuizScreen> createState() => _QuizScreenState();
+}
+
+class _QuizScreenState extends State<QuizScreen> {
+  String _selectedCategory = 'All';
+  final List<String> _categories = ['All', 'Numeric', 'Logika', 'Verbal'];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -84,7 +91,33 @@ class QuizScreen extends StatelessWidget {
                           style: TextAppStyle.poppinsSemiBold.copyWith(fontSize: 20, color: AppPalette.quaternaryColor),
                         ),
                         IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: Text(
+                                    'Select Category',
+                                    style: TextAppStyle.poppinsMedium.copyWith(fontSize: 16),
+                                  ),
+                                  actions: _categories.mapIndexed<Widget, String>(
+                                    funct: (index, value) {
+                                      return RadioListTile(
+                                        groupValue: _selectedCategory,
+                                        value: value,
+                                        title: Text(value),
+                                        onChanged: (value) {
+                                          setState(() => _selectedCategory = value ?? '');
+                                          //QuizController.data.where((element) => element.jenis == _selectedCategory).toList();
+                                          Navigator.pop(context);
+                                        },
+                                      );
+                                    },
+                                  ).toList(),
+                                );
+                              },
+                            );
+                          },
                           icon: const Icon(
                             Icons.menu,
                             color: AppPalette.quaternaryColor,
@@ -169,7 +202,7 @@ class QuizScreen extends StatelessWidget {
                         ),
                       );
                     },
-                  ).toList(),
+                  )
                 ]),
               ),
             )

@@ -20,7 +20,7 @@ class MateriBloc extends Bloc<MateriEvent, MateriState> {
     on<MateriEvent>((event, emit) => emit(MateriLoading()));
     on<GetAllMateriEvent>(
       (event, emit) async {
-        final response = await _getMateri.call(NoParams());
+        final response = await _getMateri.call(event.kategori);
         response.fold(
           (failure) => emit(MateriError(failure.message)),
           (materi) => emit(MateriLoaded(materi)),
@@ -35,7 +35,7 @@ class MateriBloc extends Bloc<MateriEvent, MateriState> {
           (failure) => emit(MateriError(failure.message)),
           (materi) {
             emit(MateriSuccess(materi));
-            add(GetAllMateriEvent());
+            add(const GetAllMateriEvent());
           },
         );
       },

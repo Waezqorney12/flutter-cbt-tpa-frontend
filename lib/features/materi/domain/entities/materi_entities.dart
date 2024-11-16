@@ -1,20 +1,29 @@
 class MateriEntities {
   final int? id;
-  final String? name;
+  final String? kategori;
+  final int? status;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
+  final MateriAttributes? materi;
+
+  const MateriEntities({
+    this.id,
+    this.kategori,
+    this.status,
+    this.createdAt,
+    this.updatedAt,
+    this.materi,
+  });
+}
+
+class MateriAttributes {
   final String? title;
   final String? description;
   final String? image;
-  final DateTime? dateTime;
-  final String? kategori;
-  final int? value;
-  MateriEntities({
-    this.id,
-    this.name,
+
+  const MateriAttributes({
     this.title,
     this.description,
     this.image,
-    this.dateTime,
-    this.kategori,
-    this.value,
   });
 }

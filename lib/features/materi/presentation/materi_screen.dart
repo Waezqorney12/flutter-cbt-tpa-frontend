@@ -1,11 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:test_potensial/core/entities/user_entities.dart';
 import 'package:test_potensial/core/shared/positioned/dimensions.dart';
 import 'package:test_potensial/core/shared/text_style/text_app_style.dart';
 import 'package:test_potensial/core/shared/widget/loading_widget.dart';
 import 'package:test_potensial/core/theme/app_palette.dart';
 import 'package:test_potensial/core/utils/calculate_date_utils.dart';
+import 'package:test_potensial/core/utils/map_index_utils.dart';
 import 'package:test_potensial/core/utils/regex_utils.dart';
 import 'package:test_potensial/core/utils/show_snackbar_utils.dart';
 
@@ -20,6 +22,8 @@ class MateriScreen extends StatefulWidget {
 }
 
 class _MateriScreenState extends State<MateriScreen> {
+  String? _selectedCategory = 'Logika';
+  final List<String> _categories = ['All', 'Logika', 'Numeric', 'Verbal'];
   late final CalendarUtils _calendarUtils;
   @override
   void initState() {
@@ -104,21 +108,61 @@ class _MateriScreenState extends State<MateriScreen> {
                                   '${state.materi.length} Materi',
                                   style: TextAppStyle.urbanistSemiBold.copyWith(fontSize: 16),
                                 ),
-                                const Spacer(),
-                                Icon(
-                                  Icons.history,
-                                  color: AppPalette.boardingTextColor.withOpacity(.6),
-                                  size: 18,
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 5),
+                                  child: Icon(
+                                    Icons.history,
+                                    color: AppPalette.boardingTextColor.withOpacity(.6),
+                                    size: 18,
+                                  ),
                                 ),
-                                const SizedBox(width: 5),
                                 Text(
                                   "${calculateTotalReadingTime<String?>(
-                                    state.materi.map((e) => e.description).toList(),
+                                    state.materi.map((e) => e.materi?.description).toList(),
                                   )}min",
                                   style: TextAppStyle.interLight.copyWith(
                                     color: AppPalette.boardingTextColor,
                                   ),
-                                )
+                                ),
+                                const Spacer(),
+                                IconButton(
+                                    onPressed: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            title: Text(
+                                              'Select Category',
+                                              style: TextAppStyle.poppinsMedium.copyWith(fontSize: 16),
+                                            ),
+                                            content: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: _categories.mapIndexed<Widget, String>(
+                                                funct: (index, category) {
+                                                  return RadioListTile(
+                                                    groupValue: _selectedCategory,
+                                                    value: category,
+                                                    title: Text(category),
+                                                    onChanged: (value) {
+                                                      setState(() => _selectedCategory = value ?? '');
+                                                      if (value == 'All') _selectedCategory = null;
+                                                      context
+                                                          .read<MateriBloc>()
+                                                          .add(GetAllMateriEvent(kategori: _selectedCategory));
+                                                      Navigator.pop(context);
+                                                    },
+                                                  );
+                                                },
+                                              ).toList(),
+                                            ),
+                                          );
+                                        },
+                                      );
+                                    },
+                                    icon: const Icon(
+                                      Icons.menu,
+                                      color: AppPalette.boardingTextColor,
+                                    )),
                               ],
                             ),
                           _ => Text(
@@ -145,7 +189,9 @@ class _MateriScreenState extends State<MateriScreen> {
                       if (state is MateriError) showSnackBar(context, state.message);
                     },
                     builder: (context, state) {
-                      if (state is MateriInitial) context.read<MateriBloc>().add(GetAllMateriEvent());
+                      if (state is MateriInitial) {
+                        context.read<MateriBloc>().add(const GetAllMateriEvent());
+                      }
                       return switch (state) {
                         MateriLoading() => const Loading(),
                         MateriLoaded() => ListView.builder(
@@ -154,10 +200,10 @@ class _MateriScreenState extends State<MateriScreen> {
                             itemCount: state.materi.length,
                             itemBuilder: (context, index) {
                               final value = state.materi[index];
-                              Duration waktu = DateTime.now().difference(value.dateTime ?? DateTime.now());
+                              Duration waktu = DateTime.now().difference(value.createdAt ?? DateTime.now());
                               int range = _calendarUtils.daysInMonth(
-                                value.dateTime?.year ?? 0,
-                                value.dateTime?.month ?? 0,
+                                value.createdAt?.year ?? 0,
+                                value.createdAt?.month ?? 0,
                               );
                               return Padding(
                                 padding:
@@ -202,7 +248,7 @@ class _MateriScreenState extends State<MateriScreen> {
                                                   Row(
                                                     children: [
                                                       Text(
-                                                        "${calculateReadingTime(value.description!)} min read",
+                                                        "${calculateReadingTime(value.materi?.description ?? '')} min read",
                                                         style: TextAppStyle.interReguler.copyWith(
                                                           color: Colors.grey,
                                                           fontSize: 10,
@@ -240,7 +286,7 @@ class _MateriScreenState extends State<MateriScreen> {
                                                     borderRadius: BorderRadius.circular(8),
                                                     image: DecorationImage(
                                                       fit: BoxFit.cover,
-                                                      image: CachedNetworkImageProvider(value.image ?? ''),
+                                                      image: CachedNetworkImageProvider(value.materi?.image ?? ''),
                                                     ),
                                                   ),
                                                 ),
@@ -249,13 +295,13 @@ class _MateriScreenState extends State<MateriScreen> {
                                           ),
                                           const SizedBox(height: 15),
                                           LinearProgressIndicator(
-                                            value: value.value != null ? value.value! / 100 : 0,
-                                            color: value.value == 100 ? AppPalette.baseGreen : AppPalette.primaryColor,
+                                            value: value.status != null ? value.status! / 100 : 0,
+                                            color: value.status == 100 ? AppPalette.baseGreen : AppPalette.primaryColor,
                                           ),
                                           Padding(
                                             padding: const EdgeInsets.symmetric(vertical: 5),
                                             child: Text(
-                                              'Progress ${value.value}%',
+                                              'Progress ${value.status}%',
                                               style: TextAppStyle.interReguler.copyWith(
                                                 color: Colors.grey,
                                               ),

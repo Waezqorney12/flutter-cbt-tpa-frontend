@@ -6,14 +6,14 @@ import '../../../../core/usecases/usescase_no_params.dart';
 import '../entities/materi_entities.dart';
 import '../repository/materi_repository.dart';
 
-class GetMateriUseCase implements UseCase<List<MateriEntities>, NoParams> {
+class GetMateriUseCase implements UseCase<List<MateriEntities>, String?> {
   final MateriRepository repository;
 
   GetMateriUseCase(this.repository);
 
   @override
-  Future<Either<FailureMessage, List<MateriEntities>>> call(NoParams params) async {
-    return await repository.getMateri();
+  Future<Either<FailureMessage, List<MateriEntities>>> call(String? kategori) async {
+    return await repository.getMateri(kategori: kategori);
   }
 }
 

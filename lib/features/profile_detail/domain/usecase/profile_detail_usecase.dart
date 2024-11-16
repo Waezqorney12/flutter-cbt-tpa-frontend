@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import '../../../../core/entities/user_entities.dart';
 import '../../../../core/usecases/usecase_interface.dart';
 import '../../../../core/utils/typedef_utils.dart';
@@ -10,19 +12,25 @@ class ProfileDetailUseCase implements UseCase<UserEntities, ProfileParams> {
   FutureEither<UserEntities> call(ProfileParams params) {
     return _profileDetailRepository.changeProfile(
       params.phone,
-      params.name,
+      params.firstName,
+      params.lastName,
       params.email,
+      params.image,
     );
   }
 }
 
 class ProfileParams {
   String? phone;
-  String? name;
+  String? firstName;
+  String? lastName;
   String? email;
+  File? image;
   ProfileParams({
     this.phone,
-    this.name,
+    this.firstName,
+    this.lastName,
     this.email,
+    this.image,
   });
 }

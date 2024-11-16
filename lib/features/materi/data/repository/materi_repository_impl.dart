@@ -8,8 +8,8 @@ class MateriRepositoryImpl implements MateriRepository {
   final MateriRemoteDataSource _remoteDataSource;
   const MateriRepositoryImpl(this._remoteDataSource);
   @override
-  FutureEither<List<MateriEntities>> getMateri() =>
-      helperCall<List<MateriEntities>>(apiCall: () => _remoteDataSource.getMateri());
+  FutureEither<List<MateriEntities>> getMateri({String? kategori}) =>
+      helperCall<List<MateriEntities>>(apiCall: () => _remoteDataSource.getMateri(kategori: kategori));
 
   @override
   FutureEither<String> updateMateri(int id) {

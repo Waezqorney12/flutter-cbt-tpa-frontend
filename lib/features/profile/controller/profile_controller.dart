@@ -29,11 +29,11 @@ class ProfileController {
       title: 'Face ID / Touch ID',
       description: 'Manage your device security',
     ),
-    const MenuEntities(
-      imageMenu: 'assets/profile/fingerprint.png',
-      title: 'Biometric Fingerprint',
-      description: 'Activated ur fingerprint',
-    ),
+    // const MenuEntities(
+    //   imageMenu: 'assets/profile/fingerprint.png',
+    //   title: 'Biometric Fingerprint',
+    //   description: 'Activated ur fingerprint',
+    // ),
     const MenuEntities(
       imageMenu: 'assets/profile/Shield.png',
       title: 'Two-Factor Authentication',

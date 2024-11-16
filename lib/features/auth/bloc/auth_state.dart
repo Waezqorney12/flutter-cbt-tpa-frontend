@@ -12,12 +12,12 @@ final class AuthInitial extends AuthState {}
 final class AuthLoading extends AuthState {}
 
 final class AuthLogin extends AuthState {
-  final UserEntities user;
+  final String data;
 
-  const AuthLogin(this.user);
+  const AuthLogin(this.data);
 
   @override
-  List<Object> get props => [user];
+  List<Object> get props => [data];
 }
 final class AuthRegister extends AuthState {
   final String message;

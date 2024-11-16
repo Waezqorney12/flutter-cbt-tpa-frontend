@@ -11,49 +11,33 @@ part 'user_state.dart';
 
 class UserCubit extends Cubit<UserState> {
   final TokenLocalDatasource _tokenLocalDatasource;
-  StreamSubscription<UserEntities>? _userSubscription;
 
   UserCubit(TokenLocalDatasource tokenLocalDatasource)
       : _tokenLocalDatasource = tokenLocalDatasource,
-        super(UserInitial()) {
-    _startListeningToUserUpdates();
-  }
+        super(UserInitial());
 
-  void _startListeningToUserUpdates() {
-    emit(UserLoading());
-    _userSubscription?.cancel();
-    _userSubscription = _tokenLocalDatasource.getUser().listen(
-      (user) {
-        if (user.email?.isEmpty ?? false) {
-          Log.loggerInformation('User Logged Out');
-          emit(const UserLoggeoOut(isLoggeoOut: true));
-        } else {
-          Log.loggerInformation('User Logged In: $user');
-          emit(UserLoggedIn(user));
-        }
-        Log.loggerInformation('User: $user');
-      },
-      onError: (e) {
-        emit(UserError(e.toString()));
-        Log.loggerFatal('Error receiving user updates: $e');
-      },
-    );
-  }
-
-  @override
-  Future<void> close() {
-    _userSubscription?.cancel();
-    _tokenLocalDatasource.disposeWebSocket();
-    return super.close();
+  Future getUser() async {
+    try {
+      emit(UserLoading());
+      final user = await _tokenLocalDatasource.getUser();
+      Log.loggerInformation("User: $user");
+      if (user.email?.isEmpty ?? false) {
+        emit(const UserLoggeoOut(isLoggeoOut: true));
+      } else {
+        emit(UserLoggedIn(user));
+      }
+    } catch (e) {
+      emit(
+        UserError(e.toString()),
+      );
+    }
   }
 
   Future removeToken() async {
     try {
       emit(UserLoading());
-      final user = await _tokenLocalDatasource.removeToken();
-      //Log.loggerTrace('UserCubit Remove Token: $user');
-      isLoggedIn.value = false;
-      emit(UserLoggeoOut(isLoggeoOut: user));
+      await _tokenLocalDatasource.removeToken();
+      emit(const UserLoggeoOut(isLoggeoOut: true));
     } catch (e) {
       emit(UserError(e.toString()));
     }

@@ -16,15 +16,20 @@ class RegisterRemoteDatasourceImpl implements RegisterRemoteDataSource {
   Future<String> registerWithEmailPassword({
     required String email,
     required String password,
-    required String name,
+    required String firstName,
+    required String lastName,
   }) async {
     try {
       final request = await _client.post(
         '/api/register',
-        data: UserModel(name: name, email: email, password: password, phone: '', roles: '').toJson(),
+        data: UserModel(
+          firstName: firstName,
+          lastName: lastName,
+          email: email,
+          password: password,
+        ).toJson(),
       );
-      Log.loggerInformation("RegisterRemoteDatasourceImpl: ${request.data['message']}");
-      return request.data['message'];
+      return request.data['data'];
     } on DioException catch (e) {
       Log.loggerError("Error: ${e.message}");
       throw Exception(e.message);
@@ -36,7 +41,6 @@ class RegisterRemoteDatasourceImpl implements RegisterRemoteDataSource {
 
   @override
   Future<void> registerWithGoogle() {
-    // TODO: implement registerWithGoogle
     throw UnimplementedError();
   }
 }

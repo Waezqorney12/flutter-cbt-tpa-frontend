@@ -25,18 +25,6 @@ class _MateriDetailScreenState extends State<MateriDetailScreen> {
 
   bool _showButton = true;
 
-  /*
-   cara ke 1 (Not valid one for this case because it's only for notify changes 
-   not for positioning and animation some widget, for instance in this case is make button
-   dissapear and appear which is not suitable if using this method)
-
-   If u want use this make sure u using NotificationListener<ScrollNotification> and implement
-   theses method in parameter of NotificationListener which is onNotification
-  */
-  // void _onStartScrolling(ScrollMetrics metrics) => setState(() => _showButton = false);
-  // void _onUpdateScrolling(ScrollMetrics metrics) => setState(() => _showButton = true);
-  // void _onEndScrolling(ScrollMetrics metrics) => setState(() => _showButton = false);
-
   @override
   void initState() {
     scrollController = ScrollController();
@@ -55,24 +43,6 @@ class _MateriDetailScreenState extends State<MateriDetailScreen> {
     if (_showButton) setState(() => _showButton = false);
     debouncer.run(() => setState(() => _showButton = true));
   }
-
-  // void _scrollListener() {
-  // Cara ke 3 (Not Working yet)
-  // if (scrollController.position.userScrollDirection == ScrollDirection.reverse ||
-  //     scrollController.position.userScrollDirection == ScrollDirection.forward) {
-  //   if (_showButton) {
-  //     setState(() {
-  //       _showButton = false;
-  //     });
-  //   }
-  // } else {
-  //   if (!_showButton) {
-  //     setState(() {
-  //       _showButton = true;
-  //     });
-  //   }
-  // }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -107,9 +77,10 @@ class _MateriDetailScreenState extends State<MateriDetailScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      widget._materi.title ?? '',
+                      widget._materi.materi?.title ?? '',
                       style: TextAppStyle.montserratBold.copyWith(
                         fontSize: 18,
                       ),
@@ -124,14 +95,14 @@ class _MateriDetailScreenState extends State<MateriDetailScreen> {
                           ),
                           children: [
                             TextSpan(
-                              text: widget._materi.name,
+                              text: 'Admin',
                               style: TextAppStyle.montserratSemiBold.copyWith(
                                 color: AppPalette.primaryColor,
                               ),
                             ),
                             TextSpan(
                               text: ' Created at ${AppDateUtil.formatDateTime(
-                                dateTime: widget._materi.dateTime,
+                                dateTime: widget._materi.createdAt,
                                 format: CustomDateFormat.dateTime,
                               )} WIB',
                               style: TextAppStyle.montserratSemiBold.copyWith(
@@ -147,7 +118,7 @@ class _MateriDetailScreenState extends State<MateriDetailScreen> {
                 Hero(
                   tag: "image${widget._materi.id}",
                   child: CachedNetworkImage(
-                    imageUrl: widget._materi.image ?? '',
+                    imageUrl: widget._materi.materi?.image ?? '',
                     width: double.infinity,
                     height: 200,
                     fit: BoxFit.cover,
@@ -155,7 +126,7 @@ class _MateriDetailScreenState extends State<MateriDetailScreen> {
                   ),
                 ),
                 Text(
-                  widget._materi.description ?? '',
+                  widget._materi.materi?.description ?? '',
                   style: TextAppStyle.interReguler.copyWith(
                     fontSize: 16,
                   ),
@@ -171,7 +142,7 @@ class _MateriDetailScreenState extends State<MateriDetailScreen> {
             elevation: 10,
             child: InkWell(
               onTap: () {
-                if (widget._materi.value != 100) {
+                if (widget._materi.status != 100) {
                   context.read<MateriBloc>().add(
                         UpdateMateriEvent(
                           id: widget._materi.id ?? 0,
@@ -191,7 +162,7 @@ class _MateriDetailScreenState extends State<MateriDetailScreen> {
                     'Selesai',
                     style: TextAppStyle.montserratSemiBold.copyWith(
                       fontSize: 16,
-                      color: widget._materi.value != 100 ? AppPalette.primaryColor : Colors.grey,
+                      color: widget._materi.status != 100 ? AppPalette.primaryColor : Colors.grey,
                     ),
                   ),
                 ),

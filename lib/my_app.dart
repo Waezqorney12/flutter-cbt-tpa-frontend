@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_potensial/core/cubit/user_cubit.dart';
-import 'package:test_potensial/core/routes/routes_pages.dart';
 import 'package:test_potensial/core/shared/widget/loading_widget.dart';
 import 'package:test_potensial/features/auth/presentation/login_screen.dart';
-//import 'package:test_potensial/core/utils/log.dart';
 import 'package:test_potensial/features/bottom_navigator/bottom_navigator_widget.dart';
 import 'package:test_potensial/features/onboarding/presentation/onboarding_screen.dart';
 
@@ -19,22 +17,14 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightMode,
-      home: BlocConsumer<UserCubit, UserState>(
-        listener: (context, state) {
-          if (state is UserError || state is UserLoggeoOut) Navigator.pushReplacement(context, Routes.login());
-        },
-        buildWhen: (previous, current) {
-          if (previous is UserLoggedIn && current is UserLoggedIn) {
-            return false;
-          }
-          return true;
-        },
+      home: BlocBuilder<UserCubit, UserState>(
         builder: (context, state) {
           if (getFirstInstall == true) {
-            switch (state) {
-              case UserLoading():
+            if (state is UserInitial) context.read<UserCubit>().getUser();
+            switch (state.runtimeType) {
+              case const (UserLoading):
                 return const Scaffold(body: Loading());
-              case UserLoggedIn():
+              case const (UserLoggedIn):
                 return BottomNavigatorWidget();
               default:
                 return const LoginScreen();

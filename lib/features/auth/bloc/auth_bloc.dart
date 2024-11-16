@@ -1,10 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+
 import 'package:test_potensial/features/auth/domain/usecases/user_login_usecases.dart';
 import 'package:test_potensial/features/auth/domain/usecases/user_register_usecases.dart';
-
-import '../../../core/entities/user_entities.dart';
-import '../../../core/token/token_local_datasource.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
@@ -17,12 +15,20 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     required UserLoginUseCase userLogin,
   })  : _userRegister = userRegister,
         _userLogin = userLogin,
+        
         super(AuthInitial()) {
     on<AuthEvent>((event, emit) => emit(AuthLoading()));
+
+    
     on<RegisterEvent>(
       (event, emit) async {
         final response = await _userRegister(
-          UserRegisterParams(email: event.email, password: event.password, name: event.name),
+          UserRegisterParams(
+            email: event.email,
+            firstName: event.firstName,
+            lastName: event.lastName,
+            password: event.password,
+          ),
         );
         response.fold(
           (l) => emit(AuthError(l.message)),
@@ -30,6 +36,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         );
       },
     );
+
     on<LoginEvent>(
       (event, emit) async {
         final response = await _userLogin(
@@ -37,10 +44,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         );
         response.fold(
           (l) => emit(AuthError(l.message)),
-          (r) {
-            isLoggedIn.value = true;
-            emit(AuthLogin(r));
-          },
+          (r) => emit(AuthLogin(r)),
         );
       },
     );

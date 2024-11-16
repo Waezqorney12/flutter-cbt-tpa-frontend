@@ -14,9 +14,7 @@ class DioClient {
       ..baseUrl = ApiConfig.baseUrl!
       ..headers = {
         HttpHeaders.contentTypeHeader: 'application/json',
-      }
-      ..connectTimeout = const Duration(minutes: 2);
-    //..receiveTimeout = const Duration(seconds: 2);
+      };
   }
 
   /// * POST

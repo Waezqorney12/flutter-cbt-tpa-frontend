@@ -11,19 +11,17 @@ class MateriRemoteDatasourceImpl implements MateriRemoteDataSource {
   final TokenLocalDatasource _tokenLocalDatasource;
   MateriRemoteDatasourceImpl(this._dioClient, this._tokenLocalDatasource);
   @override
-  Future<List<MateriModel>> getMateri() async {
+  Future<List<MateriModel>> getMateri({String? kategori}) async {
     try {
       final token = await _tokenLocalDatasource.getToken();
-      // Log.loggerInformation('Materi: $token');
-
-      final data = await _dioClient.get(
-        '/api/get-materi',
+      final json = await _dioClient.get(
+        kategori != null ? '/api/get-materi/$kategori' : '/api/get-materi',
         options: Options(
           headers: {'Authorization': 'Bearer $token'},
         ),
       );
-      Log.loggerInformation('Materi Data: $data');
-      return (data.data as List).map((e) => MateriModel.fromJson(e)).toList();
+      final baseResponse = MateriBaseResponse.fromJson(json.data);
+      return baseResponse.materi;
     } catch (e) {
       Log.loggerFatal('Datasources fail: $e');
       throw ServerException(message: 'Terjadi kesalahan pada server: $e');
@@ -37,10 +35,10 @@ class MateriRemoteDatasourceImpl implements MateriRemoteDataSource {
     try {
       final token = await _tokenLocalDatasource.getToken();
       Log.loggerDebug('Token: $token');
-      Log.loggerDebug('Data: ${MateriModel(id: id, value: 100).toJson()}');
+      Log.loggerDebug('Data: ${MateriModel(id: id, status: 100).toJson()}');
       final response = await _dioClient.put(
         '/api/update-value',
-        data: MateriModel(id: id, value: 100).toJson(),
+        data: MateriModel(id: id, status: 100).toJson(),
         options: Options(
           headers: {'Authorization': 'Bearer $token'},
           validateStatus: (status) {

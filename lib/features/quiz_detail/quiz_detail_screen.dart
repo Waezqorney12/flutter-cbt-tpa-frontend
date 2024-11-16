@@ -33,6 +33,7 @@ class _QuizDetailScreenState extends State<QuizDetailScreen> {
   bool isButtonEnabled = true;
 
   List<int> quizIds = [];
+
   @override
   void initState() {
     super.initState();
@@ -86,7 +87,7 @@ class _QuizDetailScreenState extends State<QuizDetailScreen> {
                         color: Colors.white,
                       ),
                       child: Text(
-                        state.quizEntities[currentIndex].pertanyaan,
+                        "${state.quizEntities[currentIndex].id}. ${state.quizEntities[currentIndex].pertanyaan}",
                         style: TextAppStyle.montserratMedium.copyWith(
                           fontSize: 16,
                         ),
@@ -147,7 +148,7 @@ class _QuizDetailScreenState extends State<QuizDetailScreen> {
                 CreateJawabanParams(soalId, answer),
               ),
             );
-        Future.delayed(const Duration(milliseconds: 300), () {
+        Future.delayed(const Duration(milliseconds: 1500), () {
           isButtonEnabled = true;
           currentIndex++;
         });

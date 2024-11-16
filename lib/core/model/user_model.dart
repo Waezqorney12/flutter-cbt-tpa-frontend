@@ -1,9 +1,17 @@
+import 'package:test_potensial/core/config/api_config.dart';
 import 'package:test_potensial/core/entities/user_entities.dart';
+import 'package:path/path.dart' as path;
+
+String? extractFilename(String imagePath) {
+  return path.basename(imagePath);
+}
 
 class UserModel extends UserEntities {
   const UserModel({
-    super.name,
+    super.image,
     super.email,
+    super.firstName,
+    super.lastName,
     super.password,
     super.phone,
     super.roles,
@@ -11,18 +19,22 @@ class UserModel extends UserEntities {
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
-      name: json['name'] ?? '',
+      image: '${ApiConfig.baseUrl}/storage/${json['image']}',
       email: json['email'] ?? '',
+      firstName: json['first_name'] ?? '',
+      lastName: json['last_name'] ?? '',
       password: json['password'] ?? '',
-      phone: json['phone'] ?? '',
+      phone: json['phone_number'] ?? '',
       roles: json['roles'] ?? '',
     );
   }
 
   factory UserModel.fromEntities(UserEntities userEntities) {
     return UserModel(
-      name: userEntities.name,
+      image: userEntities.image,
       email: userEntities.email,
+      firstName: userEntities.firstName,
+      lastName: userEntities.lastName,
       password: userEntities.password,
       phone: userEntities.phone,
       roles: userEntities.roles,
@@ -31,24 +43,30 @@ class UserModel extends UserEntities {
 
   Map<String, dynamic> toJson() {
     return {
-      'name': name,
+      'image': image,
       'email': email,
+      'first_name': firstName,
+      'last_name': lastName,
       'password': password,
-      'phone': phone,
+      'phone_number': phone,
       'roles': roles,
     };
   }
 
   UserModel copyWith({
-    String? name,
+    String? image,
     String? email,
+    String? firstName,
+    String? lastName,
     String? password,
     String? phone,
     String? roles,
   }) {
     return UserModel(
-      name: name ?? super.name,
+      image: image ?? super.image,
       email: email ?? super.email,
+      firstName: firstName ?? super.firstName,
+      lastName: lastName ?? super.lastName,
       password: password ?? super.password,
       phone: phone ?? super.phone,
       roles: roles ?? super.roles,

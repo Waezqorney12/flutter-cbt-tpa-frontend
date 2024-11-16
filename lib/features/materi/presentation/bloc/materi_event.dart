@@ -7,7 +7,13 @@ sealed class MateriEvent extends Equatable {
   List<Object> get props => [];
 }
 
-final class GetAllMateriEvent extends MateriEvent {}
+final class GetAllMateriEvent extends MateriEvent {
+  final String? kategori;
+  const GetAllMateriEvent({this.kategori});
+
+  @override
+  List<Object> get props => [kategori ?? ''];
+}
 
 final class UpdateMateriEvent extends MateriEvent {
   final int id;
