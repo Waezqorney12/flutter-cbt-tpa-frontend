@@ -49,8 +49,16 @@ class Dimensions {
     return screenHeight(context) / -33.08;
   }
 
+  static double minHeight35(context) {
+    return screenHeight(context) / -23.62;
+  }
+
   static double minHeight40(context) {
     return screenHeight(context) / -20.67;
+  }
+
+  static double minHeight45(context) {
+    return screenHeight(context) / -18.38;
   }
 
   static double minHeight50(BuildContext context) {

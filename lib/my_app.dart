@@ -5,6 +5,7 @@ import 'package:test_potensial/core/shared/widget/loading_widget.dart';
 import 'package:test_potensial/features/auth/presentation/login_screen.dart';
 import 'package:test_potensial/features/bottom_navigator/bottom_navigator_widget.dart';
 import 'package:test_potensial/features/onboarding/presentation/onboarding_screen.dart';
+import 'package:test_potensial/features/teacher/home_teacher/presentation/home_teacher_screen.dart';
 
 import 'core/theme/app_theme.dart';
 
@@ -21,14 +22,11 @@ class MyApp extends StatelessWidget {
         builder: (context, state) {
           if (getFirstInstall == true) {
             if (state is UserInitial) context.read<UserCubit>().getUser();
-            switch (state.runtimeType) {
-              case const (UserLoading):
-                return const Scaffold(body: Loading());
-              case const (UserLoggedIn):
-                return BottomNavigatorWidget();
-              default:
-                return const LoginScreen();
-            }
+            return switch (state) {
+              UserLoading() => const Scaffold(body: Loading()),
+              UserLoggedIn() => state.user.roles == 'STAFF' ? const HomeTeacherScreen() : BottomNavigatorWidget(),
+              _ => const LoginScreen(),
+            };
           } else {
             return const OnBoardingScreen();
           }

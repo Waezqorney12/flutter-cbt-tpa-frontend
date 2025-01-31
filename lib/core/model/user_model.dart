@@ -1,10 +1,5 @@
 import 'package:test_potensial/core/config/api_config.dart';
 import 'package:test_potensial/core/entities/user_entities.dart';
-import 'package:path/path.dart' as path;
-
-String? extractFilename(String imagePath) {
-  return path.basename(imagePath);
-}
 
 class UserModel extends UserEntities {
   const UserModel({

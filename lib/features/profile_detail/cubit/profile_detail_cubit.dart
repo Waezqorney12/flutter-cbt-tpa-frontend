@@ -2,8 +2,6 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:path/path.dart';
-import 'package:test_potensial/core/cubit/user_cubit.dart';
 import 'package:test_potensial/features/profile_detail/domain/usecase/profile_detail_usecase.dart';
 
 import '../../../core/entities/user_entities.dart';

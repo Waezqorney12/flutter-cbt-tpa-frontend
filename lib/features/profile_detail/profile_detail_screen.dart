@@ -8,7 +8,6 @@ import 'package:test_potensial/core/shared/widget/form_widget.dart';
 import 'package:test_potensial/core/shared/widget/phone_form_field_widget.dart';
 import 'package:test_potensial/core/utils/extension_utils.dart';
 import 'package:test_potensial/core/utils/log.dart';
-import 'package:test_potensial/features/bottom_navigator/bottom_navigator_widget.dart';
 import 'package:test_potensial/features/profile/Widget/box_shadow.dart';
 import 'package:test_potensial/features/profile_detail/controller/profile_detail_controller.dart';
 

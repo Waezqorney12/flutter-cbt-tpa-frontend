@@ -56,6 +56,8 @@ dependencies:
   web_socket_channel: ^3.0.1
   pusher_channels_flutter: ^2.2.1
   path: ^1.9.0
+  dotted_border: ^2.1.0
+  provider: ^6.1.2
 
 dev_dependencies:
   flutter_test:

@@ -62,10 +62,32 @@ class _LoginScreenState extends State<LoginScreen> {
 
             if (state is AuthLogin) {
               context.read<UserCubit>().getUser();
-              Navigator.pushAndRemoveUntil(
-                context,
-                Routes.nav(),
-                (route) => false,
+              context.read<UserCubit>().stream.listen(
+                (userState) {
+                  if (userState is UserLoggedIn) {
+                    final userRole = userState.user.roles ?? 'Undefined';
+                    switch (userRole) {
+                      case 'USER':
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          Routes.nav(),
+                          (route) => false,
+                        );
+                      case 'STAFF':
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          Routes.homeTeacher(),
+                          (route) => false,
+                        );
+                      default:
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          Routes.login(),
+                          (route) => false,
+                        );
+                    }
+                  }
+                },
               );
             }
             if (state is AuthError) showSnackBar(context, state.message);

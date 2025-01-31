@@ -12,9 +12,9 @@ class NavigatorProvider extends InheritedWidget {
   const NavigatorProvider({
     required this.currentIndex,
     required this.isFirst,
-    required Widget child,
+    required super.child,
     super.key,
-  }) : super(child: child);
+  });
 
   /*
   Function ini bertujuan untuk melakukan akses pada widget yang telah dibungkus oleh NavigatorProvider sehingga 

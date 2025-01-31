@@ -61,7 +61,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         SizedBox(
                           height: 49,
                           width: 49,
-                          child: (widget.user!.image == null)
+                          child: (widget.user?.image == null)
                               ? Initicon(text: '${widget.user?.firstName} ${widget.user?.lastName}')
                               : CircleAvatar(
                                   radius: 25,
@@ -89,7 +89,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ],
                         ),
                         const Spacer(),
-                        (widget.user!.phone!.isEmpty)
+                        (widget.user?.phone?.isEmpty ?? true)
                             ? Container(
                                 decoration: const BoxDecoration(
                                   color: Colors.white,
@@ -139,22 +139,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             },
                           ),
                           onTap: () async {
+                            if (index == 2) {
+                              return;
+                            }
                             [
                               () => Navigator.push(context, Routes.profileDetail(widget.user ?? const UserEntities())),
-                              // Navigator.pushAndRemoveUntil(
-                              //       context,
-                              //       Routes.profileDetail(widget.user ?? const UserEntities()),
-                              //       (route) => false,
-                              //     ),
                               () => Navigator.push(context, Routes.faceId()),
-                              () {},
                               () => Navigator.push(context, Routes.materi()),
                               () => Navigator.push(context, Routes.history()),
                               () => notificationDialog(
                                     context: context,
                                     onTap: () {
                                       context.read<UserCubit>().removeToken();
-                                      Navigator.pop(context);
+                                      Navigator.pushAndRemoveUntil(
+                                        context,
+                                        Routes.login(),
+                                        (route) => false,
+                                      );
                                     },
                                     text: 'Anda yakin ingin logout?',
                                   ),

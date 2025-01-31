@@ -21,9 +21,12 @@ extension PaddingWidget on Widget {
       child: this,
     );
   }
+
+  Widget space() => const Spacer();
 }
 
 extension WidgetExtension on Widget {
+  Center center() => Center(child: this);
   SizedBox sized({double? w, double? h}) => SizedBox(
         width: w,
         height: h,

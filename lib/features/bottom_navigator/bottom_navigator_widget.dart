@@ -3,20 +3,18 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:test_potensial/core/cubit/user_cubit.dart';
 import 'package:test_potensial/core/shared/text_style/text_app_style.dart';
 import 'package:test_potensial/core/theme/app_palette.dart';
 import 'package:test_potensial/core/utils/notification_dialog_utils.dart';
-import 'package:test_potensial/features/home/presentation/home_screen.dart';
-import 'package:test_potensial/features/materi/presentation/materi_screen.dart';
+import 'package:test_potensial/features/student/home_student/presentation/home_screen.dart';
+import 'package:test_potensial/features/student/materi/presentation/materi_screen.dart';
 import 'package:test_potensial/features/profile/presentation/profile_screen.dart';
 
 import '../../core/provider/navigator_provider.dart';
-import '../../core/routes/routes_pages.dart';
 import '../../core/shared/widget/loading_widget.dart';
-import '../quiz/quiz_screen.dart';
+import '../student/quiz/quiz_screen.dart';
 
 class BottomNavigatorWidget extends StatelessWidget {
   final int index;
